@@ -62,3 +62,26 @@ test("evidence-scout public verifier can PASS when current identities, profiles,
   assert.equal(result.result, "PASS");
   assert.equal(result.agents[0]?.mailbox, "mb-p-scout-example");
 });
+
+
+test("evidence-scout public verifier warns when readiness refers to stale DID profile paths", () => {
+  const result = evaluateEvidenceScoutPublic({
+    implementation: "Mariukasfak/flop-evidence-scout",
+    revision: "stale-readiness",
+    indexHtml: `
+      <div class="id"><h3>Evidence Scout</h3><p class="did">${CURRENT_SCOUT}</p><a href="https://technocore.chat${technocoreDidProfilePath(CURRENT_SCOUT)}">profile</a></div>
+    `,
+    readiness: {
+      checks: [
+        { id: "did-scout", state: "ACTION", detail: "/kv/did-00/00000000000000 -> 404" },
+      ],
+    },
+    claimRehearsal: { results: [{ did: CURRENT_SCOUT, verified: true }] },
+    liveProfiles: [
+      { did: CURRENT_SCOUT, url: "https://technocore.chat/example", status: 404, body: "not found" },
+    ],
+  });
+  const check = result.checks.find((item) => item.id === "public.readiness-self-report");
+  assert.equal(check?.status, "WARN");
+  assert.equal(result.result, "PARTIAL");
+});

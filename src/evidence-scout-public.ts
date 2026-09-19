@@ -138,15 +138,28 @@ export function evaluateEvidenceScoutPublic(snapshot: EvidenceScoutPublicSnapsho
     { current: evaluated.map((item) => item.did), unrehearsed: unrehearsed.map((item) => item.did), rehearsed: [...rehearsed.entries()].filter(([, verified]) => verified).map(([did]) => did) },
   ));
 
-  const readiness = evaluated.map((item) => ({ did: item.did, ...readinessState(snapshot.readiness, item.label), status: item.profileHttpStatus }));
-  const inconsistent = readiness.filter((item) => item.status === 404 && item.state !== "ACTION");
+  const readiness = evaluated.map((item) => {
+    const state = readinessState(snapshot.readiness, item.label);
+    const reportedPath = state.detail?.match(/(\/kv\/did-[0-9a-f]{2}\/[0-9a-f]{14})/i)?.[1] ?? null;
+    return {
+      did: item.did,
+      linkedProfilePath: item.linkedProfilePath,
+      reportedPath,
+      ...state,
+      status: item.profileHttpStatus,
+    };
+  });
+  const inconsistent = readiness.filter((item) =>
+    (item.status === 404 && item.state !== "ACTION") ||
+    (item.reportedPath !== null && item.reportedPath !== item.linkedProfilePath)
+  );
   checks.push(check(
     "public.readiness-self-report",
     inconsistent.length === 0 ? "PASS" : "WARN",
     inconsistent.length === 0
-      ? "The repository readiness artifact does not overstate the observed DID-profile publication state."
-      : "The repository readiness artifact conflicts with the observed live DID-profile state.",
-    { readiness },
+      ? "The repository readiness artifact matches the observed DID-profile publication state and current published identity paths."
+      : "The repository readiness artifact is stale or conflicts with the current published identity/profile state.",
+    { readiness, inconsistencies: inconsistent },
   ));
 
   const mailboxes = evaluated.filter((item) => item.mailbox !== null);
