@@ -16,6 +16,7 @@ import { validateReferenceJourney } from "./reference-journey.js";
 import { validateHtlcConformanceFixture, validateExperimentalPairFixtures } from "./htlc-conformance.js";
 import { contributionVectorSuite } from "./technocore-contribution-vectors.js";
 import { htlcReplayReadiness } from "./htlc-replay.js";
+import { validateAgentIdentityStakeLifecycleFixture } from "./agent-identity-stake-lifecycle.js";
 import type { LabReport } from "./types.js";
 
 export * from "./types.js";
@@ -52,6 +53,7 @@ export * from "./protocol-drift.js";
 export * from "./drift-handoff.js";
 export * from "./reference-journey.js";
 export * from "./agent-economic-profile.js";
+export * from "./agent-identity-stake-lifecycle.js";
 export * from "./reputation-evidence.js";
 export * from "./technocore-contribution-vectors.js";
 export * from "./htlc-conformance.js";
@@ -86,6 +88,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const htlcConformance = validateHtlcConformanceFixture();
   const htlcPairs = validateExperimentalPairFixtures();
   const htlcReplay = htlcReplayReadiness();
+  const agentIdentityStakeLifecycle = validateAgentIdentityStakeLifecycleFixture();
   const d0440Conflict = JSON.parse(
     readFileSync(
       new URL("../conformance/fixtures/flop-d0440-source-conflict.json", import.meta.url),
@@ -100,6 +103,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   ) as Record<string, unknown>;
   const cases = [
     { id: "flop.reference-journey", suite: "flop", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: referenceJourney },
+    { id: "flop.agent-identity-stake-lifecycle", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: agentIdentityStakeLifecycle },
     { id: "flop.htlc-conformance-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcConformance },
     { id: "flop.htlc-pair-fixtures-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcPairs },
     { id: "flop.htlc-replay-hardening-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcReplay },

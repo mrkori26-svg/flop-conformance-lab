@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1",
+  "id": "FLOP_AGENT_IDENTITY_STAKE_LIFECYCLE_V0_5_0",
+  "classification": "OPEN_SPEC_GAP_CANARY",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "issue": 58,
+    "observedComment": 5737231252,
+    "sections": ["§12.3", "Appendix A", "§6.2", "Appendix G"]
+  },
+  "current": {
+    "configuredMinimum": "10 FLOP",
+    "intendedRole": "anti-Sybil capital floor",
+    "status": "NOT_CALIBRATABLE_FROM_PUBLIC_NORMATIVE_SPEC"
+  },
+  "missingLifecycle": [
+    "register",
+    "bond_or_lock",
+    "active",
+    "unbond",
+    "slash_or_unlock"
+  ],
+  "resolutionCanary": {
+    "currentState": "OPEN_SPEC_GAP",
+    "promotionTarget": "CALIBRATABLE_TARGET_SPEC",
+    "promoteOnlyWhenAll": [
+      "agent_identity_registration_transition_defined",
+      "stake_lock_or_bond_transition_defined",
+      "active_identity_condition_defined",
+      "unbond_transition_defined",
+      "unlock_delay_or_reuse_condition_defined",
+      "slashing_conditions_defined_or_explicitly_absent",
+      "stake_unit_and_value_source_defined",
+      "normative_source_pinned_by_commit"
+    ],
+    "before": "AGENT_IDENTITY_COST_N_UNDERDEFINED",
+    "forbidPromotionWhen": [
+      "only_minimum_stake_constant_is_present",
+      "session_key_delegation_is_used_as_identity_staking_lifecycle",
+      "miner_or_validator_lifecycle_is_assumed_to_apply_to_agents_without_normative_text",
+      "cost_n_is_calibrated_without_reuse_unlock_semantics"
+    ]
+  },
+  "calibrationBoundary": {
+    "mayUseObservedIdentityRates": true,
+    "mayUseValueAtRisk": true,
+    "mayDeriveCostN": false,
+    "reason": "Capital cost cannot be derived until lock duration, reuse, unlock and slashing semantics are normative."
+  },
+  "scope": {
+    "claimStakeTooLow": false,
+    "claimStakeTooHigh": false,
+    "claimIssueResolved": false,
+    "claimOperatorIdentity": false
+  }
+}
