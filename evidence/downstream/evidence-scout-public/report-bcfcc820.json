@@ -1,0 +1,38 @@
+{
+  "schema": "flop-public-evidence-result/v1",
+  "integration": "evidence-scout-public",
+  "implementation": "Mariukasfak/flop-evidence-scout",
+  "revision": "bcfcc820ac2cdc25804e75e4932fb48b1457ee62",
+  "verifierCommit": "727b9a05f31ee15cdcda4531009e9ce96e22008d",
+  "generatedAt": "2026-09-19T21:50:53.801Z",
+  "result": "PARTIAL",
+  "summary": {"pass": 2, "warn": 3, "fail": 0, "skip": 0},
+  "observations": {
+    "publishedIdentityPathsDeterministic": true,
+    "currentIdentityKeyControlVerifiedByPublicClaimRehearsal": true,
+    "currentProfiles": [
+      {"did": "did:key:z6MkvJAr8ZTs5n4d14e4SGVFAxo8nWndZTin8vc23Aks3zgn", "path": "/kv/did-85/2d0b660964458e", "httpStatus": 404},
+      {"did": "did:key:z6Mkfdd1cRSrTaA1yuUC45a2dXpHe4zPf4cE1DC3DmCpELvW", "path": "/kv/did-e0/dd0e551624140a", "httpStatus": 404}
+    ],
+    "readinessReportedPaths": [
+      "/kv/did-53/0126ba70daea0e",
+      "/kv/did-23/18cba1779a04a0"
+    ],
+    "readinessPathMatchesCurrentPublishedIdentity": false,
+    "mailboxDiscoveryAvailable": false
+  },
+  "checks": [
+    {"id":"public.identity-profile-path","status":"PASS"},
+    {"id":"public.profile-publication","status":"WARN"},
+    {"id":"public.current-identity-key-control","status":"PASS"},
+    {"id":"public.readiness-self-report","status":"WARN"},
+    {"id":"public.mailbox-discovery","status":"WARN"}
+  ],
+  "claimBoundary": {
+    "externalAdoption": false,
+    "privateKeysUsed": false,
+    "externalRepositoryChangesRequired": false,
+    "keyLossClaimed": false,
+    "invalidIdentityClaimed": false
+  }
+}
