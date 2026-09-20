@@ -1,14 +1,15 @@
 {
   "schemaVersion": "1",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "generatedAt": "2026-09-11T16:13:44.000Z",
+  "generatedAt": "2026-09-17T17:09:12.204Z",
   "fingerprints": [
     "f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006",
     "03f0754ea5c75cc2a64fd88233d57cebdc3ec68379ee76c66ed5c0e80660fb9c",
-    "6088896ab6b6df3dc1aa0780317bc5ba8796a9dfca93c934ffecf971603ef938"
+    "6088896ab6b6df3dc1aa0780317bc5ba8796a9dfca93c934ffecf971603ef938",
+    "94fbc93d74526b07fe5984e4d16067a169c11787bfc5b65a8369ef20cc911d91"
   ],
   "metrics": {
-    "verified_public_events": 3,
+    "verified_public_events": 4,
     "public_releases": 0,
     "upstream_findings": 2,
     "upstream_evidence_events": 3,
@@ -16,10 +17,10 @@
     "upstream_merges": 0,
     "conformance_findings": 1,
     "conformance_evidence_events": 2,
-    "public_artifacts": 3,
-    "last_verified_activity": "2026-09-11T13:54:01.730316Z"
+    "public_artifacts": 4,
+    "last_verified_activity": "2026-09-17T17:09:09.385252Z"
   },
-  "pending": 2,
+  "pending": 0,
   "records": [
     {
       "digest": "sha256:7b089a9fee263838d5fdc8777fec3c63ddacd1076bb1531f344f64036d33f3c8",
@@ -57,6 +58,19 @@
       "technocore": {
         "room": "d-flop-infra",
         "seq": 11
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "digest": "sha256:e320e71524221818b90f88d4518fe437d359d0813d989036136ff4aa7e3ae620",
+      "date": "2026-09-17T17:09:09.385252Z",
+      "eventType": "interop",
+      "project": "conformance-lab",
+      "artifact": "https://github.com/retardio73-boop/flop-conformance-lab/commit/1186f7f2c65c655c1fc6f3fb37693e0990f3af5b",
+      "commit": "1186f7f2c65c655c1fc6f3fb37693e0990f3af5b",
+      "technocore": {
+        "room": "d-flop-infra",
+        "seq": 14
       },
       "verificationStatus": "VERIFIED"
     }
