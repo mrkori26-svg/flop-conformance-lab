@@ -236,3 +236,5 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
 
 export * from "./htlc-replay.js";
 export * from "./evidence-scout-public.js";
+
+export * from "./interaction-observatory.js";

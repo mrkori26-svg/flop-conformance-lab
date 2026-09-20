@@ -5,7 +5,8 @@
   "type": "module",
   "bin": {
     "flop-conformance": "dist/src/cli.js",
-    "protocol-drift": "dist/src/drift-cli.js"
+    "protocol-drift": "dist/src/drift-cli.js",
+    "interaction-observatory": "dist/src/interaction-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -30,7 +31,8 @@
     "docs/API_STABILITY.md",
     "docs/INTEGRATE_60_SECONDS.md",
     "docs/REPRODUCIBLE_DEMOS.md",
-    "integrations/external"
+    "integrations/external",
+    "docs/INTERACTION_OBSERVATORY.md"
   ],
   "engines": {
     "node": ">=22.13"
@@ -44,7 +46,8 @@
     "package:smoke": "npm run build && node tools/package-smoke.js",
     "quickstart": "npm run build && node dist/src/cli.js verify --profile technocore-agent --input examples/external-consumer/technocore-agent.json --out conformance-report.json",
     "drift:snapshot": "npm run build && node dist/src/drift-cli.js snapshot --previous conformance/observatory/baseline.json --out conformance/observatory/current.json --events conformance/observatory/events.json",
-    "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke"
+    "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
+    "interactions:snapshot": "npm run build && node dist/src/interaction-cli.js snapshot --previous conformance/interactions/state.json --out conformance/interactions/current.json --events conformance/interactions/events.json"
   },
   "keywords": [
     "flop",
