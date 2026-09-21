@@ -52,3 +52,30 @@ Each runtime result exposes `flop.capability-manifest/v1`. The CLI writes it nex
 The manifest separates discovery from compatibility, verification, and reliability. A runtime can be observed and compatible while still lacking independent evidence or enough history to call it reliable.
 
 Session Router consumes this manifest only as an optional hard compatibility gate when a request names `requiredProtocolCapabilities`; it does not add a reputation score or infer trust from liveness.
+
+
+## Continuous Runtime Evidence Loop
+
+The Observatory can now run as a continuous operational evidence loop rather than only emitting isolated bundles.
+
+Each cycle performs:
+
+`discover -> fingerprint -> exercise -> collect -> verify -> persist -> compare -> publish`
+
+For every target it maintains:
+
+- `latest.json`: latest runtime evidence bundle
+- `history.jsonl`: append-only run ledger
+- `state.json`: cumulative operational state
+- `summary.json`: compact current metrics
+
+The summary tracks PASS / FAIL / DRIFT / UNKNOWN counts, attempts, retries, transient errors, coverage loss, verification failures, recoveries, uptime and recovery time. Failed and unknown runs are retained as evidence instead of being discarded.
+
+Run locally with:
+
+```bash
+npm run runtime:loop:f1
+npm run runtime:loop:volta
+```
+
+The GitHub workflow now runs hourly and retains each run's continuous evidence directory as a dated CI artifact for 90 days.

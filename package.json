@@ -7,7 +7,8 @@
     "flop-conformance": "dist/src/cli.js",
     "protocol-drift": "dist/src/drift-cli.js",
     "interaction-observatory": "dist/src/interaction-cli.js",
-    "runtime-observatory": "dist/src/runtime-cli.js"
+    "runtime-observatory": "dist/src/runtime-cli.js",
+    "runtime-evidence-loop": "dist/src/continuous-runtime-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -51,7 +52,9 @@
     "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
     "interactions:snapshot": "npm run build && node dist/src/interaction-cli.js snapshot --previous conformance/interactions/state.json --out conformance/interactions/current.json --events conformance/interactions/events.json",
     "runtime:f1": "npm run build && node dist/src/runtime-cli.js run --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --previous conformance/runtime/reference-f1-latest.json --out conformance/runtime/reference-f1-latest.json",
-    "runtime:volta": "npm run build && node dist/src/runtime-cli.js run --target volta-public --input conformance/runtime/volta-public-input.json --previous conformance/runtime/volta-public-latest.json --out conformance/runtime/volta-public-latest.json"
+    "runtime:volta": "npm run build && node dist/src/runtime-cli.js run --target volta-public --input conformance/runtime/volta-public-input.json --previous conformance/runtime/volta-public-latest.json --out conformance/runtime/volta-public-latest.json",
+    "runtime:loop:f1": "npm run build && node dist/src/continuous-runtime-cli.js --target reference-f1 --input examples/external-consumer/direct-rail-f1.json",
+    "runtime:loop:volta": "npm run build && node dist/src/continuous-runtime-cli.js --target volta-public --input conformance/runtime/volta-public-input.json"
   },
   "keywords": [
     "flop",

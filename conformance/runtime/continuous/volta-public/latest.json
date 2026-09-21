@@ -1,0 +1,278 @@
+{
+  "schema": "flop.runtime-evidence-bundle/v1",
+  "target": {
+    "id": "volta-public",
+    "fingerprint": {
+      "implementation": "zkVerify Volta",
+      "version": "2000000",
+      "revision": "1",
+      "genesisHash": "0xff7fe5a610f15fe7a0c52f94f86313fb7db7d3786e7f8acf2b66c11d5be7c242"
+    },
+    "capabilities": [
+      "external-public-runtime",
+      "runtime-metadata-probe",
+      "substrate-json-rpc"
+    ]
+  },
+  "testCaseId": "volta-public-surface-probe",
+  "runId": "volta-public:volta-public-surface-probe:2026-09-21T21:53:22.163Z",
+  "observedAt": "2026-09-21T21:53:22.163Z",
+  "execution": {
+    "startedAt": "2026-09-21T21:53:20.690Z",
+    "finishedAt": "2026-09-21T21:53:22.162Z",
+    "transcript": {
+      "rpcUrl": "https://zkverify-volta-rpc.zkverify.io",
+      "methods": [
+        "system_chain",
+        "state_getRuntimeVersion",
+        "chain_getBlockHash",
+        "state_getMetadata"
+      ]
+    },
+    "output": {
+      "chain": "zkVerify Volta",
+      "runtimeVersion": {
+        "specName": "tzkv-runtime",
+        "implName": "zkv-node",
+        "authoringVersion": 1,
+        "specVersion": 2000000,
+        "implVersion": 1,
+        "apis": [
+          [
+            "0xdf6acb689907609b",
+            5
+          ],
+          [
+            "0x37e397fc7c91f5e4",
+            2
+          ],
+          [
+            "0x40fe3ad401f8959a",
+            6
+          ],
+          [
+            "0xd2bc9897eed08f15",
+            3
+          ],
+          [
+            "0xf78b278be53f454c",
+            2
+          ],
+          [
+            "0xcbca25e39f142387",
+            2
+          ],
+          [
+            "0x687ad44ad37f03c2",
+            1
+          ],
+          [
+            "0xab3c0572291feb8b",
+            1
+          ],
+          [
+            "0xed99c5acb25eedf5",
+            3
+          ],
+          [
+            "0xbc9d89904f5b923f",
+            1
+          ],
+          [
+            "0x37c8bb1350a9a2a8",
+            4
+          ],
+          [
+            "0xf3ff14d5ab527059",
+            3
+          ],
+          [
+            "0x18ef58a3b67ba770",
+            1
+          ],
+          [
+            "0xccd9de6396c899ca",
+            1
+          ],
+          [
+            "0x9ffb505aa738d69c",
+            1
+          ],
+          [
+            "0x91b1c8b16328eb92",
+            2
+          ],
+          [
+            "0x6ff52ee858e6c5bd",
+            2
+          ],
+          [
+            "0x4353432ceab01d10",
+            1
+          ],
+          [
+            "0xaf2c0297a23e6d3d",
+            15
+          ],
+          [
+            "0xfbc577b9d747efd6",
+            1
+          ],
+          [
+            "0x7dc23ff6bf0f15ca",
+            1
+          ]
+        ],
+        "transactionVersion": 1,
+        "systemVersion": 1,
+        "stateVersion": 1
+      },
+      "genesisHash": "0xff7fe5a610f15fe7a0c52f94f86313fb7db7d3786e7f8acf2b66c11d5be7c242",
+      "metadataBytes": 391436,
+      "metadataSha256": "130b168788c4e7865891ea9ea1db28186118f51fac9ba22ce4797e1efbb40baf",
+      "requiredSurface": [
+        "flop",
+        "poui",
+        "direct",
+        "f1"
+      ],
+      "matchedSurface": [
+        "direct"
+      ]
+    }
+  },
+  "evidence": {
+    "chain": "zkVerify Volta",
+    "genesisHash": "0xff7fe5a610f15fe7a0c52f94f86313fb7db7d3786e7f8acf2b66c11d5be7c242",
+    "runtimeVersion": {
+      "specName": "tzkv-runtime",
+      "implName": "zkv-node",
+      "authoringVersion": 1,
+      "specVersion": 2000000,
+      "implVersion": 1,
+      "apis": [
+        [
+          "0xdf6acb689907609b",
+          5
+        ],
+        [
+          "0x37e397fc7c91f5e4",
+          2
+        ],
+        [
+          "0x40fe3ad401f8959a",
+          6
+        ],
+        [
+          "0xd2bc9897eed08f15",
+          3
+        ],
+        [
+          "0xf78b278be53f454c",
+          2
+        ],
+        [
+          "0xcbca25e39f142387",
+          2
+        ],
+        [
+          "0x687ad44ad37f03c2",
+          1
+        ],
+        [
+          "0xab3c0572291feb8b",
+          1
+        ],
+        [
+          "0xed99c5acb25eedf5",
+          3
+        ],
+        [
+          "0xbc9d89904f5b923f",
+          1
+        ],
+        [
+          "0x37c8bb1350a9a2a8",
+          4
+        ],
+        [
+          "0xf3ff14d5ab527059",
+          3
+        ],
+        [
+          "0x18ef58a3b67ba770",
+          1
+        ],
+        [
+          "0xccd9de6396c899ca",
+          1
+        ],
+        [
+          "0x9ffb505aa738d69c",
+          1
+        ],
+        [
+          "0x91b1c8b16328eb92",
+          2
+        ],
+        [
+          "0x6ff52ee858e6c5bd",
+          2
+        ],
+        [
+          "0x4353432ceab01d10",
+          1
+        ],
+        [
+          "0xaf2c0297a23e6d3d",
+          15
+        ],
+        [
+          "0xfbc577b9d747efd6",
+          1
+        ],
+        [
+          "0x7dc23ff6bf0f15ca",
+          1
+        ]
+      ],
+      "transactionVersion": 1,
+      "systemVersion": 1,
+      "stateVersion": 1
+    },
+    "metadataBytes": 391436,
+    "metadataSha256": "130b168788c4e7865891ea9ea1db28186118f51fac9ba22ce4797e1efbb40baf",
+    "requiredSurface": [
+      "flop",
+      "poui",
+      "direct",
+      "f1"
+    ],
+    "matchedSurface": [
+      "direct"
+    ]
+  },
+  "verification": {
+    "status": "UNKNOWN",
+    "checks": [
+      {
+        "id": "volta.chain",
+        "ok": true
+      },
+      {
+        "id": "volta.genesis",
+        "ok": true
+      },
+      {
+        "id": "volta.metadata",
+        "ok": true
+      },
+      {
+        "id": "volta.flop-f1-surface",
+        "ok": false,
+        "detail": "Missing runtime-surface tokens: flop,poui,f1"
+      }
+    ]
+  },
+  "digest": "ab010ba5b2f8e0d5814e992a94ee9bc2bfca03b78ce5f6c7ca0f19919b1c764a"
+}

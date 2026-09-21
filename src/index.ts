@@ -247,3 +247,5 @@ export * from "./runtime-target-f1.js";
 export * from "./runtime-target-volta.js";
 export * from "./rail-observer.js";
 export * from "./capability-manifest.js";
+
+export * from './continuous-runtime-loop.js';

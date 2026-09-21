@@ -3,13 +3,13 @@ name: Runtime Conformance Observatory
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 3 * * *"
+    - cron: "17 * * * *"
 
 permissions:
   contents: read
 
 jobs:
-  reference-f1:
+  continuous-runtime-evidence:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,19 +20,30 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - name: Run reference F.1 runtime target
-        run: npm run runtime:f1
-      - name: Probe public Volta runtime
+      - name: Run reference F.1 continuous loop
+        run: npm run runtime:loop:f1
+      - name: Probe public Volta continuous loop
         id: volta
         continue-on-error: true
-        run: npm run runtime:volta
-      - uses: actions/upload-artifact@v4
+        run: npm run runtime:loop:volta
+      - name: Publish runtime evidence archive
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: runtime-evidence
+          name: runtime-evidence-${{ github.run_id }}
+          retention-days: 90
+          path: |
+            conformance/runtime/continuous/**/*
+          if-no-files-found: error
+      - name: Publish legacy latest bundles
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: runtime-latest-${{ github.run_id }}
+          retention-days: 30
           path: |
             conformance/runtime/reference-f1-latest.json
             conformance/runtime/reference-f1-latest.json.capabilities.json
             conformance/runtime/volta-public-latest.json
             conformance/runtime/volta-public-latest.json.capabilities.json
-          if-no-files-found: error
+          if-no-files-found: warn
