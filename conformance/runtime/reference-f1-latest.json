@@ -1,0 +1,71 @@
+{
+  "schema": "flop.runtime-evidence-bundle/v1",
+  "target": {
+    "id": "reference-f1",
+    "fingerprint": {
+      "implementation": "flop-conformance-lab/reference-f1",
+      "version": "1",
+      "runtime": "v25.6.1"
+    },
+    "capabilities": [
+      "direct-rail-f1",
+      "evidence-bundle-v1",
+      "producer",
+      "validator"
+    ]
+  },
+  "testCaseId": "direct-rail-f1-reference",
+  "runId": "reference-f1:direct-rail-f1-reference:2026-09-21T21:20:02.815Z",
+  "observedAt": "2026-09-21T21:20:02.815Z",
+  "execution": {
+    "startedAt": "2026-09-21T21:20:02.811Z",
+    "finishedAt": "2026-09-21T21:20:02.814Z",
+    "transcript": {
+      "operation": "direct-rail-f1",
+      "taskPreimageBytes": 183,
+      "reportPreimageBytes": 145,
+      "elapsedMs": 2.357599999999998
+    },
+    "output": {
+      "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+      "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "railEvidence": {
+      "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+      "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "evidence": {
+    "taskPreimageBytes": 183,
+    "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+    "reportPreimageBytes": 145,
+    "reportDataBytes": 64,
+    "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "verification": {
+    "status": "PASS",
+    "checks": [
+      {
+        "id": "f1.task-preimage-183",
+        "ok": true
+      },
+      {
+        "id": "f1.task-hash",
+        "ok": true
+      },
+      {
+        "id": "f1.report-preimage-145",
+        "ok": true
+      },
+      {
+        "id": "f1.report-data-64",
+        "ok": true
+      },
+      {
+        "id": "f1.report-data",
+        "ok": true
+      }
+    ]
+  },
+  "digest": "4796f64f88703457954f42d0dee85a4abd3e0eae6b78073d1df60b0078ad693c"
+}
