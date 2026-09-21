@@ -51,7 +51,8 @@
     "drift:snapshot": "npm run build && node dist/src/drift-cli.js snapshot --previous conformance/observatory/baseline.json --out conformance/observatory/current.json --events conformance/observatory/events.json",
     "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
     "interactions:snapshot": "npm run build && node dist/src/interaction-cli.js snapshot --previous conformance/interactions/state.json --out conformance/interactions/current.json --events conformance/interactions/events.json",
-    "runtime:f1": "npm run build && node dist/src/runtime-cli.js run --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --previous .runtime/reference-f1-latest.json --out .runtime/reference-f1-latest.json"
+    "runtime:f1": "npm run build && node dist/src/runtime-cli.js run --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --previous .runtime/reference-f1-latest.json --out .runtime/reference-f1-latest.json",
+    "runtime:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/reference-f1-state.json --retry-budget 2 --history-limit 168"
   },
   "keywords": [
     "flop",

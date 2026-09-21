@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFileSync } from "node:fs";
 import { ReferenceF1RuntimeTarget } from "../src/runtime-target-f1.js";
 import { compareEvidence, runRuntimeTarget, type EvidenceBundle } from "../src/runtime-observatory.js";
-import { runContinuousRuntimeCycle, summarizeRuntimeHistory } from "../src/continuous-runtime.js";
+import { emptyRuntimeLoopState, runContinuousRuntimeCycle, runOperationalRuntimeCycle, summarizeRuntimeHistory } from "../src/continuous-runtime.js";
 
 const example = JSON.parse(
   readFileSync(new URL("../../examples/external-consumer/direct-rail-f1.json", import.meta.url), "utf8"),
@@ -60,4 +60,63 @@ test("continuous runtime history keeps operational status counts", async () => {
     lastObservedAt: second.entry.bundle.observedAt,
     targetId: "reference-f1",
   });
+});
+
+
+test("operational cycle records transient failure recovery", async () => {
+  let calls = 0;
+  class FlakyTarget extends ReferenceF1RuntimeTarget {
+    override async discover(): Promise<boolean> {
+      calls += 1;
+      if (calls === 1) throw new Error("TRANSIENT");
+      return true;
+    }
+  }
+  const state = {
+    schema: "flop.runtime-loop-state/v1" as const,
+    targetId: "reference-f1",
+    testCaseId: "f1",
+    updatedAt: new Date(0).toISOString(),
+    historyLimit: 10,
+    history: [],
+    metrics: {
+      runs: 0, pass: 0, fail: 0, drift: 0, unknown: 0, attempts: 0,
+      transientErrors: 0, recoveredRuns: 0, coverageLostRuns: 0,
+      recoveryRate: null, coverageRate: 1, currentFailureStreak: 0, maxFailureStreak: 0,
+    },
+  };
+  const result = await runOperationalRuntimeCycle({
+    targetId: "reference-f1",
+    target: new FlakyTarget(),
+    testCase: { id: "f1", input: example.input },
+    state,
+    retryBudget: 2,
+    retryDelayMs: 0,
+  });
+  assert.equal(result.entry.status, "PASS");
+  assert.equal(result.entry.attempts, 2);
+  assert.equal(result.entry.transientErrors, 1);
+  assert.equal(result.entry.recovered, true);
+  assert.equal(result.entry.coverageLost, false);
+  assert.equal(result.state.metrics.recoveredRuns, 1);
+});
+
+test("operational cycle records coverage loss after retry budget is exhausted", async () => {
+  class DownTarget extends ReferenceF1RuntimeTarget {
+    override async discover(): Promise<boolean> { throw new Error("DOWN"); }
+  }
+  const state = emptyRuntimeLoopState("reference-f1", "f1", 10);
+  const result = await runOperationalRuntimeCycle({
+    targetId: "reference-f1",
+    target: new DownTarget(),
+    testCase: { id: "f1", input: example.input },
+    state,
+    retryBudget: 1,
+    retryDelayMs: 0,
+  });
+  assert.equal(result.entry.status, "UNKNOWN");
+  assert.equal(result.entry.attempts, 2);
+  assert.equal(result.entry.coverageLost, true);
+  assert.equal(result.state.metrics.coverageLostRuns, 1);
+  assert.equal(result.state.metrics.coverageRate, 0);
 });
