@@ -34,3 +34,18 @@ npm run runtime:volta
 ```
 
 Absence of the required surface is `UNKNOWN`, not `FAIL`: a vanilla/public upstream runtime not exposing FLOP F.1 does not prove that some other FLOP runtime implementation is incompatible. The retained bundle records the exact metadata hash and missing surface tokens.
+
+## Experimental FLOP devnet
+
+`flop-devnet` is a self-hosted JSON-RPC runtime surface used to exercise F.1 end-to-end without claiming upstream or Substrate conformance.
+
+It exposes `flop_submitF1`, persists the executed task by `task_hash`, emits `flop_poui/F1Executed`, and supports storage/event readback.
+
+```bash
+npm run runtime:devnet
+npm run devnet:serve
+```
+
+The target classification is `LOCAL_POLICY`. A PASS means this experimental runtime dispatched the supplied F.1 case and its RPC readback matched the canonical Lab computation. It does not mean an upstream FLOP pallet, zkVerify runtime, or public network has implemented F.1.
+
+The nightly workflow executes this devnet target alongside `reference-f1` and `volta-public`.

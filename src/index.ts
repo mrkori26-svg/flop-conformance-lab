@@ -245,3 +245,5 @@ export * from "./interaction-observatory.js";
 export * from "./runtime-observatory.js";
 export * from "./runtime-target-f1.js";
 export * from "./runtime-target-volta.js";
+export * from "./runtime-target-flop-devnet.js";
+export * from "./flop-devnet-server.js";

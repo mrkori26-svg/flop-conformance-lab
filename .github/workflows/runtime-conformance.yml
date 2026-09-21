@@ -26,6 +26,8 @@ jobs:
         id: volta
         continue-on-error: true
         run: npm run runtime:volta
+      - name: Run experimental FLOP devnet end-to-end
+        run: npm run runtime:devnet
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -33,4 +35,5 @@ jobs:
           path: |
             conformance/runtime/reference-f1-latest.json
             conformance/runtime/volta-public-latest.json
+            conformance/runtime/flop-devnet-latest.json
           if-no-files-found: error
