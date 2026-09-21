@@ -242,3 +242,10 @@ export * from "./htlc-replay.js";
 export * from "./evidence-scout-public.js";
 
 export * from "./interaction-observatory.js";
+export * from "./runtime-observatory.js";
+export * from "./runtime-target-f1.js";
+export * from "./continuous-runtime.js";
+export * from "./evidence-envelope.js";
+export * from "./transcript-checkpoint-proposal.js";
+export * from "./trusted-time-proposal.js";
+export * from "./identity-stake-lifecycle-proposal.js";
