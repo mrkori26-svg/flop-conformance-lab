@@ -1,0 +1,25 @@
+{
+  "schema": "flop.external-tclk-rail-adoption/v1",
+  "observedAt": "2026-09-21",
+  "source": {
+    "repo": "Mariukasfak/flop-evidence-scout",
+    "commit": "e2dab7313781526a79b40e8324f0deda5c78d1a6",
+    "path": "src/tclk-engine.mjs"
+  },
+  "evidence": {
+    "completedDealsAudited": 24,
+    "priorClosedRecordsHadRailFields": false,
+    "closedDealNowPersists": ["railKind", "railStatus"],
+    "railKind": "paper",
+    "railBackedBy": "technocore-kv-note",
+    "claimPathRechecksRailStatus": true,
+    "receiptWithheldOnRailDisagreement": true
+  },
+  "claimBoundary": {
+    "coordinationClaimedDoesNotImplyMoneySettlement": true,
+    "paperRailIsRealMoneySettlement": false,
+    "upstreamNormativeResolution": "NOT_CLAIMED",
+    "directRailF1Compatibility": "NOT_CLAIMED",
+    "directRailF1Candidate": false
+  }
+}
