@@ -22,3 +22,15 @@ npm run runtime:f1
 ```
 
 The GitHub workflow `Runtime Conformance Observatory` also runs nightly and via `workflow_dispatch`, publishing the resulting evidence bundle as a CI artifact.
+
+## External target: zkVerify Volta
+
+`volta-public` probes the public zkVerify Volta JSON-RPC endpoint without credentials. It fingerprints the chain genesis/runtime version, hashes the live SCALE metadata, and looks for an explicit FLOP/F.1 runtime surface.
+
+Run it with:
+
+```bash
+npm run runtime:volta
+```
+
+Absence of the required surface is `UNKNOWN`, not `FAIL`: a vanilla/public upstream runtime not exposing FLOP F.1 does not prove that some other FLOP runtime implementation is incompatible. The retained bundle records the exact metadata hash and missing surface tokens.

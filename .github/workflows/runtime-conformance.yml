@@ -22,8 +22,15 @@ jobs:
       - run: npm test
       - name: Run reference F.1 runtime target
         run: npm run runtime:f1
+      - name: Probe public Volta runtime
+        id: volta
+        continue-on-error: true
+        run: npm run runtime:volta
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: runtime-evidence-reference-f1
-          path: conformance/runtime/reference-f1-latest.json
+          name: runtime-evidence
+          path: |
+            conformance/runtime/reference-f1-latest.json
+            conformance/runtime/volta-public-latest.json
           if-no-files-found: error
