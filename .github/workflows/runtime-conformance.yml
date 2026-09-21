@@ -32,5 +32,7 @@ jobs:
           name: runtime-evidence
           path: |
             conformance/runtime/reference-f1-latest.json
+            conformance/runtime/reference-f1-latest.json.capabilities.json
             conformance/runtime/volta-public-latest.json
+            conformance/runtime/volta-public-latest.json.capabilities.json
           if-no-files-found: error

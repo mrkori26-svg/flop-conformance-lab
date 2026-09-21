@@ -34,3 +34,21 @@ npm run runtime:volta
 ```
 
 Absence of the required surface is `UNKNOWN`, not `FAIL`: a vanilla/public upstream runtime not exposing FLOP F.1 does not prove that some other FLOP runtime implementation is incompatible. The retained bundle records the exact metadata hash and missing surface tokens.
+
+## Rail observation and evidence context
+
+Runtime evidence may carry a fail-closed context with rail observations, transcript completeness, trusted-time evidence, and a capability manifest.
+
+`RailObserver` standardizes `UNKNOWN | FUNDED | CLAIMED | REFUNDED | INVALID`. Missing observations stay `UNKNOWN`; they are never rewritten as unfunded, refunded, or failed. The Lab includes a fixture-backed `PaperRailObserver` and a resolver-backed `DirectRuntimeRailObserver`.
+
+Completeness is independent from signature validity. `COMPLETE` requires no known sequence gaps; `PARTIAL` and `UNKNOWN` cannot support a completeness claim.
+
+Deadline evidence is also independent. A sender timestamp or unauthenticated venue timestamp does not satisfy the trusted-deadline guard. Authenticated venue, rail, runtime, or checkpoint time can be represented without declaring a universal time authority.
+
+## Capability manifests
+
+Each runtime result exposes `flop.capability-manifest/v1`. The CLI writes it next to the evidence bundle as `<bundle>.capabilities.json` unless `--manifest` selects another path.
+
+The manifest separates discovery from compatibility, verification, and reliability. A runtime can be observed and compatible while still lacking independent evidence or enough history to call it reliable.
+
+Session Router consumes this manifest only as an optional hard compatibility gate when a request names `requiredProtocolCapabilities`; it does not add a reputation score or infer trust from liveness.

@@ -1,0 +1,23 @@
+{
+  "schema": "flop.capability-manifest/v1",
+  "identity": "reference-f1",
+  "implementation": "flop-conformance-lab/reference-f1",
+  "version": "1",
+  "capabilities": [
+    "direct-rail-f1",
+    "evidence-bundle-v1",
+    "producer",
+    "validator"
+  ],
+  "evidence": [
+    {
+      "kind": "runtime-evidence-bundle",
+      "ref": "reference-f1",
+      "digest": "4796f64f88703457954f42d0dee85a4abd3e0eae6b78073d1df60b0078ad693c"
+    }
+  ],
+  "availability": {
+    "status": "OBSERVED",
+    "observedAt": "2026-09-21T21:39:36.250Z"
+  }
+}
