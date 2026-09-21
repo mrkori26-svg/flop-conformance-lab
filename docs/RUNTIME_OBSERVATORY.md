@@ -20,3 +20,5 @@ npm run runtime:f1
 ```
 
 The scheduled workflow uploads the generated bundle as an artifact rather than committing periodic runtime state.
+
+Generated runtime state is written under `.runtime/`, outside the published package surface.
