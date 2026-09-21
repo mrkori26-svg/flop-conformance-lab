@@ -1,6 +1,6 @@
 {
   "schema": "flop.protocol-drift-snapshot.v1",
-  "generatedAt": "2026-09-17T14:56:55.163Z",
+  "generatedAt": "2026-09-21T23:48:07.317Z",
   "observations": [
     {
       "id": "yellowpaper-main",
@@ -96,6 +96,43 @@
         "title": "challenge: E.48's fee-floor deterrence premise (collusion_deterred) doesn't scale with R10.5's variable-settlement lock size"
       },
       "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImNoYWxsZW5nZTogRS40OCdzIGZlZS1mbG9vciBkZXRlcnJlbmNlIHByZW1pc2UgKGNvbGx1c2lvbl9kZXRlcnJlZCkgZG9lc24ndCBzY2FsZSB3aXRoIFIxMC41J3MgdmFyaWFibGUtc2V0dGxlbWVudCBsb2NrIHNpemUiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xMVQwNzozODozMFoifQ"
+    },
+    {
+      "id": "yellowpaper-issue-58-agent-stake-lifecycle",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-18T23:03:50Z",
+        "title": "challenge: §12.3 demand-side Sybil floor is unsized against observed identity rates; Technocore measurements for E.49"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImNoYWxsZW5nZTogwqcxMi4zIGRlbWFuZC1zaWRlIFN5YmlsIGZsb29yIGlzIHVuc2l6ZWQgYWdhaW5zdCBvYnNlcnZlZCBpZGVudGl0eSByYXRlczsgVGVjaG5vY29yZSBtZWFzdXJlbWVudHMgZm9yIEUuNDkiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xOFQyMzowMzo1MFoifQ"
+    },
+    {
+      "id": "tclk-issue-172-settlement-view",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-21T05:58:38Z",
+        "title": "Design: a rail-verified settlement view for tclk/1, before any value rail merges"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6IkRlc2lnbjogYSByYWlsLXZlcmlmaWVkIHNldHRsZW1lbnQgdmlldyBmb3IgdGNsay8xLCBiZWZvcmUgYW55IHZhbHVlIHJhaWwgbWVyZ2VzIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjFUMDU6NTg6MzhaIn0"
+    },
+    {
+      "id": "tclk-pr-173-settlement-view",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "0f94269db7598f28cf645b5d74110ae215446671",
+        "updated_at": "2026-09-21T05:57:57Z"
+      },
+      "fingerprint": "eyJoZWFkX3NoYSI6IjBmOTQyNjlkYjc1OThmMjhjZjY0NWI1ZDc0MTEwYWUyMTU0NDY2NzEiLCJtZXJnZWQiOmZhbHNlLCJzdGF0ZSI6Im9wZW4iLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yMVQwNTo1Nzo1N1oifQ"
+    },
+    {
+      "id": "yellowpaper-issue-74-validator-performance",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-21T10:23:26Z",
+        "title": "ambiguity: validator performance score components lack normative observation definitions"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogdmFsaWRhdG9yIHBlcmZvcm1hbmNlIHNjb3JlIGNvbXBvbmVudHMgbGFjayBub3JtYXRpdmUgb2JzZXJ2YXRpb24gZGVmaW5pdGlvbnMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yMVQxMDoyMzoyNloifQ"
     }
   ]
 }
