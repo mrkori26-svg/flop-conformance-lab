@@ -44,3 +44,33 @@ test("live-room capture rejects insecure remote venue URLs", async () => {
     /TECHNOCORE_URL_MUST_USE_HTTPS/,
   );
 });
+
+
+test("live-room capture retries transient read failures without losing the evidence window", async () => {
+  const raw = `${JSON.stringify({
+    seq: 1,
+    ts: "2026-09-17T12:00:00Z",
+    from: "~guest",
+    text: "gm",
+  })}\n`;
+  let calls = 0;
+  const fetch = (async () => {
+    calls += 1;
+    return calls === 1
+      ? new Response("temporary", { status: 502 })
+      : new Response(raw, { status: 200, headers: { "content-type": "text/plain" } });
+  }) as typeof globalThis.fetch;
+
+  const { bundle } = await captureAndVerifyLiveRoom({
+    room: "test-room",
+    binding: { payer: DID, payee: DID, contract: "contract" },
+    fetch,
+    retryDelaysMs: [0, 0, 0],
+    retrySleep: async () => {},
+  });
+
+  assert.equal(calls, 2);
+  assert.equal(bundle.source.fetchAttempts, 2);
+  assert.equal(bundle.source.fetchRetries, 1);
+  assert.equal(bundle.source.transientFailures, 1);
+});

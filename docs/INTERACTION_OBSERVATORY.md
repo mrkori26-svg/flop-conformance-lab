@@ -27,3 +27,18 @@ This distinction is intended to be reused by Control Center and Technocore/socia
 ## State
 
 The scheduled workflow restores the latest state from GitHub Actions cache and writes fresh `interaction-state.json` and `interaction-events.json` artifacts. It does not create periodic commits solely to advance a watermark.
+
+
+## Transient read reliability
+
+Transient transport failures are retried with a bounded backoff of 500 ms, 1 s, and 2 s. The streak cap is three retries per request; permanent 4xx responses are not retried.
+
+Each snapshot records:
+
+- total fetch attempts;
+- retries performed;
+- transient failures observed;
+- exhausted requests;
+- required and optional coverage surfaces lost.
+
+A recovered transient read therefore remains observable without being misclassified as a missing interaction window, while exhausted reads downgrade coverage explicitly instead of silently looking quiet.

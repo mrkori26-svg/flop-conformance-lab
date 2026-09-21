@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { fetchWithTransientRetry, type RetryTelemetry } from "./transient-retry.js";
 
 export type InteractionKind =
   | "EXTERNAL_REPLY"
@@ -45,6 +46,17 @@ export type InteractionState = {
   coverage: "FULL" | "PARTIAL";
   errors?: string[];
   coverageGaps?: string[];
+  coverageLoss?: {
+    requiredSurfaces: number;
+    optionalSurfaces: number;
+    total: number;
+  };
+  reliability?: {
+    attempts: number;
+    retries: number;
+    transientFailures: number;
+    exhaustedRequests: number;
+  };
   threads: InteractionStateEntry[];
 };
 
@@ -108,14 +120,35 @@ function classify(threadId: string, body: string, maintainer: boolean): Interact
   return "EXTERNAL_REPLY";
 }
 
-async function ghJson(path: string, token?: string): Promise<any> {
-  const r = await fetch(`https://api.github.com${path}`, {
-    headers: {
-      accept: "application/vnd.github+json",
-      "user-agent": "flop-interaction-observatory",
-      ...(token ? { authorization: `Bearer ${token}` } : {}),
+type ReliabilityAccumulator = {
+  attempts: number;
+  retries: number;
+  transientFailures: number;
+  exhaustedRequests: number;
+};
+
+function recordRetryTelemetry(accumulator: ReliabilityAccumulator, telemetry: RetryTelemetry): void {
+  accumulator.attempts += telemetry.attempts;
+  accumulator.retries += telemetry.retries;
+  accumulator.transientFailures += telemetry.transientFailures;
+  if (telemetry.exhausted) accumulator.exhaustedRequests += 1;
+}
+
+async function ghJson(path: string, token: string | undefined, reliability: ReliabilityAccumulator): Promise<any> {
+  const r = await fetchWithTransientRetry(
+    globalThis.fetch,
+    `https://api.github.com${path}`,
+    {
+      headers: {
+        accept: "application/vnd.github+json",
+        "user-agent": "flop-interaction-observatory",
+        ...(token ? { authorization: `Bearer ${token}` } : {}),
+      },
     },
-  });
+    {
+      onTelemetry: (telemetry) => recordRetryTelemetry(reliability, telemetry),
+    },
+  );
   if (!r.ok) throw new Error(`GITHUB_${r.status}_${path}`);
   return r.json();
 }
@@ -135,7 +168,8 @@ function allowedRepository(registry: InteractionRegistry, repository: string): b
 
 async function discoverThreads(
   registry: InteractionRegistry,
-  token?: string,
+  token: string | undefined,
+  reliability: ReliabilityAccumulator,
 ): Promise<{
   threads: InteractionThread[];
   requiredErrors: string[];
@@ -171,6 +205,7 @@ async function discoverThreads(
         const events = await ghJson(
           `/users/${encodeURIComponent(registry.account)}/events/public?per_page=100&page=${page}`,
           token,
+          reliability,
         ) as GhEvent[];
         for (const event of events) {
           const repository = event.repo?.name;
@@ -192,6 +227,7 @@ async function discoverThreads(
       const own = await ghJson(
         `/repos/${registry.ownRepository}/issues?state=all&sort=updated&direction=desc&per_page=100`,
         token,
+        reliability,
       ) as GhIssue[];
       for (const item of own) add(registry.ownRepository, item, false);
     } catch (error) {
@@ -211,23 +247,29 @@ export async function observeInteractions(
 ): Promise<{ state: InteractionState; events: InteractionEvent[] }> {
   const events: InteractionEvent[] = [];
   const entries: InteractionStateEntry[] = [];
-  const discovery = await discoverThreads(registry, token);
+  const reliability: ReliabilityAccumulator = {
+    attempts: 0,
+    retries: 0,
+    transientFailures: 0,
+    exhaustedRequests: 0,
+  };
+  const discovery = await discoverThreads(registry, token, reliability);
   const requiredErrors = [...discovery.requiredErrors];
   const coverageGaps = [...discovery.coverageGaps];
 
   for (const thread of discovery.threads) {
     try {
       const base = `/repos/${thread.repository}`;
-      const issue = await ghJson(`${base}/issues/${thread.number}`, token) as GhIssue;
+      const issue = await ghJson(`${base}/issues/${thread.number}`, token, reliability) as GhIssue;
       const subject = thread.kind === "pr"
-        ? await ghJson(`${base}/pulls/${thread.number}`, token) as GhIssue
+        ? await ghJson(`${base}/pulls/${thread.number}`, token, reliability) as GhIssue
         : issue;
-      const comments = await ghJson(`${base}/issues/${thread.number}/comments?per_page=100`, token) as GhComment[];
+      const comments = await ghJson(`${base}/issues/${thread.number}/comments?per_page=100`, token, reliability) as GhComment[];
       const reviews = thread.kind === "pr"
-        ? await ghJson(`${base}/pulls/${thread.number}/reviews?per_page=100`, token) as GhComment[]
+        ? await ghJson(`${base}/pulls/${thread.number}/reviews?per_page=100`, token, reliability) as GhComment[]
         : [];
       const inline = thread.kind === "pr"
-        ? await ghJson(`${base}/pulls/${thread.number}/comments?per_page=100`, token) as GhComment[]
+        ? await ghJson(`${base}/pulls/${thread.number}/comments?per_page=100`, token, reliability) as GhComment[]
         : [];
 
       const timeline = [...comments, ...reviews, ...inline]
@@ -313,9 +355,15 @@ export async function observeInteractions(
       schema: "flop.interaction-state.v1",
       generatedAt: new Date().toISOString(),
       checkStatus: requiredErrors.length ? "UNCHECKED" : "CHECKED",
-      coverage: coverageGaps.length ? "PARTIAL" : "FULL",
+      coverage: requiredErrors.length || coverageGaps.length ? "PARTIAL" : "FULL",
       ...(requiredErrors.length ? { errors: requiredErrors } : {}),
       ...(coverageGaps.length ? { coverageGaps } : {}),
+      coverageLoss: {
+        requiredSurfaces: requiredErrors.length,
+        optionalSurfaces: coverageGaps.length,
+        total: requiredErrors.length + coverageGaps.length,
+      },
+      reliability: { ...reliability },
       threads: entries,
     },
     events,

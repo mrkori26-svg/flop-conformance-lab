@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { verifyExternalProfile, type PortableConformanceResult } from "./profiles.js";
+import { fetchWithTransientRetry, type RetryTelemetry } from "./transient-retry.js";
 
 const ROOM_RE = /^[a-z0-9][a-z0-9_-]{0,47}$/;
 const TIMESTAMP_RE = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
@@ -19,6 +20,8 @@ export interface LiveRoomCaptureOptions {
   implementation?: string;
   revision?: string;
   fetch?: typeof globalThis.fetch;
+  retryDelaysMs?: number[];
+  retrySleep?: (ms: number) => Promise<void>;
 }
 
 interface ExportRecord {
@@ -57,6 +60,9 @@ export interface LiveRoomEvidenceBundle {
     signedRecords: number;
     unsignedRecords: number;
     generationModel: "capture-local-0";
+    fetchAttempts: number;
+    fetchRetries: number;
+    transientFailures: number;
   };
   input: {
     implementation?: string;
@@ -194,10 +200,25 @@ export async function captureAndVerifyLiveRoom(options: LiveRoomCaptureOptions):
   const doFetch = options.fetch ?? globalThis.fetch;
   if (typeof doFetch !== "function") throw new Error("FETCH_UNAVAILABLE");
 
-  const response = await doFetch(`${baseUrl}${exportPath}`, {
-    method: "GET",
-    headers: { accept: "text/plain" },
-  });
+  let retryTelemetry: RetryTelemetry = {
+    attempts: 0,
+    retries: 0,
+    transientFailures: 0,
+    exhausted: false,
+  };
+  const response = await fetchWithTransientRetry(
+    doFetch,
+    `${baseUrl}${exportPath}`,
+    {
+      method: "GET",
+      headers: { accept: "text/plain" },
+    },
+    {
+      ...(options.retryDelaysMs ? { delaysMs: options.retryDelaysMs } : {}),
+      ...(options.retrySleep ? { sleep: options.retrySleep } : {}),
+      onTelemetry: (telemetry) => { retryTelemetry = telemetry; },
+    },
+  );
   const rawExport = await readBodyOrThrow(response, "ROOM_EXPORT");
   const exportedRecords = parseRoomExport(room, rawExport);
   if (exportedRecords.length === 0) throw new Error("EMPTY_ROOM_EXPORT");
@@ -230,6 +251,9 @@ export async function captureAndVerifyLiveRoom(options: LiveRoomCaptureOptions):
         signedRecords: records.length,
         unsignedRecords,
         generationModel: "capture-local-0",
+        fetchAttempts: retryTelemetry.attempts,
+        fetchRetries: retryTelemetry.retries,
+        transientFailures: retryTelemetry.transientFailures,
       },
       input,
       report,
