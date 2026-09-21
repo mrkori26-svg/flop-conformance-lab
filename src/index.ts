@@ -17,6 +17,7 @@ import { validateHtlcConformanceFixture, validateExperimentalPairFixtures } from
 import { contributionVectorSuite } from "./technocore-contribution-vectors.js";
 import { htlcReplayReadiness } from "./htlc-replay.js";
 import { validateAgentIdentityStakeLifecycleFixture } from "./agent-identity-stake-lifecycle.js";
+import { validateExternalTclkRailAdoptionFixture } from "./tclk-rail-adoption.js";
 import type { LabReport } from "./types.js";
 
 export * from "./types.js";
@@ -57,6 +58,7 @@ export * from "./agent-identity-stake-lifecycle.js";
 export * from "./reputation-evidence.js";
 export * from "./technocore-contribution-vectors.js";
 export * from "./htlc-conformance.js";
+export * from "./tclk-rail-adoption.js";
 
 function packageVersion(): string {
   const metadata = JSON.parse(
@@ -89,6 +91,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const htlcPairs = validateExperimentalPairFixtures();
   const htlcReplay = htlcReplayReadiness();
   const agentIdentityStakeLifecycle = validateAgentIdentityStakeLifecycleFixture();
+  const externalTclkRailAdoption = validateExternalTclkRailAdoptionFixture();
   const d0440Conflict = JSON.parse(
     readFileSync(
       new URL("../conformance/fixtures/flop-d0440-source-conflict.json", import.meta.url),
@@ -110,6 +113,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "technocore.contribution-proof-vectors", suite: "technocore", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: contributionVectors },
     { id: "flop.direct-rail-f1-cross-language", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: directRailF1CrossLanguage },
     { id: "ecosystem.interop-registry-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: ecosystemInterop },
+    { id: "evidence.external-tclk-rail-adoption", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: externalTclkRailAdoption },
     ...(await coreSuites()),
     ...(await routerSuite(routerModule)),
     {
