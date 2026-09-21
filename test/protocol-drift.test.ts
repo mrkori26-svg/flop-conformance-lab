@@ -42,3 +42,12 @@ test("HTLC lane is wired to its upstream drift authorities", () => {
     assert.ok(source.affects.includes("flop.htlc-conformance-v1"), `${id} must invalidate HTLC conformance`);
   }
 });
+
+
+test("settlement-view and validator-performance canaries are wired to upstream drift", () => {
+  const registry = loadDriftRegistry();
+  const byId = new Map(registry.sources.map((source) => [source.id, source]));
+  assert.ok(byId.get("tclk-issue-172-settlement-view")?.affects.includes("tclk.settlement-view-rail-evidence"));
+  assert.ok(byId.get("tclk-pr-173-settlement-view")?.affects.includes("tclk.settlement-view-rail-evidence"));
+  assert.ok(byId.get("yellowpaper-issue-74-validator-performance")?.affects.includes("flop.validator-performance-score-ambiguity"));
+});

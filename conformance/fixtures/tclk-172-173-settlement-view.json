@@ -1,0 +1,102 @@
+{
+  "schema": "flop.tclk-settlement-view-canary/v1",
+  "classification": "PROVISIONAL_PR_CANARY",
+  "upstream": {
+    "repository": "flop-labs/tclk",
+    "issue": 172,
+    "pr": 173,
+    "baseCommit": "5cc4ab93efbc8999a3a7e1471b639deca25998ea",
+    "headCommit": "0f94269db7598f28cf645b5d74110ae215446671"
+  },
+  "expectations": [
+    {
+      "id": "claimed_without_evidence",
+      "coordination": "claimed",
+      "evidence": null,
+      "money": "unverified",
+      "diverged": false
+    },
+    {
+      "id": "claimed_exact_rail_ref",
+      "coordination": "claimed",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r1",
+        "observation": "claimed"
+      },
+      "money": "claimed",
+      "diverged": false
+    },
+    {
+      "id": "wrong_ref_ignored",
+      "coordination": "claimed",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r2",
+        "observation": "claimed"
+      },
+      "money": "unverified",
+      "diverged": false
+    },
+    {
+      "id": "absent_diverges",
+      "coordination": "locked",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r1",
+        "observation": "absent"
+      },
+      "money": "unfunded",
+      "diverged": true
+    },
+    {
+      "id": "mismatch_diverges",
+      "coordination": "locked",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r1",
+        "observation": "mismatch"
+      },
+      "money": "unfunded",
+      "diverged": true
+    },
+    {
+      "id": "room_claimed_rail_refunded",
+      "coordination": "claimed",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r1",
+        "observation": "refunded"
+      },
+      "money": "refunded",
+      "diverged": true
+    },
+    {
+      "id": "room_refunded_rail_claimed",
+      "coordination": "refunded",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "r1",
+        "observation": "claimed"
+      },
+      "money": "claimed",
+      "diverged": true
+    },
+    {
+      "id": "opaque_ref",
+      "coordination": "locked",
+      "evidence": {
+        "rail": "flop-htlc",
+        "ref": "0xdeadbeef",
+        "observation": "locked"
+      },
+      "money": "funded",
+      "diverged": false
+    }
+  ],
+  "boundary": {
+    "roomStatusIsCoordinationOnly": true,
+    "terminalMoneyRequiresRailEvidence": true,
+    "prIsNormative": false
+  }
+}
