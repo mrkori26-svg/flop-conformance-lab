@@ -1,6 +1,6 @@
 {
   "schema": "flop.ecosystem-interop.v1",
-  "observedAt": "2026-09-16",
+  "observedAt": "2026-09-21",
   "policy": {
     "communityProjectsAreNormative": false,
     "copyImplementationsByDefault": false,
@@ -123,6 +123,17 @@
         "public-release-scan"
       ],
       "strategy": "pin-independent-cross-language-evidence"
+    },
+    {
+      "repo": "Mariukasfak/flop-evidence-scout",
+      "commit": "e2dab7313781526a79b40e8324f0deda5c78d1a6",
+      "classification": "COMMUNITY_ADOPTION_EVIDENCE",
+      "reuse": [
+        "rail-status-persistence",
+        "paper-rail-boundary",
+        "receipt-withhold-on-rail-disagreement"
+      ],
+      "strategy": "pin-adoption-evidence-without-normative-promotion"
     }
   ]
 }
