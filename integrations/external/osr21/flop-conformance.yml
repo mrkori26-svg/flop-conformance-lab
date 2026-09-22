@@ -1,9 +1,16 @@
 name: flop-conformance
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'client-conformance/**'
+      - 'tools/build-direct-rail-input.py'
+      - '.github/workflows/flop-conformance.yml'
   push:
     paths:
       - 'client-conformance/**'
+      - 'tools/build-direct-rail-input.py'
+      - '.github/workflows/flop-conformance.yml'
 jobs:
   direct-rail-f1:
     runs-on: ubuntu-latest

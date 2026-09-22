@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 
 const REGISTRY_URL = new URL("../conformance/observatory/registry.json", import.meta.url);
 
-type SourceKind = "github-ref" | "github-issue" | "github-pr";
+type SourceKind = "github-ref" | "github-issue" | "github-pr" | "github-repo-activity";
 export type DriftSource = {
   id: string;
   kind: SourceKind;
@@ -29,7 +29,7 @@ export type DriftSnapshot = {
 };
 export type DriftEvent = {
   sourceId: string;
-  change: "SPEC_CHANGE" | "ISSUE_CHANGE" | "PR_CHANGE";
+  change: "SPEC_CHANGE" | "ISSUE_CHANGE" | "PR_CHANGE" | "REPO_ACTIVITY";
   affected: string[];
   previousFingerprint: string | null;
   currentFingerprint: string;
@@ -81,7 +81,7 @@ export function diffDriftSnapshots(
     if (before?.fingerprint === observation.fingerprint) continue;
     events.push({
       sourceId: observation.id,
-      change: source.kind === "github-ref" ? "SPEC_CHANGE" : source.kind === "github-issue" ? "ISSUE_CHANGE" : "PR_CHANGE",
+      change: source.kind === "github-ref" ? "SPEC_CHANGE" : source.kind === "github-issue" ? "ISSUE_CHANGE" : source.kind === "github-pr" ? "PR_CHANGE" : "REPO_ACTIVITY",
       affected: [...source.affects],
       previousFingerprint: before?.fingerprint ?? null,
       currentFingerprint: observation.fingerprint,
@@ -122,6 +122,19 @@ async function githubJson(fetchImpl: FetchLike, path: string): Promise<Record<st
   return await response.json() as Record<string, unknown>;
 }
 
+async function githubArray(fetchImpl: FetchLike, path: string): Promise<Array<Record<string, unknown>>> {
+  const token = process.env.GITHUB_TOKEN;
+  const response = await fetchImpl(`https://api.github.com${path}`, {
+    headers: {
+      accept: "application/vnd.github+json",
+      "user-agent": "flop-conformance-lab-protocol-drift",
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+    },
+  });
+  if (!response.ok) throw new Error(`DRIFT_FETCH_FAILED_${response.status}_${path}`);
+  return await response.json() as Array<Record<string, unknown>>;
+}
+
 async function observeSource(source: DriftSource, fetchImpl: FetchLike): Promise<{ id: string; state: Record<string, string | number | boolean | null> }> {
   const repoPath = `/repos/${source.repository}`;
   if (source.kind === "github-ref") {
@@ -137,18 +150,67 @@ async function observeSource(source: DriftSource, fetchImpl: FetchLike): Promise
       title: String(issue.title ?? ""),
     } };
   }
-  const pr = await githubJson(fetchImpl, `${repoPath}/pulls/${source.pr}`);
-  return { id: source.id, state: {
-    state: String(pr.state ?? "unknown"),
-    merged: Boolean(pr.merged),
-    head_sha: String((pr.head as Record<string, unknown> | undefined)?.sha ?? ""),
-    updated_at: String(pr.updated_at ?? ""),
-  } };
+  if (source.kind === "github-repo-activity") {
+    const items = await githubArray(fetchImpl, `${repoPath}/issues?state=all&sort=updated&direction=desc&per_page=30`);
+    const compact = items.map((item) => ({
+      number: Number(item.number ?? 0),
+      kind: item.pull_request ? "pr" : "issue",
+      state: String(item.state ?? "unknown"),
+      updated_at: String(item.updated_at ?? ""),
+      title: String(item.title ?? ""),
+    }));
+    return { id: source.id, state: {
+      count: compact.length,
+      latest_updated_at: compact[0]?.updated_at ?? "",
+      items_json: JSON.stringify(compact),
+    } };
+  }
+  try {
+    const pr = await githubJson(fetchImpl, `${repoPath}/pulls/${source.pr}`);
+    return { id: source.id, state: {
+      state: String(pr.state ?? "unknown"),
+      merged: Boolean(pr.merged),
+      head_sha: String((pr.head as Record<string, unknown> | undefined)?.sha ?? ""),
+      updated_at: String(pr.updated_at ?? ""),
+      detail_state: "FULL_PR_METADATA",
+    } };
+  } catch (error) {
+    if (!(error instanceof Error) || !error.message.startsWith("DRIFT_FETCH_FAILED_404_")) throw error;
+    try {
+      const issue = await githubJson(fetchImpl, `${repoPath}/issues/${source.pr}`);
+      return { id: source.id, state: {
+        state: String(issue.state ?? "unknown"),
+        merged: false,
+        head_sha: "UNAVAILABLE",
+        updated_at: String(issue.updated_at ?? ""),
+        detail_state: "PR_DETAIL_UNAVAILABLE_ISSUE_FALLBACK",
+      } };
+    } catch (fallbackError) {
+      if (!(fallbackError instanceof Error) || !fallbackError.message.startsWith("DRIFT_FETCH_FAILED_404_")) throw fallbackError;
+      return { id: source.id, state: {
+        state: "unknown",
+        merged: false,
+        head_sha: "UNAVAILABLE",
+        updated_at: "",
+        detail_state: "PR_METADATA_UNAVAILABLE",
+      } };
+    }
+  }
 }
 
 export async function snapshotProtocolDrift(fetchImpl: FetchLike = fetch): Promise<DriftSnapshot> {
   const registry = loadDriftRegistry();
   const observations = [];
-  for (const source of registry.sources) observations.push(await observeSource(source, fetchImpl));
+  for (const source of registry.sources) {
+    try {
+      observations.push(await observeSource(source, fetchImpl));
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "DRIFT_FETCH_FAILED";
+      observations.push({ id: source.id, state: {
+        fetch_state: "UNAVAILABLE",
+        error: message.slice(0, 240),
+      } });
+    }
+  }
   return makeDriftSnapshot(observations);
 }

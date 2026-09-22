@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 
-root = Path(__file__).resolve().parents[2]
+root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(root / 'client-conformance'))
 from task_id_conformance import DEFAULT_VECTOR, evaluate_fixture  # type: ignore
 
