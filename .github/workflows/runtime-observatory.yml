@@ -9,13 +9,19 @@ on:
     types: [completed]
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: runtime-evidence-publisher
+  cancel-in-progress: false
 
 jobs:
   reference-f1:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -26,6 +32,14 @@ jobs:
           key: runtime-state-${{ github.repository }}-${{ github.run_id }}
           restore-keys: |
             runtime-state-${{ github.repository }}-
+      - name: Recover durable state when cache is empty
+        shell: bash
+        run: |
+          if [ ! -f .runtime/reference-f1-state.json ]; then
+            mkdir -p .runtime
+            git fetch origin runtime-evidence:refs/remotes/origin/runtime-evidence || true
+            git show origin/runtime-evidence:.runtime/reference-f1-state.json > .runtime/reference-f1-state.json 2>/dev/null || rm -f .runtime/reference-f1-state.json
+          fi
       - run: npm ci
       - run: npm run runtime:cycle
       - run: npm run runtime:status
@@ -33,10 +47,34 @@ jobs:
         if: always()
         with:
           name: runtime-reference-f1-${{ github.run_id }}
+          retention-days: 90
           path: |
             .runtime/reference-f1-state.json
             runtime-public/runtime-index.json
             runtime-public/STATUS.md
+      - name: Publish durable public evidence branch
+        if: always()
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin runtime-evidence:refs/remotes/origin/runtime-evidence || true
+          rm -rf /tmp/runtime-evidence-worktree
+          if git show-ref --verify --quiet refs/remotes/origin/runtime-evidence; then
+            git worktree add --detach /tmp/runtime-evidence-worktree origin/runtime-evidence
+          else
+            git worktree add --detach /tmp/runtime-evidence-worktree HEAD
+          fi
+          mkdir -p /tmp/runtime-evidence-worktree/.runtime /tmp/runtime-evidence-worktree/runtime-public
+          cp .runtime/reference-f1-state.json /tmp/runtime-evidence-worktree/.runtime/reference-f1-state.json
+          cp runtime-public/runtime-index.json /tmp/runtime-evidence-worktree/runtime-public/runtime-index.json
+          cp runtime-public/STATUS.md /tmp/runtime-evidence-worktree/runtime-public/STATUS.md
+          cd /tmp/runtime-evidence-worktree
+          git add -f .runtime/reference-f1-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
+          if ! git diff --cached --quiet; then
+            git commit -m "evidence: runtime snapshot ${GITHUB_RUN_ID}"
+            git push origin HEAD:runtime-evidence
+          fi
       - uses: actions/cache/save@v4
         if: always()
         with:
