@@ -20,6 +20,10 @@ import { validateAgentIdentityStakeLifecycleFixture } from "./agent-identity-sta
 import { validateExternalTclkRailAdoptionFixture } from "./tclk-rail-adoption.js";
 import { validateTclkSettlementViewCanary } from "./tclk-settlement-view-canary.js";
 import { validateValidatorPerformanceAmbiguity } from "./validator-performance-ambiguity.js";
+import { validateF3HidsKat } from "./f3-hids-kat.js";
+import { emptyPublicMeterKatBundle, validateMeterKatBundle } from "./meter-kat.js";
+import { htlcResidualWitness } from "./htlc-residual.js";
+import { validatorRotationWitness } from "./validator-rotation-safety.js";
 import type { LabReport } from "./types.js";
 
 export * from "./types.js";
@@ -98,6 +102,10 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const externalTclkRailAdoption = validateExternalTclkRailAdoptionFixture();
   const tclkSettlementView = validateTclkSettlementViewCanary();
   const validatorPerformanceAmbiguity = validateValidatorPerformanceAmbiguity();
+  const f3HidsKat = validateF3HidsKat();
+  const meterKat = validateMeterKatBundle(emptyPublicMeterKatBundle);
+  const htlcResidual = htlcResidualWitness({ locked: 10000n, actual: 6200n });
+  const validatorRotation = validatorRotationWitness({ active: 30, promotable: 0, ejectTarget: 50, promoteTarget: 50, minimumActive: 30 });
   const d0440Conflict = JSON.parse(
     readFileSync(
       new URL("../conformance/fixtures/flop-d0440-source-conflict.json", import.meta.url),
@@ -122,6 +130,13 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "evidence.external-tclk-rail-adoption", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: externalTclkRailAdoption },
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
+    { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },
+    { id: "flop.meter-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: meterKat },
+    { id: "flop.htlc-residual-witness", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcResidual },
+    { id: "flop.validator-rotation-witness", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorRotation },
+    { id: "flop.soft-telemetry-evidence", suite: "research", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: { schema: "flop.soft-telemetry-evidence/v1", purpose: "ordered empirical denominators", normativeProfile: false } },
+    { id: "flop.da-evidence", suite: "research", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: { schema: "flop.da-evidence/v1", publicRuntime: false, claimBoundary: "REFERENCE_EVIDENCE_ONLY_NOT_LIVE_DA_SERVICE" } },
+    { id: "technocore.retained-window-proof", suite: "technocore", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: { schema: "technocore.retained-window-proof/v1", provesFullHistory: false, requires: ["room_generation","first_retained_seq","last_seq"] } },
     {
       id: "evidence.envelope-v1",
       suite: "evidence",
@@ -302,3 +317,13 @@ export * from "./evidence-envelope.js";
 export * from "./transcript-checkpoint-proposal.js";
 export * from "./trusted-time-proposal.js";
 export * from "./identity-stake-lifecycle-proposal.js";
+
+export * from "./f3-hids-kat.js";
+export * from "./validator-target.js";
+export * from "./rail-evidence.js";
+export * from "./retained-window-proof.js";
+export * from "./meter-kat.js";
+export * from "./soft-telemetry.js";
+export * from "./da-evidence.js";
+export * from "./htlc-residual.js";
+export * from "./validator-rotation-safety.js";

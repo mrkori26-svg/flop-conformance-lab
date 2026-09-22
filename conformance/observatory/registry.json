@@ -145,8 +145,58 @@
       "repository": "flop-labs/yellowpaper",
       "issue": 74,
       "affects": [
-        "flop.validator-performance-score-ambiguity"
+        "flop.validator-performance-score-ambiguity",
+        "flop.validator-conformance-target"
       ]
+    },
+    {
+      "id": "yellowpaper-issue-73-hids",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 73,
+      "affects": ["flop.f3-hids-kat"]
+    },
+    {
+      "id": "yellowpaper-issue-55-meter",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 55,
+      "affects": ["flop.meter-kat"]
+    },
+    {
+      "id": "yellowpaper-issue-62-soft",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 62,
+      "affects": ["flop.soft-telemetry-evidence"]
+    },
+    {
+      "id": "yellowpaper-issue-71-htlc-residual",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 71,
+      "affects": ["flop.htlc-residual-witness"]
+    },
+    {
+      "id": "yellowpaper-issue-67-validator-rotation",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 67,
+      "affects": ["flop.validator-rotation-witness"]
+    },
+    {
+      "id": "technocore-pr-842-export",
+      "kind": "github-pr",
+      "repository": "flop-labs/technocore-chat",
+      "pr": 842,
+      "affects": ["technocore.retained-window-proof"]
+    },
+    {
+      "id": "technocore-pr-800-retained-floor",
+      "kind": "github-pr",
+      "repository": "flop-labs/technocore-chat",
+      "pr": 800,
+      "affects": ["technocore.retained-window-proof"]
     }
   ]
 }
