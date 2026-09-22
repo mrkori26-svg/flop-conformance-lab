@@ -1,0 +1,115 @@
+{
+  "schema": "flop.runtime-loop-state/v1",
+  "targetId": "reference-f1",
+  "testCaseId": "direct-rail-f1-reference",
+  "updatedAt": "2026-09-22T01:16:38.858Z",
+  "historyLimit": 744,
+  "history": [
+    {
+      "runId": "reference-f1:direct-rail-f1-reference:2026-09-22T01:16:38.858Z",
+      "targetId": "reference-f1",
+      "testCaseId": "direct-rail-f1-reference",
+      "status": "PASS",
+      "observedAt": "2026-09-22T01:16:38.858Z",
+      "attempts": 1,
+      "transientErrors": 0,
+      "recovered": false,
+      "coverageLost": false,
+      "verificationFailures": 0,
+      "durationMs": 4,
+      "bundle": {
+        "schema": "flop.runtime-evidence-bundle/v1",
+        "target": {
+          "id": "reference-f1",
+          "fingerprint": {
+            "implementation": "flop-conformance-lab/reference-f1",
+            "version": "1",
+            "runtime": "v25.6.1",
+            "externalRuntime": false
+          },
+          "capabilities": [
+            "direct-rail-f1",
+            "evidence-bundle-v1",
+            "producer",
+            "reference-only",
+            "validator"
+          ]
+        },
+        "testCaseId": "direct-rail-f1-reference",
+        "runId": "reference-f1:direct-rail-f1-reference:2026-09-22T01:16:38.858Z",
+        "observedAt": "2026-09-22T01:16:38.858Z",
+        "execution": {
+          "startedAt": "2026-09-22T01:16:38.854Z",
+          "finishedAt": "2026-09-22T01:16:38.856Z",
+          "transcript": {
+            "operation": "direct-rail-f1",
+            "taskPreimageBytes": 183,
+            "reportPreimageBytes": 145,
+            "elapsedMs": 1.983699999999999
+          },
+          "output": {
+            "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+            "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "railEvidence": {
+            "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+            "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000",
+            "classification": "REFERENCE_EXECUTION_NOT_PUBLIC_RAIL"
+          }
+        },
+        "evidence": {
+          "taskPreimageBytes": 183,
+          "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+          "reportPreimageBytes": 145,
+          "reportDataBytes": 64,
+          "reportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "verification": {
+          "status": "PASS",
+          "checks": [
+            {
+              "id": "f1.task-preimage-183",
+              "ok": true
+            },
+            {
+              "id": "f1.task-hash",
+              "ok": true
+            },
+            {
+              "id": "f1.report-preimage-145",
+              "ok": true
+            },
+            {
+              "id": "f1.report-data-64",
+              "ok": true
+            },
+            {
+              "id": "f1.report-data",
+              "ok": true
+            }
+          ]
+        },
+        "digest": "d902cad508d45f8f754280c8fc4704958c1e86336f0d1425578438f18921659e"
+      }
+    }
+  ],
+  "metrics": {
+    "runs": 1,
+    "pass": 1,
+    "fail": 0,
+    "drift": 0,
+    "unknown": 0,
+    "attempts": 1,
+    "transientErrors": 0,
+    "recoveredRuns": 0,
+    "coverageLostRuns": 0,
+    "verificationFailures": 0,
+    "reachableRuns": 1,
+    "recoveryRate": null,
+    "coverageRate": 1,
+    "operationalAvailability": 1,
+    "conformancePassRate": 1,
+    "currentFailureStreak": 0,
+    "maxFailureStreak": 0
+  }
+}
