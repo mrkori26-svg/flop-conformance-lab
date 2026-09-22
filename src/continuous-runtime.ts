@@ -66,6 +66,7 @@ export interface OperationalRuntimeEntry {
   recovered: boolean;
   coverageLost: boolean;
   durationMs: number;
+  verificationFailures?: number;
   bundle?: EvidenceBundle;
   error?: string;
 }
@@ -80,8 +81,12 @@ export interface RuntimeLoopMetrics {
   transientErrors: number;
   recoveredRuns: number;
   coverageLostRuns: number;
+  verificationFailures: number;
+  reachableRuns: number;
   recoveryRate: number | null;
   coverageRate: number;
+  operationalAvailability: number;
+  conformancePassRate: number;
   currentFailureStreak: number;
   maxFailureStreak: number;
 }
@@ -118,13 +123,17 @@ const EMPTY_METRICS: RuntimeLoopMetrics = {
   transientErrors: 0,
   recoveredRuns: 0,
   coverageLostRuns: 0,
+  verificationFailures: 0,
+  reachableRuns: 0,
   recoveryRate: null,
   coverageRate: 1,
+  operationalAvailability: 1,
+  conformancePassRate: 1,
   currentFailureStreak: 0,
   maxFailureStreak: 0,
 };
 
-function metricsFor(history: OperationalRuntimeEntry[]): RuntimeLoopMetrics {
+export function metricsFor(history: OperationalRuntimeEntry[]): RuntimeLoopMetrics {
   const metrics = { ...EMPTY_METRICS };
   for (const item of history) {
     metrics.runs += 1;
@@ -136,12 +145,16 @@ function metricsFor(history: OperationalRuntimeEntry[]): RuntimeLoopMetrics {
     else metrics.unknown += 1;
     if (item.recovered) metrics.recoveredRuns += 1;
     if (item.coverageLost) metrics.coverageLostRuns += 1;
+    if (item.bundle) metrics.reachableRuns += 1;
+    metrics.verificationFailures += item.verificationFailures ?? 0;
     const isFailure = item.status === "FAIL" || item.status === "UNKNOWN";
     metrics.currentFailureStreak = isFailure ? metrics.currentFailureStreak + 1 : 0;
     metrics.maxFailureStreak = Math.max(metrics.maxFailureStreak, metrics.currentFailureStreak);
   }
   metrics.recoveryRate = metrics.transientErrors === 0 ? null : metrics.recoveredRuns / metrics.transientErrors;
   metrics.coverageRate = metrics.runs === 0 ? 1 : (metrics.runs - metrics.coverageLostRuns) / metrics.runs;
+  metrics.operationalAvailability = metrics.runs === 0 ? 1 : metrics.reachableRuns / metrics.runs;
+  metrics.conformancePassRate = metrics.runs === 0 ? 1 : metrics.pass / metrics.runs;
   return metrics;
 }
 
@@ -163,7 +176,7 @@ export function readRuntimeLoopState(path: string, targetId: string, testCaseId:
     const parsed = JSON.parse(readFileSync(path, "utf8")) as RuntimeLoopState;
     if (parsed.schema !== "flop.runtime-loop-state/v1") throw new Error("INVALID_RUNTIME_LOOP_STATE_SCHEMA");
     if (parsed.targetId !== targetId || parsed.testCaseId !== testCaseId) throw new Error("RUNTIME_LOOP_SCOPE_MISMATCH");
-    const limit = parsed.historyLimit || historyLimit;
+    const limit = Math.max(parsed.historyLimit || 0, historyLimit);
     const history = Array.isArray(parsed.history) ? parsed.history.slice(-limit) : [];
     return {
       ...parsed,
@@ -235,7 +248,8 @@ export async function runOperationalRuntimeCycle<TInput>(input: {
         attempts,
         transientErrors,
         recovered: transientErrors > 0,
-        coverageLost: false,
+        coverageLost: result.status === "UNKNOWN",
+        verificationFailures: result.bundle.verification.checks.filter((check) => !check.ok).length,
         durationMs: Math.max(0, Date.now() - started),
         bundle: result.bundle,
       };

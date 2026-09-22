@@ -327,3 +327,5 @@ export * from "./soft-telemetry.js";
 export * from "./da-evidence.js";
 export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
+
+export * from './runtime-status.js';

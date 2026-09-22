@@ -82,7 +82,9 @@ test("operational cycle records transient failure recovery", async () => {
     metrics: {
       runs: 0, pass: 0, fail: 0, drift: 0, unknown: 0, attempts: 0,
       transientErrors: 0, recoveredRuns: 0, coverageLostRuns: 0,
-      recoveryRate: null, coverageRate: 1, currentFailureStreak: 0, maxFailureStreak: 0,
+      verificationFailures: 0, reachableRuns: 0,
+      recoveryRate: null, coverageRate: 1, operationalAvailability: 1, conformancePassRate: 1,
+      currentFailureStreak: 0, maxFailureStreak: 0,
     },
   };
   const result = await runOperationalRuntimeCycle({

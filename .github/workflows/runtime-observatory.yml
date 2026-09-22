@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "17 * * * *"
+  workflow_run:
+    workflows: ["Protocol Drift Observatory"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -25,11 +28,15 @@ jobs:
             runtime-state-${{ github.repository }}-
       - run: npm ci
       - run: npm run runtime:cycle
+      - run: npm run runtime:status
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: runtime-reference-f1-${{ github.run_id }}
-          path: .runtime/reference-f1-state.json
+          path: |
+            .runtime/reference-f1-state.json
+            runtime-public/runtime-index.json
+            runtime-public/STATUS.md
       - uses: actions/cache/save@v4
         if: always()
         with:
