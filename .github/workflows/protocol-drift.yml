@@ -27,6 +27,7 @@ jobs:
           --previous conformance/observatory/baseline.json
           --out protocol-drift-current.json
           --events protocol-drift-events.json
+          --handoff protocol-drift-handoff.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -34,6 +35,7 @@ jobs:
           path: |
             protocol-drift-current.json
             protocol-drift-events.json
+            protocol-drift-handoff.json
       - name: Surface drift as a CI signal
         if: steps.drift.outcome == 'failure'
         run: |
