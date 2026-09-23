@@ -1,9 +1,25 @@
 {
   "schema": "flop-upstream-resolution-ledger/v1",
   "policy": {
-    "lifecycle": ["issue", "independent_reproduction", "fixture", "current_result", "upstream_decision", "fixture_update", "before_decision_after"],
+    "lifecycle": [
+      "issue",
+      "independent_reproduction",
+      "fixture",
+      "current_result",
+      "upstream_decision",
+      "fixture_update",
+      "before_decision_after"
+    ],
     "issueCloseAloneIsResolution": false,
-    "followUpRequiresNewEvidence": true
+    "followUpRequiresNewEvidence": true,
+    "publicationStateLifecycle": [
+      "DETECTED",
+      "REPRODUCED",
+      "PUBLICATION_CANDIDATE",
+      "UPSTREAM_POSTED",
+      "UPSTREAM_RESOLVED",
+      "REPLAYED"
+    ]
   },
   "issues": {
     "26": {
@@ -40,6 +56,16 @@
       "upstreamDecision": null,
       "fixture": "yellowpaper-61-direct-rail-v0.5.0.json",
       "next": "WAIT_FOR_SECTION_1_1_R6_5E_AND_APPENDIX_F1_RECONCILIATION_THEN_REPLAY"
+    },
+    "76": {
+      "before": "E38_E40_CONVERSION_EVIDENCE_PATH_UNSPECIFIED",
+      "current": "UPSTREAM_POSTED_PARTICIPANT_EVIDENCE_BOUNDARY; AUTHORSHIP_VERIFIED_TIME_UNVERIFIED; ALLOCATION_NOT_DERIVED",
+      "upstreamDecision": null,
+      "fixture": "yellowpaper-76-conversion-evidence-boundary.json",
+      "publicationState": "UPSTREAM_POSTED",
+      "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/76#issuecomment-5797184386",
+      "evidenceCommit": "80140104251120d1c81ef75042b61060490ab4e8",
+      "next": "WAIT_FOR_E38_E40_EVIDENCE_AUTHORITY_RETENTION_DISPUTE_SCORING_CLAIM_RESOLUTION_THEN_REPLAY"
     }
   }
 }

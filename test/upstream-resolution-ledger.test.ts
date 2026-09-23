@@ -22,3 +22,23 @@ test("#44 #56 and #57 remain open until upstream resolution is replayable", () =
     assert.match(ledger.issues[issue].next, /WAIT_/);
   }
 });
+
+test("#76 is recorded as upstream-posted but unresolved until E.38/E.40 can be replayed", () => {
+  assert.deepEqual(ledger.policy.publicationStateLifecycle, [
+    "DETECTED",
+    "REPRODUCED",
+    "PUBLICATION_CANDIDATE",
+    "UPSTREAM_POSTED",
+    "UPSTREAM_RESOLVED",
+    "REPLAYED",
+  ]);
+  assert.equal(ledger.issues["76"].publicationState, "UPSTREAM_POSTED");
+  assert.equal(ledger.issues["76"].upstreamDecision, null);
+  assert.equal(ledger.issues["76"].fixture, "yellowpaper-76-conversion-evidence-boundary.json");
+  assert.equal(
+    ledger.issues["76"].upstreamUrl,
+    "https://github.com/flop-labs/yellowpaper/issues/76#issuecomment-5797184386",
+  );
+  assert.match(ledger.issues["76"].current, /ALLOCATION_NOT_DERIVED/);
+  assert.match(ledger.issues["76"].next, /WAIT_FOR_E38_E40/);
+});
