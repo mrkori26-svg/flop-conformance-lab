@@ -115,6 +115,12 @@ export function validateDirectRailF1CrossLanguageEvidence() {
   if (!fixture.implementations.some((item: any) => item.language === "Python" && item.repo === "osr21/flop-protocol-reproducibility-audits")) {
     throw new Error("DIRECT_RAIL_F1_EXTERNAL_EVIDENCE_MISSING");
   }
+  if (!fixture.implementations.some((item: any) => item.repo === "kberkan/flop-proof-api" && item.path === "app/crypto.py")) {
+    throw new Error("DIRECT_RAIL_F1_SECOND_EXTERNAL_EVIDENCE_MISSING");
+  }
+  if (fixture.claimBoundary.externalRuntimeTargets !== 0) {
+    throw new Error("DIRECT_RAIL_F1_EXTERNAL_RUNTIME_OVERCLAIM");
+  }
   if (fixture.claimBoundary.runtimeCompatibility !== "NOT_CLAIMED" || fixture.claimBoundary.upstreamResolution !== "NOT_CLAIMED") {
     throw new Error("DIRECT_RAIL_F1_CLAIM_BOUNDARY");
   }
