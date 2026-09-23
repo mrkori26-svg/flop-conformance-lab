@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added a pinned `kberkan/flop-proof-api` Appendix F.1 external verifier target with canonical and mutation-corpus evidence.
+- Added negative boundary probes for task/report lengths and u64 nonce constraints.
+- Extended the hourly Runtime Observatory to retain external verifier history and detect revision drift without claiming a public FLOP runtime.
+
+## Unreleased
+
 - Upstream Participation Policy v1.1 fails closed on security-sensitive findings: public issue/comment/PR candidates are rejected with `PRIVATE_SECURITY_CHANNEL_REQUIRED` and must follow the upstream private vulnerability-reporting path.
 - Add a normative-for-this-repository upstream participation policy and executable publication gate: evidence before opinion, no self-promotion in normative threads, comments/reviews require new evidence, and local/provisional artifacts cannot self-promote to FLOP protocol law.
 - Add `flop.conversion-evidence-bundle/v1` and a language-neutral Yellow Paper #76 canary that verifies participant-held Technocore authorship while keeping server `seq`/`ts` unauthenticated and conversion/allocation credit `NOT_DERIVED` pending E.38/E.40.
