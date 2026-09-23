@@ -19,7 +19,23 @@ An upstream contribution MUST include:
 
 A raw alert, intuition, dashboard observation, or local proposal is insufficient.
 
-## 2. New issues
+## 2. Security routing
+
+Before any public issue, comment, or PR review, classify whether the finding could expose a vulnerability or an exploitable protocol/economic failure.
+
+Security-sensitive findings MUST NOT enter the public publication lifecycle. This includes, at minimum:
+
+- a break in verification that enables accepting work that was not performed;
+- a practical economic attack or reward-extraction path;
+- consensus safety or liveness violations;
+- secret/key/authentication bypasses or value-loss paths;
+- exploit details whose publication would materially lower the cost of attack.
+
+For FLOP Yellow Paper findings, follow the upstream `SECURITY.md` private vulnerability-reporting path first. The executable gate represents this as `securitySensitive: true -> PRIVATE_SECURITY_CHANNEL_REQUIRED`.
+
+Public disclosure can be considered only after the responsible upstream security process permits it. The Lab MUST NOT copy private exploit detail into a public candidate automatically.
+
+## 3. New issues
 
 Open a new upstream issue only when the finding is not already represented by an active issue and at least one of these is true:
 
@@ -33,7 +49,7 @@ The preferred shape is:
 
 `source -> two readings / reproducible failure -> concrete consequence -> evidence -> requested decision -> acceptance criteria`
 
-## 3. Comments and reviews
+## 4. Comments and reviews
 
 Issue comments and PR reviews MUST add **new evidence**.
 
@@ -43,13 +59,13 @@ When a PR purports to resolve an issue, prefer:
 
 `resolved text/code -> replay existing adversarial vector -> PASS/FAIL/DRIFT -> remaining boundary`
 
-## 4. No self-promotion in normative threads
+## 5. No self-promotion in normative threads
 
 Project invitations, contests, games, marketing, contributor recruitment, token/reward promotion, or unrelated links MUST NOT be posted in normative FLOP/TCLK/Technocore issues or PRs.
 
 A project link is allowed only when it is the evidence artifact required to reproduce the technical point.
 
-## 5. Authority classes
+## 6. Authority classes
 
 Every public claim MUST preserve one of these authority classes:
 
@@ -60,7 +76,7 @@ Every public claim MUST preserve one of these authority classes:
 
 `UPSTREAM_PROVISIONAL`, `COMMUNITY_EVIDENCE`, and `LOCAL_POLICY` MUST NOT be presented as protocol law.
 
-## 6. Source precedence and drift
+## 7. Source precedence and drift
 
 For FLOP Yellow Paper questions:
 
@@ -70,7 +86,7 @@ For FLOP Yellow Paper questions:
 4. never promote teaser/role-page/tokenomics copy above a normative Yellow Paper requirement;
 5. when an upstream source changes, replay the same fixture before changing classification.
 
-## 7. Observatory publication state machine
+## 8. Observatory publication state machine
 
 The Observatory MUST use this progression:
 
@@ -87,7 +103,7 @@ Rules:
 
 Automation MAY prepare candidates automatically. It MUST NOT auto-promote local policy into upstream normative status.
 
-## 8. Yellow Paper #76 conversion-evidence boundary
+## 9. Yellow Paper #76 conversion-evidence boundary
 
 Until E.38/E.40 specify the conversion evidence path:
 
@@ -97,7 +113,7 @@ Until E.38/E.40 specify the conversion evidence path:
 - independent timestamp/checkpoint mechanisms may be tested only as `LOCAL_POLICY` / experimental proposals;
 - any future upstream resolution MUST be replayed against `yellowpaper-76-conversion-evidence-boundary.json`.
 
-## 9. TCLK settlement-consumer boundary
+## 10. TCLK settlement-consumer boundary
 
 Until a FLOP rail profile is ratified:
 
@@ -106,7 +122,7 @@ Until a FLOP rail profile is ratified:
 - a generic `amount` becomes a reservation/maximum only if a specific rail profile normatively defines that relationship;
 - `(rail, ref)` is an opaque correlation key at the generic consumer layer.
 
-## 10. Contributor invariant
+## 11. Contributor invariant
 
 The public objective is not comment volume. The desired invariant is:
 

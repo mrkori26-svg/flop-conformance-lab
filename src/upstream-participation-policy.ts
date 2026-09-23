@@ -1,4 +1,4 @@
-export const UPSTREAM_PARTICIPATION_POLICY_VERSION = "1.0.0" as const;
+export const UPSTREAM_PARTICIPATION_POLICY_VERSION = "1.1.0" as const;
 
 export type UpstreamVenue = "YELLOWPAPER" | "TCLK" | "TECHNOCORE";
 export type ContributionKind = "NEW_ISSUE" | "ISSUE_COMMENT" | "PR_REVIEW";
@@ -23,6 +23,7 @@ export interface UpstreamContributionCandidate {
   claimBoundary: string;
   promotionalContent?: boolean;
   claimsProtocolNormative?: boolean;
+  securitySensitive?: boolean;
 }
 
 export interface UpstreamContributionAssessment {
@@ -35,6 +36,7 @@ export interface UpstreamContributionAssessment {
     noLocalNormativePromotion: true;
     commentsRequireNewEvidence: true;
     exactSourceProvenance: true;
+    privateSecurityRouting: true;
   };
 }
 
@@ -53,6 +55,7 @@ export function assessUpstreamContribution(
   }
   if (!candidate.claimBoundary.trim()) reasons.push("CLAIM_BOUNDARY_REQUIRED");
   if (candidate.promotionalContent) reasons.push("PROMOTIONAL_CONTENT_FORBIDDEN");
+  if (candidate.securitySensitive) reasons.push("PRIVATE_SECURITY_CHANNEL_REQUIRED");
   if ((candidate.kind === "ISSUE_COMMENT" || candidate.kind === "PR_REVIEW") && !candidate.newEvidence) {
     reasons.push("COMMENTS_AND_REVIEWS_REQUIRE_NEW_EVIDENCE");
   }
@@ -70,6 +73,7 @@ export function assessUpstreamContribution(
       noLocalNormativePromotion: true,
       commentsRequireNewEvidence: true,
       exactSourceProvenance: true,
+      privateSecurityRouting: true,
     },
   };
 }

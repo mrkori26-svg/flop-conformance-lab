@@ -66,6 +66,7 @@ Before opening or commenting on FLOP Labs, TCLK, or Technocore upstream discussi
 The policy is normative for agents operating this repository. In particular:
 
 - publish evidence before opinion;
+- route security-sensitive vulnerabilities/economic attacks through the upstream private security process, never the public issue pipeline;
 - issue comments and PR reviews require new evidence;
 - no project promotion or invitations in normative technical threads;
 - local/community/provisional work cannot declare protocol law;

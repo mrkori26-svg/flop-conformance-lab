@@ -115,3 +115,23 @@ test("publication state machine cannot skip reproduction, policy gate, upstream 
     replayResult: "PASS",
   }), "REPLAYED");
 });
+
+test("security-sensitive findings are rejected from public upstream publication", () => {
+  const result = assessUpstreamContribution({
+    venue: "YELLOWPAPER",
+    kind: "NEW_ISSUE",
+    sourceRef: "flop-labs/yellowpaper SECURITY.md",
+    authority: "UPSTREAM_NORMATIVE",
+    evidenceRef: "private-reproduction",
+    reproducible: true,
+    newEvidence: true,
+    divergenceOrFinding: "security-sensitive protocol break",
+    consequence: "could enable reward extraction or safety/liveness failure",
+    acceptanceCriteria: ["route privately before disclosure"],
+    claimBoundary: "no public exploit detail",
+    securitySensitive: true,
+  });
+  assert.equal(result.status, "REJECTED");
+  assert.ok(result.reasons.includes("PRIVATE_SECURITY_CHANNEL_REQUIRED"));
+  assert.equal(result.rules.privateSecurityRouting, true);
+});
