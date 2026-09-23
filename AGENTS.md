@@ -58,3 +58,18 @@ If a downstream repository publishes `.well-known/flop-conformance.json`, use it
 ## Contributing external evidence
 
 If an implementation has a reproducible result, use the repository issue form **Submit conformance evidence**. Registry status must remain `PROPOSED`/`CANDIDATE` until independently reproducible CI evidence exists.
+
+## Upstream publication
+
+Before opening or commenting on FLOP Labs, TCLK, or Technocore upstream discussions, follow `docs/UPSTREAM_PARTICIPATION_POLICY.md`.
+
+The policy is normative for agents operating this repository. In particular:
+
+- publish evidence before opinion;
+- issue comments and PR reviews require new evidence;
+- no project promotion or invitations in normative technical threads;
+- local/community/provisional work cannot declare protocol law;
+- preserve exact source provenance and claim boundaries;
+- replay the original fixture after an upstream resolution.
+
+Use `assessUpstreamContribution` as the executable publication gate.

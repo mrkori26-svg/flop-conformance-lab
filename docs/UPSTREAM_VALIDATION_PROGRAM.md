@@ -1,6 +1,6 @@
 # Upstream Validation Program
 
-This program turns active FLOP/TCLK/Technocore validation gaps into executable, non-normative evidence.
+This program turns active FLOP/TCLK/Technocore validation gaps into executable, non-normative evidence. Public upstream participation is governed by `docs/UPSTREAM_PARTICIPATION_POLICY.md`.
 
 ## Principles
 
@@ -12,6 +12,9 @@ This program turns active FLOP/TCLK/Technocore validation gaps into executable, 
 - Preserve exact upstream issue/PR provenance in the Protocol Drift Observatory.
 
 ## Active lanes
+
+### Conversion evidence path — Yellow Paper #76
+`flop.conversion-evidence-bundle/v1` verifies participant-held Technocore authorship over exact `room|nonce|text`, keeps server-assigned `seq`/`ts` explicitly unauthenticated, and refuses to derive conversion eligibility, score, cap, claim right or allocation credit while E.38/E.40 remain unresolved. The language-neutral canary is `conformance/fixtures/yellowpaper-76-conversion-evidence-boundary.json`.
 
 ### Appendix F.3 token binding — Yellow Paper #73
 `flop.f3-hids-kat/v1` reproduces the published fixed-width `h_ids` value and the alternative SCALE interpretation. It is an interoperability witness, not a normative encoding choice.
@@ -39,7 +42,7 @@ This program turns active FLOP/TCLK/Technocore validation gaps into executable, 
 
 ## Promotion model
 
-Each lane starts as `OPEN_SPEC_GAP_CANARY`, `PROVISIONAL_PR`, `LOCAL_POLICY` or `UNKNOWN`.
+Each lane starts as `OPEN_SPEC_GAP_CANARY`, `PROVISIONAL_PR`, `LOCAL_POLICY` or `UNKNOWN`. Publication candidates must additionally pass the executable `assessUpstreamContribution` gate.
 Promotion requires a pinned upstream decision/release plus replay of the same adversarial vector against the resolved implementation.
 
 ## Integration direction

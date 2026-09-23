@@ -67,6 +67,8 @@ export * from "./htlc-conformance.js";
 export * from "./tclk-rail-adoption.js";
 export * from "./tclk-settlement-view-canary.js";
 export * from "./validator-performance-ambiguity.js";
+export * from "./conversion-evidence.js";
+export * from "./upstream-participation-policy.js";
 
 function packageVersion(): string {
   const metadata = JSON.parse(
@@ -131,6 +133,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
     { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },
+    { id: "flop.conversion-evidence-boundary", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: { schema: "flop.conversion-evidence-bundle/v1", yellowpaperIssue: 76, senderAuthorship: "room|nonce|text", serverAssignedUnsigned: ["seq","ts"], conversionEligibility: "NOT_DERIVED", allocationCredit: "NOT_DERIVED" } },
+    { id: "upstream.participation-policy", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: { version: "1.0.0", executableGate: "assessUpstreamContribution", commentsRequireNewEvidence: true, selfPromotionInNormativeThreads: false, localNormativePromotion: false } },
     { id: "flop.meter-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: meterKat },
     { id: "flop.htlc-residual-witness", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcResidual },
     { id: "flop.validator-rotation-witness", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorRotation },

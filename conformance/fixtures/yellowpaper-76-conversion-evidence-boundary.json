@@ -1,0 +1,64 @@
+{
+  "schema": "flop.conversion-evidence-boundary/v1",
+  "classification": "OPEN_SPEC_GAP_CANARY",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "issue": 76,
+    "sections": ["E.38", "E.40", "9.3"]
+  },
+  "purpose": "Freeze what a participant-held Technocore activity record can and cannot prove before E.38 defines the conversion evidence path.",
+  "cases": [
+    {
+      "id": "signed-record-no-time-anchor",
+      "input": {
+        "sender_signature": "valid over room|nonce|text",
+        "server_seq": "present",
+        "server_ts": "present",
+        "external_time_anchor": false
+      },
+      "expected": {
+        "authorship": "VERIFIED",
+        "sequence": "SERVER_ASSIGNED_UNSIGNED",
+        "network_time": "UNVERIFIED_SERVER_METADATA",
+        "conversion_eligibility": "NOT_DERIVED",
+        "conversion_score": "NOT_DERIVED",
+        "allocation_credit": "NOT_DERIVED"
+      }
+    },
+    {
+      "id": "signed-record-with-independent-anchor",
+      "input": {
+        "sender_signature": "valid over room|nonce|text",
+        "external_time_anchor": "cryptographically verified local proposal over signed-payload digest"
+      },
+      "expected": {
+        "authorship": "VERIFIED",
+        "network_time": "EXTERNALLY_ANCHORED_LOCAL_PROPOSAL",
+        "conversion_eligibility": "NOT_DERIVED",
+        "conversion_score": "NOT_DERIVED",
+        "allocation_credit": "NOT_DERIVED"
+      }
+    },
+    {
+      "id": "invalid-sender-signature",
+      "input": {
+        "sender_signature": "invalid"
+      },
+      "expected": {
+        "authorship": "INVALID",
+        "conversion_eligibility": "NOT_DERIVED",
+        "conversion_score": "NOT_DERIVED",
+        "allocation_credit": "NOT_DERIVED"
+      }
+    }
+  ],
+  "promotion_gate": {
+    "protocol_normative": false,
+    "may_become_normative_only_after": [
+      "an upstream FLOP specification defines the admissible evidence of record",
+      "the authority for network-observation time or anti-backdating is defined",
+      "retention and dispute windows are defined",
+      "conversion scoring/eligibility/claim semantics are ratified"
+    ]
+  }
+}
