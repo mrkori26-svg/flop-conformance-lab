@@ -1,6 +1,6 @@
 {
   "schema": "flop.direct-rail-f1-cross-language/v1",
-  "observedAt": "2026-09-16",
+  "observedAt": "2026-09-23",
   "yellowpaper": {
     "repository": "flop-labs/yellowpaper",
     "commit": "cb3cbf97a346ff85aca6dba5e924434270ca672c",
@@ -27,6 +27,13 @@
       "commit": "f701db3a211746b65747d69f1e480d8e4500cfb9",
       "language": "Python",
       "role": "independent standard-library F.1 reference verifier"
+    },
+    {
+      "repo": "kberkan/flop-proof-api",
+      "commit": "1672ec5f5536f8ea06934ff2823bf36ad47dd1b6",
+      "path": "app/crypto.py",
+      "language": "Python",
+      "role": "independent community F.1 task_hash/report_data implementation; not a FLOP runtime"
     }
   ],
   "agreement": {
@@ -34,12 +41,14 @@
     "canonicalReportDataExact": true,
     "rejectLegacyTaskU64": true,
     "rejectLegacyTaskU32": true,
-    "rejectBare32ByteReportData": true
+    "rejectBare32ByteReportData": true,
+    "externalImplementations": 2
   },
   "claimBoundary": {
     "runtimeCompatibility": "NOT_CLAIMED",
     "upstreamResolution": "NOT_CLAIMED",
     "privateImplementationCoverage": "NOT_CLAIMED",
-    "purpose": "cross-language release-gate evidence"
+    "purpose": "cross-language release-gate evidence",
+    "externalRuntimeTargets": 0
   }
 }
