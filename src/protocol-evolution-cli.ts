@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { buildProtocolEvolutionHistory, evolutionRecordFromHandoff, type ProtocolEvolutionHistory } from "./protocol-evolution.js";
+import { attachResolutionReplay, buildProtocolEvolutionHistory, evolutionRecordFromHandoff, type ProtocolEvolutionHistory, type ResolutionReplayReport } from "./protocol-evolution.js";
 import type { DriftHandoff } from "./drift-handoff.js";
 
 const args = process.argv.slice(2);
@@ -11,6 +11,7 @@ function value(flag: string, fallback: string): string {
 
 const handoffPath = value("--handoff", "conformance/observatory/handoff.json");
 const outPath = value("--out", "conformance/observatory/evolution-history.json");
+const replayPath = value("--replay", "conformance/observatory/resolution-replay-latest.json");
 const handoff = JSON.parse(readFileSync(handoffPath, "utf8")) as DriftHandoff;
 
 const fresh = handoff.items.map((item) => evolutionRecordFromHandoff(handoff, item));
@@ -29,10 +30,14 @@ const seed = buildProtocolEvolutionHistory([], new Date().toISOString());
 for (const key of Object.keys(seed.summary) as Array<keyof typeof seed.summary>) seed.summary[key] = 0;
 for (const record of mergedRecords) seed.summary[record.after.status] += 1;
 
-const output: ProtocolEvolutionHistory = {
+let output: ProtocolEvolutionHistory = {
   ...seed,
   records: mergedRecords,
 };
+if (existsSync(replayPath)) {
+  const replay = JSON.parse(readFileSync(replayPath, "utf8")) as ResolutionReplayReport;
+  output = attachResolutionReplay(output, replay, replayPath);
+}
 
 writeFileSync(outPath, JSON.stringify(output, null, 2) + "\n");
 console.log(JSON.stringify({
