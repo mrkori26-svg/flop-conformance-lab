@@ -77,6 +77,7 @@ export * from "./tclk-settlement-truth.js";
 export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
+export * from "./evidence-envelope-verifier.js";
 
 function packageVersion(): string {
   const metadata = JSON.parse(

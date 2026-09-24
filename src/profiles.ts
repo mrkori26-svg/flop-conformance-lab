@@ -1,4 +1,4 @@
-﻿import { readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { tryDecodeFrame } from "@flop-labs/tclk";
 import {
   analyzeTranscriptEvidence,
@@ -11,8 +11,9 @@ import { didKeyBytes, transportRepresentable, verifyTechnocoreRecord } from "./t
 import type { TransportRecord } from "./types.js";
 import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
+import { verifyEvidenceEnvelopeValue } from "./evidence-envelope-verifier.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "evidence-envelope"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -418,10 +419,36 @@ function verifyDirectRailF1(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function verifyEvidenceEnvelopeProfile(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "PROFILE_INPUT");
+    const envelope = input.envelope ?? rawInput;
+    const verification = verifyEvidenceEnvelopeValue(envelope);
+    const checks: PortableCheck[] = verification.checks.map((item) =>
+      check(
+        `evidence-envelope.${item.id}`,
+        item.ok ? "PASS" : "FAIL",
+        item.ok ? `Evidence envelope ${item.id} check passed.` : `Evidence envelope ${item.id} check failed.`,
+        item.detail ? { detail: item.detail } : undefined,
+      ),
+    );
+    checks.push(check(
+      "evidence-envelope.digest",
+      verification.valid ? "PASS" : "FAIL",
+      verification.valid ? "Canonical envelope digest is internally consistent." : "Envelope integrity or claim boundary failed.",
+      { computedSha256: verification.computedSha256 },
+    ));
+    return finalize("evidence-envelope", input, checks);
+  } catch (error) {
+    return failureResult("evidence-envelope", rawInput, error);
+  }
+}
+
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
+  if (profile === "evidence-envelope") return verifyEvidenceEnvelopeProfile(input);
   throw new Error(`UNKNOWN_EXTERNAL_PROFILE:${profile}`);
 }
