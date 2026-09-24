@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import { claimBoundaryFor, createRuntimeTarget, isRuntimeTargetName, RUNTIME_TARGET_NAMES } from "./runtime-target-registry.js";
+import { claimBoundaryFor, createRuntimeTarget, isRuntimeTargetName, RUNTIME_TARGET_NAMES, runtimeTargetRegistration } from "./runtime-target-registry.js";
 import { publishRuntimeBundle } from "./runtime-publication.js";
 import { readEvidenceBundle, runRuntimeTarget, writeEvidenceBundle } from "./runtime-observatory.js";
 import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState } from "./continuous-runtime.js";
@@ -29,10 +29,10 @@ if (!["run", "cycle"].includes(command ?? "") || !isRuntimeTargetName(targetName
   process.exit(2);
 }
 
-const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: unknown; id?: string };
+const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: unknown; id?: string } & Record<string, unknown>;
 const input = raw.input ?? raw;
-const defaultCaseId = targetName === "external-task-relay-paper" ? "task-relay-paper-reference" : "direct-rail-f1-reference";
-const testCase = { id: raw.id ?? defaultCaseId, input };
+const registration = runtimeTargetRegistration(targetName)!;
+const testCase = { id: raw.id ?? registration.defaultCaseId, input };
 const target = createRuntimeTarget(targetName);
 const claimBoundary = claimBoundaryFor(targetName);
 
