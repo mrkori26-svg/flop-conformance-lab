@@ -15,7 +15,11 @@ test("Technocore PR #800 retained floor stays distinct from response window and 
  assert.equal(fixture.observedSemantics.first_seq,"RESPONSE_WINDOW_FIRST_SEQ");
  assert.equal(fixture.observedSemantics.first_retained_seq,"ROOM_RETAINED_FLOOR_SEQ");
  assert.equal(fixture.observedSemantics.first_retained_ts,"ROOM_RETAINED_FLOOR_TIMESTAMP");
- assert.equal(fixture.claimBoundary.retainedWindowCompleteness,"MEASURABLE");
+ assert.equal(fixture.independentValidation.sourceInspection,"SPLIT_PATH_OPEN_REMAINS");
+ assert.equal(fixture.independentValidation.floorAndTailSingleSnapshot,false);
+ assert.equal(fixture.independentValidation.upstreamMainCi,"FAIL_FORMAT_CHECK");
+ assert.equal(fixture.independentValidation.publicationRecommendation,"WAIT_FOR_NEXT_HEAD");
+ assert.equal(fixture.claimBoundary.retainedWindowCompleteness,"MEASURABLE_ONLY_IF_FLOOR_AND_WINDOW_SHARE_SNAPSHOT");
  assert.equal(fixture.claimBoundary.fullTranscriptCompleteness,false);
  assert.equal(fixture.claimBoundary.normativePromotion,false);
 });

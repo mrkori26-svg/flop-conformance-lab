@@ -15,6 +15,7 @@ export interface RuntimeExecution {
   transcript: unknown;
   output: unknown;
   railEvidence?: unknown;
+  executionReceipt?: unknown;
 }
 
 export interface RuntimeVerification {
@@ -54,6 +55,20 @@ function digest(value: unknown): string {
   return createHash("sha256").update(stable(value)).digest("hex");
 }
 
+export function verifyRouterRuntimeExecutionReceipt(value: unknown): boolean {
+  if (!value || typeof value !== "object") return false;
+  const receipt = value as Record<string, unknown>;
+  if (receipt.schema !== "flop.router-runtime-execution/v1" || typeof receipt.semanticDigest !== "string") return false;
+  const semantic = {
+    router: receipt.router,
+    runtime: receipt.runtime,
+    testCaseId: receipt.testCaseId,
+    execution: receipt.execution,
+    evidenceRefs: receipt.evidenceRefs,
+  };
+  return digest(semantic) === receipt.semanticDigest;
+}
+
 export function compareEvidence(previous: EvidenceBundle | null, current: EvidenceBundle): RuntimeStatus {
   if (current.verification.status === "FAIL") return "FAIL";
   if (current.verification.status === "UNKNOWN") return "UNKNOWN";
@@ -74,7 +89,16 @@ export async function runRuntimeTarget<TInput>(
   const [fingerprint, capabilities] = await Promise.all([target.fingerprint(), target.capabilities()]);
   const execution = await target.execute(testCase);
   const evidence = await target.collectEvidence(testCase, execution);
-  const verification = await target.verify(testCase, execution, evidence);
+  const targetVerification = await target.verify(testCase, execution, evidence);
+  const receiptPresent = execution.executionReceipt !== undefined;
+  const receiptValid = !receiptPresent || verifyRouterRuntimeExecutionReceipt(execution.executionReceipt);
+  const verification: RuntimeVerification = {
+    status: receiptValid ? targetVerification.status : "FAIL",
+    checks: [
+      ...targetVerification.checks,
+      ...(receiptPresent ? [{ id: "router_runtime_execution_receipt_integrity", ok: receiptValid }] : []),
+    ],
+  };
   const observedAt = new Date().toISOString();
   const core = {
     schema: "flop.runtime-evidence-bundle/v1" as const,
@@ -91,6 +115,7 @@ export async function runRuntimeTarget<TInput>(
     testCaseId: core.testCaseId,
     output: core.execution.output,
     railEvidence: core.execution.railEvidence ?? null,
+    executionReceipt: core.execution.executionReceipt ?? null,
     evidence: core.evidence,
     verification: core.verification,
   };

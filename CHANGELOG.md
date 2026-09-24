@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added a pinned `kberkan/flop-proof-api` Appendix F.1 external verifier target with canonical and mutation-corpus evidence.
+- Added negative boundary probes for task/report lengths and u64 nonce constraints.
+- Extended the hourly Runtime Observatory to retain external verifier history and detect revision drift without claiming a public FLOP runtime.
 - Correct Yellow Paper #26 quote-contract appendix provenance from E.54 to E.55 per maintainer correction comment `5808384402`; no Router behavior changes.
 
 - Upstream Participation Policy v1.1 fails closed on security-sensitive findings: public issue/comment/PR candidates are rejected with `PRIVATE_SECURITY_CHANNEL_REQUIRED` and must follow the upstream private vulnerability-reporting path.

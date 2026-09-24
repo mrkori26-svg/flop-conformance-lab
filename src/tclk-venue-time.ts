@@ -82,6 +82,21 @@ interface TclkIssue96Fixture {
     failClosed: true;
     allowDeadlineVerdict: false;
   };
+  pr175Replay: {
+    pr: number;
+    head: string;
+    replayedAt: string;
+    build: "PASS";
+    transcriptTests: { passed: number; failed: number };
+    plainReveal: "claimed";
+    timestampOnlyMutationKeepsSignatureValid: true;
+    timestampOnlyMutationChangesPlainFoldOutcome: true;
+    strictReveal: "REFUSED_UNSIGNED_VENUE_TIMESTAMP";
+    strictRefund: "REFUSED_UNSIGNED_VENUE_TIMESTAMP";
+    strictStateAfterTerminalRefusal: "locked";
+    terminalEvidenceForPlainTerminal: "rail-required";
+    claimBoundary: "PR_PROVISIONAL_NOT_RELEASE_NORMATIVE";
+  };
 }
 
 export function validateTclkIssue96Fixture(): Record<string, unknown> {
@@ -114,6 +129,23 @@ export function validateTclkIssue96Fixture(): Record<string, unknown> {
   if (fixture.honest.expectedTerminalStatus === fixture.tampered.expectedTerminalStatus) {
     throw new Error("TCLK96_VECTOR_DOES_NOT_FLIP_VERDICT");
   }
+  if (fixture.pr175Replay.pr !== 175 ||
+      fixture.pr175Replay.head !== "ac2698c25d0c34a6122dd83be42334983ca8b62c") {
+    throw new Error("TCLK96_PR175_REPLAY_SOURCE_DRIFT");
+  }
+  if (fixture.pr175Replay.build !== "PASS" ||
+      fixture.pr175Replay.transcriptTests.passed !== 13 ||
+      fixture.pr175Replay.transcriptTests.failed !== 0) {
+    throw new Error("TCLK96_PR175_REPLAY_EXECUTION_DRIFT");
+  }
+  if (!fixture.pr175Replay.timestampOnlyMutationKeepsSignatureValid ||
+      !fixture.pr175Replay.timestampOnlyMutationChangesPlainFoldOutcome ||
+      fixture.pr175Replay.strictReveal !== "REFUSED_UNSIGNED_VENUE_TIMESTAMP" ||
+      fixture.pr175Replay.strictRefund !== "REFUSED_UNSIGNED_VENUE_TIMESTAMP" ||
+      fixture.pr175Replay.strictStateAfterTerminalRefusal !== "locked" ||
+      fixture.pr175Replay.terminalEvidenceForPlainTerminal !== "rail-required") {
+    throw new Error("TCLK96_PR175_REPLAY_SEMANTICS_DRIFT");
+  }
 
   const assessment = assessTclkVenueTime({
     signatureValid: true,
@@ -135,5 +167,6 @@ export function validateTclkIssue96Fixture(): Record<string, unknown> {
     trustBoundary: assessment.status,
     failClosed: assessment.failClosed,
     allowDeadlineVerdict: assessment.allowDeadlineVerdict,
+    pr175Replay: fixture.pr175Replay,
   };
 }

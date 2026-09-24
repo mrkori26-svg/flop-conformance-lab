@@ -39,7 +39,7 @@ Use `verify-live-room` when you want the Lab to capture the canonical Technocore
     out: conformance-report.json
 ```
 
-While Yellow Paper #61 remains unresolved, byte/vector agreement may remain `PARTIAL`; that is intentional and is not runtime-compatibility proof.
+Yellow Paper #61 was resolved by `3c97bbc`, so exact Appendix F.1 byte/vector agreement can return `PASS`. That result is still not runtime-compatibility proof.
 
 ## Keep the artifact
 

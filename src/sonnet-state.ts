@@ -8,6 +8,68 @@ export function assertMatchingRosterConsents(consents: Array<{did:string;contest
 export function assertRosterReadyBeforeWord(state: ContestState): void { if(state.state!=="ROSTER_READY"&&state.state!=="WRITING")throw new Error("WORD_BEFORE_ROSTER_READY"); if(!state.game_id||!state.poem_room||!Number.isSafeInteger(state.room_generation)||!state.roster?.includes(SONNET_WRITER_DID))throw new Error("INCOMPLETE_ROSTER_READY_STATE"); }
 export function assertFreshWordProposal(state: ContestState, proposal:{game_id:string;room_generation:number;version:number;previous_state_hash:string}, refreshed:ContestState):void { assertRosterReadyBeforeWord(refreshed); if(proposal.game_id!==refreshed.game_id||proposal.room_generation!==refreshed.room_generation||proposal.version!==refreshed.version||proposal.previous_state_hash!==refreshed.state_hash)throw new Error("STALE_WORD_PROPOSAL"); if(canonicalSonnetJson(state)!==canonicalSonnetJson(refreshed))throw new Error("STATE_CHANGED_BEFORE_WORD"); }
 export function verifyRefereeRecord(record:{from:string;text:string}, expectedRequestId?:string):Record<string,unknown>{if(record.from!==SONNET_REFEREE_DID)throw new Error("WRONG_SONNET_REFEREE");const payload=JSON.parse(record.text)as Record<string,unknown>;if(payload.type!=="sonnet.receipt.v1"||payload.contest_id!==SONNET_CONTEST_ID)throw new Error("INVALID_REFEREE_RECEIPT");if(expectedRequestId&&payload.request_id!==expectedRequestId)throw new Error("REFEREE_REQUEST_ID_MISMATCH");return payload;}
+
+export const PARTICIPANT_DISPOSITIONS = ["UNKNOWN", "ACCEPTED", "REJECTED"] as const;
+export type ParticipantDisposition = typeof PARTICIPANT_DISPOSITIONS[number];
+export type ReceiptVisibility = "OBSERVED" | "NOT_OBSERVED";
+export type ParticipantRegistrationState = {
+  disposition: ParticipantDisposition;
+  receipt_visibility: ReceiptVisibility;
+  authoritative_source: "LEDGER" | "RECEIPT" | "NONE";
+  can_participate: boolean;
+  evidence: string[];
+};
+
+function normalizeParticipantDisposition(status: unknown): ParticipantDisposition {
+  if (status === "accepted") return "ACCEPTED";
+  if (status === "rejected") return "REJECTED";
+  throw new Error("INVALID_REFEREE_DISPOSITION");
+}
+
+/**
+ * Reconciles participant state without conflating protocol disposition with
+ * read-lane receipt visibility. A durable referee/ledger conclusion is
+ * authoritative even when the original sonnet.receipt.v1 was not observed.
+ */
+export function reconcileParticipantRegistration(input: {
+  request_id?: string;
+  ledger?: {status: "accepted" | "rejected"; evidence: string};
+  receipt?: {from: string; text: string};
+}): ParticipantRegistrationState {
+  let ledgerDisposition: ParticipantDisposition | undefined;
+  if (input.ledger) {
+    if (!input.ledger.evidence) throw new Error("LEDGER_EVIDENCE_REQUIRED");
+    ledgerDisposition = normalizeParticipantDisposition(input.ledger.status);
+  }
+
+  let receiptDisposition: ParticipantDisposition | undefined;
+  let receiptEvidence: string | undefined;
+  if (input.receipt) {
+    const payload = verifyRefereeRecord(input.receipt, input.request_id);
+    receiptDisposition = normalizeParticipantDisposition(payload.status);
+    const requestId = payload.request_id;
+    receiptEvidence = typeof requestId === "string" && requestId.length > 0
+      ? `receipt:${requestId}`
+      : "receipt:observed";
+  }
+
+  if (ledgerDisposition && receiptDisposition && ledgerDisposition !== receiptDisposition) {
+    throw new Error("REFEREE_STATE_CONFLICT");
+  }
+
+  const disposition = ledgerDisposition ?? receiptDisposition ?? "UNKNOWN";
+  const authoritative_source = ledgerDisposition ? "LEDGER" : receiptDisposition ? "RECEIPT" : "NONE";
+  const evidence = [input.ledger?.evidence, receiptEvidence].filter((item): item is string => Boolean(item));
+
+  return {
+    disposition,
+    receipt_visibility: input.receipt ? "OBSERVED" : "NOT_OBSERVED",
+    authoritative_source,
+    can_participate: disposition === "ACCEPTED",
+    evidence,
+  };
+}
+
 export function beginIdempotentRequest(existing:{request_id:string;canonical:string}|undefined,payload:Record<string,unknown>):{request_id:string;canonical:string}{const requestId=payload.request_id;if(typeof requestId!=="string"||requestId.length===0)throw new Error("INVALID_REQUEST_ID");const candidate={request_id:requestId,canonical:canonicalSonnetJson(payload)};if(!existing)return candidate;if(existing.request_id!==requestId||existing.canonical!==candidate.canonical)throw new Error("REQUEST_ID_RETRY_CONFLICT");return existing;}
 
 export type RosterObservation = {contest_id:string; signer:string; request_id:string; canonical:string};

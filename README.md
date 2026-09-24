@@ -43,9 +43,11 @@ On Windows, the optional productive signer is loaded from a CurrentUser DPAPI cr
 - `evidence`: adversarial trust-boundary fixtures for world-writable room content, transcript completeness/order, unauthenticated venue time, settlement confidence, mailbox reachability and lossless transport nonces.
 - `router`: optional adapter conformance against a built Session Router module.
 - `htlc`: offline §10/TCLK settlement-boundary conformance with R10.2, R10.5, provisional tclk/2 observations, and E.48 kept pending. See [`docs/HTLC_CONFORMANCE.md`](docs/HTLC_CONFORMANCE.md).
-- `flop`: target-spec reporting only while an authoritative public runtime adapter is unavailable; E.51 wire closure remains explicitly unresolved.
+- `flop`: target-spec reporting against pinned Yellow Paper semantics while an authoritative public runtime adapter is unavailable. The 0.5.0 sync at `3c97bbc` resolves the #17/#44/#54/#56/#57/#61 canaries and pins E.55 quote fields partially; live runtime compatibility remains separate.
 
 `RELEASE_CONFORMANCE` is active against pinned `@flop-labs/tclk@0.1.0` vectors. `UPSTREAM_CONFORMANCE` is `MANIFEST_ONLY`: exact upstream SHAs are recorded but no second behavioral lane is claimed. `TARGET_SPEC_CONFORMANCE` is active for explicit target semantics. `LIVE_CONFORMANCE` is `PUBLIC_RUNTIME_UNAVAILABLE`. Open pull requests and issues are provisional, never silently normative.
+
+The first multi-issue resolution lifecycle is retained in [`docs/YELLOWPAPER_3C97BBC_RESOLUTION_SWEEP.md`](docs/YELLOWPAPER_3C97BBC_RESOLUTION_SWEEP.md): #17/#44/#54/#56/#57/#61 replay to PASS after upstream sync `3c97bbc`, while #26 remains intentionally PARTIAL.
 
 `UPSTREAM_COMPATIBILITY_WORKAROUND`: the released TCLK ID helpers hash every enumerable property supplied by the caller. The Lab exports `normativeOfferId` and `normativeContractId`, which whitelist only normative protocol fields so transport/runtime metadata cannot change an offer or contract ID. Official vectors remain unmodified; this workaround is covered by regression tests and should be removed only after a verified compatible upstream release.
 
@@ -104,7 +106,7 @@ node dist/src/cli.js verify --profile direct-rail-f1 --input examples/external-c
 
 The portable output schema is `flop-conformance-result/v1`. `PASS`, `PARTIAL`, and `FAIL` distinguish verified supplied evidence from incomplete evidence and hard conformance failures. A profile PASS is not a FLOP Labs certification and never upgrades transcript activity into a settlement claim.
 
-`direct-rail-f1` is a release gate for Appendix F.1 bytes and negative legacy cases. While Yellow Paper #61 remains open it returns `PARTIAL` even when byte-level checks pass, so vector agreement is never misrepresented as normative resolution.
+`direct-rail-f1` is a release gate for Appendix F.1 bytes and negative legacy cases. Yellow Paper #61 was resolved by `3c97bbc`, so exact F.1 evidence can now return `PASS`; that PASS still does not claim public runtime compatibility or private implementation coverage.
 
 A reusable root `action.yml` provides the same interface for GitHub Actions. Consumers should pin an immutable release tag or commit and retain `conformance-report.json` as CI evidence. See [`docs/external-integration.md`](docs/external-integration.md) and [`schemas/flop-conformance-result-v1.schema.json`](schemas/flop-conformance-result-v1.schema.json). Ready-to-apply external adapter/workflow bundles live under [`integrations/external/`](integrations/external/), and three bounded public reproductions are indexed in [`docs/REPRODUCIBLE_DEMOS.md`](docs/REPRODUCIBLE_DEMOS.md).
 

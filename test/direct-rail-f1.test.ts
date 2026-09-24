@@ -15,12 +15,12 @@ test("direct-rail-f1 computes the published F.1 vector exactly", () => {
   assert.equal(computed.reportDataHex, example.observed.reportDataHex);
 });
 
-test("direct-rail-f1 portable profile passes bytes but remains PARTIAL while #61 is open", () => {
+test("direct-rail-f1 portable profile is TARGET_SPEC-conformant after #61 resolution", () => {
   const result = verifyExternalProfile("direct-rail-f1", example);
-  assert.equal(result.result, "PARTIAL");
+  assert.equal(result.result, "PASS");
   assert.equal(result.summary.fail, 0);
-  assert.equal(result.summary.warn, 1);
-  assert.ok(result.checks.some((item) => item.id === "direct-rail-f1.normative-state" && item.status === "WARN"));
+  assert.equal(result.summary.warn, 0);
+  assert.ok(result.checks.some((item) => item.id === "direct-rail-f1.normative-state" && item.status === "PASS"));
 });
 test("direct-rail-f1 fails when a legacy form is accepted", () => {
   const input = structuredClone(example);
@@ -32,9 +32,11 @@ test("direct-rail-f1 fails when a legacy form is accepted", () => {
 
 test("cross-language evidence keeps external Python reproduction independent and bounded", () => {
   const evidence = validateDirectRailF1CrossLanguageEvidence() as any;
-  assert.equal(evidence.implementations.length, 2);
+  assert.equal(evidence.implementations.length, 3);
+  assert.ok(evidence.implementations.some((item: any) => item.repo === "kberkan/flop-proof-api" && item.commit === "1672ec5f5536f8ea06934ff2823bf36ad47dd1b6"));
   assert.equal(evidence.agreement.canonicalTaskHashExact, true);
   assert.equal(evidence.agreement.canonicalReportDataExact, true);
   assert.equal(evidence.claimBoundary.runtimeCompatibility, "NOT_CLAIMED");
-  assert.equal(evidence.claimBoundary.upstreamResolution, "NOT_CLAIMED");
+  assert.equal(evidence.claimBoundary.upstreamResolution, "RESOLVED_3C97BBC");
+  assert.equal(evidence.yellowpaper.resolution.state, "RESOLVED_TARGET_SPEC");
 });

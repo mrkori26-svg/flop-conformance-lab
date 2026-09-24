@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
-import { parseRoomExport } from '../../src/core.mjs';
+import { parseRoomExport } from '../src/core.mjs';
 
 const [room, payer, payee, contract, rawPath, out = 'evidence/flop-tclk-transcript.json'] = process.argv.slice(2);
 if (!room || !payer || !payee || !contract || !rawPath) {

@@ -1,62 +1,82 @@
 {
   "schema": "flop-upstream-resolution-ledger/v1",
   "policy": {
-    "lifecycle": [
-      "issue",
-      "independent_reproduction",
-      "fixture",
-      "current_result",
-      "upstream_decision",
-      "fixture_update",
-      "before_decision_after"
-    ],
+    "lifecycle": ["issue", "independent_reproduction", "fixture", "current_result", "upstream_decision", "fixture_update", "before_decision_after"],
     "issueCloseAloneIsResolution": false,
     "followUpRequiresNewEvidence": true,
-    "publicationStateLifecycle": [
-      "DETECTED",
-      "REPRODUCED",
-      "PUBLICATION_CANDIDATE",
-      "UPSTREAM_POSTED",
-      "UPSTREAM_RESOLVED",
-      "REPLAYED"
-    ]
+    "publicationStateLifecycle": ["DETECTED", "REPRODUCED", "PUBLICATION_CANDIDATE", "UPSTREAM_POSTED", "UPSTREAM_RESOLVED", "REPLAYED"]
   },
   "issues": {
+    "17": {
+      "before": "CLIENT_CRASH_PATH_CLARIFIED_BY_MAINTAINER_COMMENT_BUT_NOT_EXPLICIT_IN_A7",
+      "current": "A7_EXPLICITLY_STATES_R12_1D_APPLIES_AND_CRASH_IS_NOT_AN_EXCEPTION",
+      "upstreamDecision": "RESOLVED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818891476,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "fixture": "flop-client-crash-settlement-v0.5.0.json",
+      "publicationState": "REPLAYED",
+      "next": "RETAIN_BEFORE_AFTER_REGRESSION"
+    },
     "26": {
       "before": "NO_CANONICAL_COMPARISON_QUOTE; CROSS_PROVIDER_RANKING_FAIL_CLOSED",
-      "current": "SESSIONOFFER_OPENING_ENVELOPE_PINNED; COMPARISON_QUOTE_STILL_UNRESOLVED",
-      "upstreamDecision": "MAINTAINER_CLARIFIED_E55_SDK_APPENDIX_F_DIRECTION",
+      "current": "E55_REQUIRED_FIELDS_PINNED; VERSIONED_SIGNED_QUOTE_CONTRACT_STILL_PLANNED; CROSS_PROVIDER_RANKING_FAIL_CLOSED",
+      "upstreamDecision": "E55_FIELDS_PINNED_IN_0_5_DRAFT",
       "correctionCommentId": 5808384402,
-      "fixture": "flop-session-offer-boundary-v0.5.0.json",
-      "next": "REPLAY_WHEN_1597_1586_AND_QUOTE_WIRE_SHAPE_LAND"
+      "resolutionCommentId": 5818897853,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "publicationState": "REPLAYED",
+      "next": "WAIT_FOR_1597_1586_AND_VERSIONED_SIGNED_QUOTE_WIRE_FIXTURE_THEN_REPLAY"
     },
     "44": {
       "before": "WRONG_PATH_ORIENTATION_NEGATIVE_VECTOR_RECOMPUTES_COMMITTED_ROOT",
-      "current": "OPEN_ISSUE_WITH_SECOND_INDEPENDENT_REPRODUCTION",
-      "upstreamDecision": null,
+      "current": "GENERATOR_FLIPS_NON_DUPLICATED_SIBLING; REGENERATED_VECTOR_REJECTS",
+      "upstreamDecision": "CORPUS_GENERATOR_FIXED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818905442,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
       "fixture": "flop-wire-v1-yellowpaper-44.json",
-      "next": "WAIT_FOR_CORPUS_OR_SPEC_RESOLUTION_THEN_REPLAY"
+      "publicationState": "REPLAYED",
+      "next": "RETAIN_OLD_FALSE_NEGATIVE_AND_NEW_REJECTION_REGRESSION"
+    },
+    "54": {
+      "before": "D0440_LIVE_SPEC_4_4B_VS_STALE_GITHUB_MIRROR_3_5B",
+      "current": "PUBLIC_MIRROR_CONVERGED_ON_D0440_4_4B_AND_1_2M_VALIDATOR_BOND",
+      "upstreamDecision": "SOURCE_DRIFT_RESOLVED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818908492,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "fixture": "flop-d0440-source-conflict.json",
+      "publicationState": "REPLAYED",
+      "next": "RETAIN_SOURCE_DRIFT_HISTORY; E38_E40_REMAIN_SEPARATE"
     },
     "56": {
       "before": "PAYABLE_SEMANTICS_UNIT_ORIGIN_UNRESOLVED",
-      "current": "OPEN_ISSUE_FAIL_CLOSED",
-      "upstreamDecision": null,
+      "current": "R12_1I_DEFINES_PAYABLE_UNIT_AND_PATH_SPECIFIC_ORIGIN",
+      "upstreamDecision": "PAYABLE_RESOLVED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818909345,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
       "fixture": "yellowpaper-56-57-v0.5.0.json",
-      "next": "WAIT_FOR_NORMATIVE_SEMANTICS_UNIT_AND_ORIGIN_THEN_REPLAY"
+      "publicationState": "REPLAYED",
+      "next": "RETAIN_BEFORE_AFTER_REGRESSION"
     },
     "57": {
       "before": "SUM_TREE_WORDING_CONFLICTS_WITH_PLAIN_MERKLE_NODE_RULE",
-      "current": "OPEN_ISSUE",
-      "upstreamDecision": null,
+      "current": "SECTION_1_WORDING_ALIGNED_WITH_F3_PLAIN_MERKLE_RULE",
+      "upstreamDecision": "WORDING_CONFLICT_RESOLVED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818910111,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
       "fixture": "yellowpaper-56-57-v0.5.0.json",
-      "next": "WAIT_FOR_WORDING_OR_CONSTRUCTION_RESOLUTION_THEN_REPLAY"
+      "publicationState": "REPLAYED",
+      "next": "RETAIN_EXISTING_IMPLEMENTATION_AS_CONFORMANT_REGRESSION"
     },
     "61": {
       "before": "SECTION_1_1_TASK_HASH_AND_REPORT_DATA_CONFLICT_WITH_APPENDIX_F1_AND_WIRE_CORPUS",
-      "current": "OPEN_ISSUE_FAIL_CLOSED_WITH_DIRECT_RAIL_VECTOR",
-      "upstreamDecision": null,
+      "current": "SECTION_1_1_DELEGATES_TO_APPENDIX_F1_V1; 183B_TASK_AND_64B_REPORT_DATA_CANONICAL",
+      "upstreamDecision": "DIRECT_RAIL_IDENTITY_CONFLICT_RESOLVED_IN_0_5_DRAFT_SYNC",
+      "resolutionCommentId": 5818913017,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
       "fixture": "yellowpaper-61-direct-rail-v0.5.0.json",
-      "next": "WAIT_FOR_SECTION_1_1_R6_5E_AND_APPENDIX_F1_RECONCILIATION_THEN_REPLAY"
+      "publicationState": "REPLAYED",
+      "next": "KEEP_PUBLIC_RUNTIME_COMPATIBILITY_NOT_CLAIMED_UNTIL_EXTERNAL_RUNTIME_EXISTS"
     },
     "76": {
       "before": "E38_E40_CONVERSION_EVIDENCE_PATH_UNSPECIFIED",
