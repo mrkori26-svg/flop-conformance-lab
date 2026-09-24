@@ -1,0 +1,21 @@
+{
+  "schema": "technocore.retained-floor-boundary/v1",
+  "classification": "PROVISIONAL_PR",
+  "upstream": {
+    "repository": "flop-labs/technocore-chat",
+    "pr": 800,
+    "head": "67c1f72c483dce0e49fb622aaed7147c391ccc1e",
+    "base": "c3fcf06ac6b47a652a27b62ee72f24592180bcdf",
+    "state": "OPEN"
+  },
+  "observedSemantics": {
+    "first_seq": "RESPONSE_WINDOW_FIRST_SEQ",
+    "first_retained_seq": "ROOM_RETAINED_FLOOR_SEQ",
+    "first_retained_ts": "ROOM_RETAINED_FLOOR_TIMESTAMP"
+  },
+  "claimBoundary": {
+    "retainedWindowCompleteness": "MEASURABLE",
+    "fullTranscriptCompleteness": false,
+    "normativePromotion": false
+  }
+}
