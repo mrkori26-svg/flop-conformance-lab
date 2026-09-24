@@ -92,7 +92,7 @@ function canonical(value: unknown): string {
     .map((key) => `${JSON.stringify(key)}:${canonical(object[key])}`).join(",")}}`;
 }
 
-export function sha256(value: unknown): string {
+function sha256(value: unknown): string {
   return createHash("sha256").update(typeof value === "string" ? value : canonical(value), "utf8").digest("hex");
 }
 

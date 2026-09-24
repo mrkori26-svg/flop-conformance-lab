@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import { ReferenceF1RuntimeTarget } from "./runtime-target-f1.js";
-import { Osr21F1VerifierTarget } from "./runtime-target-external-f1.js";
-import { FlopProofApiF1VerifierTarget } from "./runtime-target-flop-proof-api-f1.js";
+import { claimBoundaryFor, createRuntimeTarget, isRuntimeTargetName, RUNTIME_TARGET_NAMES, runtimeTargetRegistration } from "./runtime-target-registry.js";
+import { publishRuntimeBundle } from "./runtime-publication.js";
 import { readEvidenceBundle, runRuntimeTarget, writeEvidenceBundle } from "./runtime-observatory.js";
 import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState } from "./continuous-runtime.js";
-import type { DirectRailF1Input } from "./direct-rail-f1.js";
+import { appendObservations, detectGitRevision, observationsFromRuntime } from "./longitudinal-observatory.js";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -18,29 +17,24 @@ function usage(): string {
     "usage:",
     "  runtime-observatory run --target reference-f1 --input case.json [--previous bundle.json] --out bundle.json",
     "  runtime-observatory cycle --target reference-f1 --input case.json --state state.json [--retry-budget 2] [--history-limit 168]",
-    "  targets: reference-f1 | external-osr21-f1 | external-flop-proof-api-f1",
+    `  targets: ${RUNTIME_TARGET_NAMES.join(" | ")}`,
   ].join("\n") + "\n";
 }
 
 const command = args[0];
 const targetName = flag("--target");
 const inputPath = flag("--input");
-if (!["run", "cycle"].includes(command ?? "") || !["reference-f1", "external-osr21-f1", "external-flop-proof-api-f1"].includes(targetName ?? "") || !inputPath) {
+if (!["run", "cycle"].includes(command ?? "") || !isRuntimeTargetName(targetName) || !inputPath) {
   process.stderr.write(usage());
   process.exit(2);
 }
 
-const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: DirectRailF1Input; id?: string };
-const input = raw.input ?? raw as unknown as DirectRailF1Input;
-const testCase = { id: raw.id ?? "direct-rail-f1-reference", input };
-const target = targetName === "external-osr21-f1"
-  ? new Osr21F1VerifierTarget()
-  : targetName === "external-flop-proof-api-f1"
-    ? new FlopProofApiF1VerifierTarget()
-    : new ReferenceF1RuntimeTarget();
-const claimBoundary = targetName === "external-osr21-f1" || targetName === "external-flop-proof-api-f1"
-  ? "EXTERNAL_VERIFIER_NOT_PUBLIC_FLOP_RUNTIME"
-  : "REFERENCE_RUNTIME_ONLY_NOT_PUBLIC_FLOP_RUNTIME";
+const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: unknown; id?: string } & Record<string, unknown>;
+const input = raw.input ?? raw;
+const registration = runtimeTargetRegistration(targetName)!;
+const testCase = { id: raw.id ?? registration.defaultCaseId, input };
+const target = createRuntimeTarget(targetName);
+const claimBoundary = claimBoundaryFor(targetName);
 
 try {
   if (command === "run") {
@@ -51,14 +45,16 @@ try {
     }
     const previousPath = flag("--previous");
     const previous = previousPath ? readEvidenceBundle(previousPath) : null;
-    const result = await runRuntimeTarget(targetName!, target, testCase, previous);
+    const result = await runRuntimeTarget(targetName, target, testCase, previous);
     writeEvidenceBundle(outPath, result.bundle);
+    const archive = publishRuntimeBundle("runtime-public", result.status, result.bundle);
     process.stdout.write(`${JSON.stringify({
       status: result.status,
       target: result.bundle.target,
       testCaseId: result.bundle.testCaseId,
       digest: result.bundle.digest,
       out: outPath,
+      archive,
       claimBoundary,
     }, null, 2)}\n`);
     if (result.status === "FAIL") process.exitCode = 1;
@@ -71,15 +67,19 @@ try {
     }
     const retryBudget = Number(flag("--retry-budget") ?? "2");
     const historyLimit = Number(flag("--history-limit") ?? "168");
-    const state = readRuntimeLoopState(statePath, targetName!, testCase.id, historyLimit);
+    const state = readRuntimeLoopState(statePath, targetName, testCase.id, historyLimit);
     const result = await runOperationalRuntimeCycle({
-      targetId: targetName!,
+      targetId: targetName,
       target,
       testCase,
       state,
       retryBudget,
     });
     writeRuntimeLoopState(statePath, result.state);
+    appendObservations(".runtime/longitudinal", observationsFromRuntime(result.entry, detectGitRevision(process.cwd())));
+    const archive = result.entry.bundle
+      ? publishRuntimeBundle("runtime-public", result.entry.status, result.entry.bundle)
+      : null;
     process.stdout.write(`${JSON.stringify({
       status: result.entry.status,
       targetId: result.entry.targetId,
@@ -91,6 +91,7 @@ try {
       delta: result.delta,
       metrics: result.state.metrics,
       state: statePath,
+      archive,
       claimBoundary,
     }, null, 2)}\n`);
     if (result.entry.status === "FAIL") process.exitCode = 1;

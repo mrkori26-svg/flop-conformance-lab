@@ -23,11 +23,13 @@ import { validateExternalTclkRailAdoptionFixture } from "./tclk-rail-adoption.js
 import { validateTclkSettlementViewCanary } from "./tclk-settlement-view-canary.js";
 import { validateTclkIssue180LockTermsBinding } from "./tclk-lockterms-binding.js";
 import { validateTclkSettlementTruthComposition } from "./tclk-settlement-truth.js";
+import { validateSettlementCompositionV1 } from "./settlement-composition.js";
 import { validateValidatorPerformanceAmbiguity } from "./validator-performance-ambiguity.js";
 import { validateF3HidsKat } from "./f3-hids-kat.js";
 import { emptyPublicMeterKatBundle, validateMeterKatBundle } from "./meter-kat.js";
 import { htlcResidualWitness } from "./htlc-residual.js";
 import { validatorRotationWitness } from "./validator-rotation-safety.js";
+import { runCrossSystemJourney, sha256, type RouterRuntimeReceipt } from "./cross-system-conformance.js";
 import type { LabReport } from "./types.js";
 
 export * from "./types.js";
@@ -75,6 +77,10 @@ export * from "./tclk-rail-adoption.js";
 export * from "./tclk-settlement-view-canary.js";
 export * from "./tclk-lockterms-binding.js";
 export * from "./tclk-settlement-truth.js";
+export * from "./settlement-composition.js";
+export * from "./settlement-runtime-evidence.js";
+export * from "./tclk-handshake-retention.js";
+export * from "./tclk-payment-key-boundary.js";
 export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
@@ -119,11 +125,27 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const tclkSettlementView = validateTclkSettlementViewCanary();
   const tclkIssue180 = await validateTclkIssue180LockTermsBinding();
   const tclkSettlementTruth = await validateTclkSettlementTruthComposition();
+  const settlementComposition = validateSettlementCompositionV1();
   const validatorPerformanceAmbiguity = validateValidatorPerformanceAmbiguity();
   const f3HidsKat = validateF3HidsKat();
   const meterKat = validateMeterKatBundle(emptyPublicMeterKatBundle);
   const htlcResidual = htlcResidualWitness({ locked: 10000n, actual: 6200n });
   const validatorRotation = validatorRotationWitness({ active: 30, promotable: 0, ejectTarget: 50, promoteTarget: 50, minimumActive: 30 });
+  const crossSystemSemantic = {
+    router: { decisionId: "lab-cross-system-decision", requestId: "lab-cross-system-request", selectedMinerId: "reference-runtime", snapshotHash: "a".repeat(64), configHash: "b".repeat(64) },
+    runtime: { targetId: "reference-runtime", fingerprint: { profile: "lab-reference" }, capabilities: ["execute", "receipt"] },
+    testCaseId: "lab-cross-system-reference",
+    execution: { startedAt: "2026-09-24T20:00:00.000Z", finishedAt: "2026-09-24T20:00:01.000Z", status: "completed" as const, outputDigest: "c".repeat(64) },
+    evidenceRefs: ["lab:cross-system-reference"],
+  };
+  const crossSystemInput: RouterRuntimeReceipt = {
+    schema: "flop.router-runtime-execution/v1",
+    receiptId: "runtime_receipt_lab_reference",
+    observedAt: "2026-09-24T20:00:02.000Z",
+    ...crossSystemSemantic,
+    semanticDigest: sha256({ ...crossSystemSemantic, runtime: { ...crossSystemSemantic.runtime, capabilities: [...crossSystemSemantic.runtime.capabilities].sort() }, evidenceRefs: [...crossSystemSemantic.evidenceRefs].sort() }),
+  };
+  const crossSystemJourney = runCrossSystemJourney(crossSystemInput);
   const d0440Conflict = JSON.parse(
     readFileSync(
       new URL("../conformance/fixtures/flop-d0440-source-conflict.json", import.meta.url),
@@ -137,6 +159,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     ),
   ) as Record<string, unknown>;
   const cases = [
+    { id: "flop.cross-system-router-runtime-receipt-verifier", suite: "evidence", status: crossSystemJourney.verdict === "PASS" ? "PASS" as const : "FAIL" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: { ...crossSystemJourney } },
     { id: "flop.reference-journey", suite: "flop", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: referenceJourney },
     { id: "flop.agent-identity-stake-lifecycle", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: agentIdentityStakeLifecycle },
     { id: "flop.htlc-conformance-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcConformance },
@@ -149,6 +172,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
     { id: "tclk.issue-180-lockterms-binding", suite: "tclk", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: tclkIssue180 },
     { id: "tclk.settlement-truth-composition", suite: "tclk", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: tclkSettlementTruth },
+    { id: "flop.settlement-composition-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: settlementComposition },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
     { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },
     { id: "flop.conversion-evidence-boundary", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: { schema: "flop.conversion-evidence-bundle/v1", yellowpaperIssue: 76, senderAuthorship: "room|nonce|text", serverAssignedUnsigned: ["seq","ts"], conversionEligibility: "NOT_DERIVED", allocationCredit: "NOT_DERIVED" } },
@@ -369,4 +393,5 @@ export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
-export * from "./longitudinal-observatory.js";
+export * from './cross-system-conformance.js';
+export * from './cross-protocol-conformance.js';
