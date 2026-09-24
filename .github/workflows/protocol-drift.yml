@@ -28,6 +28,14 @@ jobs:
           --out protocol-drift-current.json
           --events protocol-drift-events.json
           --handoff protocol-drift-handoff.json
+      - name: Replay affected known conformance cases
+        id: replay
+        if: always()
+        continue-on-error: true
+        run: >-
+          node tools/resolution-replay.mjs
+          --handoff protocol-drift-handoff.json
+          --out protocol-resolution-replay.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -36,6 +44,7 @@ jobs:
             protocol-drift-current.json
             protocol-drift-events.json
             protocol-drift-handoff.json
+            protocol-resolution-replay.json
       - name: Surface drift as a CI signal
         if: steps.drift.outcome == 'failure'
         run: |
