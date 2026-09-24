@@ -36,6 +36,12 @@ jobs:
           node tools/resolution-replay.mjs
           --handoff protocol-drift-handoff.json
           --out protocol-resolution-replay.json
+      - name: Build machine-readable protocol evolution history
+        if: always()
+        run: >-
+          node dist/src/protocol-evolution-cli.js
+          --handoff protocol-drift-handoff.json
+          --out conformance/observatory/evolution-history.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -45,6 +51,7 @@ jobs:
             protocol-drift-events.json
             protocol-drift-handoff.json
             protocol-resolution-replay.json
+            conformance/observatory/evolution-history.json
       - name: Surface drift as a CI signal
         if: steps.drift.outcome == 'failure'
         run: |

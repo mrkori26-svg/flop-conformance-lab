@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { metricsFor, type OperationalRuntimeEntry, type RuntimeLoopMetrics, type RuntimeLoopState } from "./continuous-runtime.js";
-import type { RuntimeStatus } from "./runtime-observatory.js";
+import type { EvidenceBundle, RuntimeStatus } from "./runtime-observatory.js";
+import { runtimeClaimBoundary, runtimeTrustLevel, type RuntimeTrustLevel } from "./runtime-publication.js";
 
 export interface RuntimeWindowSummary {
   label: "24h" | "7d" | "30d";
@@ -24,6 +25,8 @@ export interface RuntimeTargetStatus {
   testCaseId: string;
   updatedAt: string;
   currentStatus: RuntimeStatus | null;
+  trustLevel: RuntimeTrustLevel | "UNKNOWN";
+  claimBoundary: string;
   overall: RuntimeLoopMetrics;
   windows: RuntimeWindowSummary[];
   incidents: RuntimeIncident[];
@@ -90,11 +93,15 @@ function windowSummary(history: OperationalRuntimeEntry[], nowMs: number, label:
 
 export function targetStatus(state: RuntimeLoopState, now = new Date()): RuntimeTargetStatus {
   const nowMs = now.getTime();
+  const latestBundle = [...state.history].reverse().find((item) => item.bundle)?.bundle as EvidenceBundle | undefined;
+  const classifiable = Boolean(latestBundle?.target?.fingerprint);
   return {
     targetId: state.targetId,
     testCaseId: state.testCaseId,
     updatedAt: state.updatedAt,
     currentStatus: state.history.at(-1)?.status ?? null,
+    trustLevel: classifiable ? runtimeTrustLevel(latestBundle!) : "UNKNOWN",
+    claimBoundary: classifiable ? runtimeClaimBoundary(latestBundle!) : "NO_RUNTIME_EVIDENCE",
     overall: metricsFor(state.history),
     windows: [
       windowSummary(state.history, nowMs, "24h", 24 * 60 * 60 * 1000),
@@ -125,16 +132,16 @@ export function runtimeStatusMarkdown(index: RuntimePublicIndex): string {
     "",
     `Generated: ${index.generatedAt}`,
     "",
-    "| Target | Status | Availability | Conformance | Coverage | Runs | Open incidents |",
-    "| --- | --- | ---: | ---: | ---: | ---: | ---: |",
+    "| Target | Trust | Status | Availability | Conformance | Coverage | Runs | Open incidents |",
+    "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |",
   ];
   for (const target of index.targets) {
     const openIncidents = target.incidents.filter((incident) => !incident.resolvedAt).length;
-    lines.push(`| ${target.targetId} | ${target.currentStatus ?? "NO_DATA"} | ${pct(target.overall.operationalAvailability)} | ${pct(target.overall.conformancePassRate)} | ${pct(target.overall.coverageRate)} | ${target.overall.runs} | ${openIncidents} |`);
+    lines.push(`| ${target.targetId} | ${target.trustLevel} | ${target.currentStatus ?? "NO_DATA"} | ${pct(target.overall.operationalAvailability)} | ${pct(target.overall.conformancePassRate)} | ${pct(target.overall.coverageRate)} | ${target.overall.runs} | ${openIncidents} |`);
   }
   lines.push("", "## Windows", "");
   for (const target of index.targets) {
-    lines.push(`### ${target.targetId}`, "");
+    lines.push(`### ${target.targetId}`, "", `Trust: **${target.trustLevel}**`, `Boundary: \`${target.claimBoundary}\``, "");
     for (const window of target.windows) {
       lines.push(`- **${window.label}:** runs ${window.metrics.runs}, availability ${pct(window.metrics.operationalAvailability)}, conformance ${pct(window.metrics.conformancePassRate)}, coverage ${pct(window.metrics.coverageRate)}, PASS ${window.metrics.pass}, FAIL ${window.metrics.fail}, DRIFT ${window.metrics.drift}, UNKNOWN ${window.metrics.unknown}.`);
     }

@@ -2,6 +2,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { diffDriftSnapshots, loadDriftRegistry, snapshotProtocolDrift, type DriftSnapshot } from "./protocol-drift.js";
 import { makeDriftHandoff } from "./drift-handoff.js";
+import { appendObservations, detectGitRevision, observationsFromDrift } from "./longitudinal-observatory.js";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -28,6 +29,7 @@ if (out) writeFileSync(out, `${JSON.stringify(current, null, 2)}\n`);
 else process.stdout.write(`${JSON.stringify(current, null, 2)}\n`);
 if (eventsOut) writeFileSync(eventsOut, `${JSON.stringify({ schema: "flop.protocol-drift-events.v1", events }, null, 2)}\n`);
 if (handoffOut) writeFileSync(handoffOut, `${JSON.stringify(makeDriftHandoff(events), null, 2)}\n`);
+appendObservations(".runtime/longitudinal", observationsFromDrift(current, events, detectGitRevision(process.cwd()), previous));
 if (events.length > 0) {
   for (const event of events) {
     process.stderr.write(`${event.change} ${event.sourceId}: ${event.affected.join(", ")} -> ${event.action}\n`);

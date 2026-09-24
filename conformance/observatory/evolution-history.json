@@ -1,0 +1,259 @@
+{
+  "schema": "flop.protocol-evolution-history.v1",
+  "generatedAt": "2026-09-24T21:10:06.222Z",
+  "records": [
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-17:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-17",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "flop-client-crash-settlement-v0.5.0.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "flop-client-crash-settlement-v0.5.0.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.17",
+        "note": "A7_EXPLICITLY_STATES_CRASH_IS_NOT_AN_EXCEPTION_AND_R12_1D_APPLIES"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "flop-client-crash-settlement-v0.5.0.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-17",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/17#issuecomment-5818891476"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "15860bf682174d5cee315e1b2e1be20ff23d626207ea1cc4a281304bfb07266d"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-26:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-26",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "flop-quote-open-channel-receipt-v0.5.0.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "flop-quote-open-channel-receipt-v0.5.0.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "UNKNOWN",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.26",
+        "note": "E55_PINS_REQUIRED_FIELDS_BUT_VERSIONED_SIGNED_QUOTE_CONTRACT_REMAINS_PLANNED"
+      },
+      "after": {
+        "status": "UPSTREAM_RESOLVED",
+        "result": "PARTIAL",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": null
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-26",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/26#issuecomment-5818897853"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "56dce261949050ea5dde118b1d0f6d5c2585be334239cce19d11c93550b9481f"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-44:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-44",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "flop-wire-v1-yellowpaper-44.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "flop-wire-v1-yellowpaper-44.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.44",
+        "note": "GENERATOR_NOW_FLIPS_NON_DUPLICATED_SIBLING_AND_REGENERATED_CORPUS_REJECTS"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "flop-wire-v1-yellowpaper-44.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-44",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5818905442"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "46be82123b305805ae70d07e9394067e6f235914b9d33b36126c40fc9f6954a5"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-54:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-54",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "flop-d0440-source-conflict.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "flop-d0440-source-conflict.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.54",
+        "note": "PUBLIC_MIRROR_NOW_CARRIES_D0440_4_4B_AND_1_2M_VALIDATOR_BOND"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "flop-d0440-source-conflict.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-54",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/54#issuecomment-5818908492"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "c6e464c74349f090b4403140d625be00b8711ae0c5c512e4b645a9f5140e2846"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-56:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-56",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "yellowpaper-56-57-v0.5.0.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "UNKNOWN",
+        "evidenceRef": "yellowpaper-56-57-v0.5.0.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.56",
+        "note": "R12_1I_DEFINES_PAYABLE_AS_1E_18_FLOP_BASE_UNITS_WITH_PATH_SPECIFIC_DERIVATION"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "yellowpaper-56-57-v0.5.0.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-56",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/56#issuecomment-5818909345"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "49703837b121b5f0a8957ed3d5b0f1d7a40d537801d746dc9f27cdfd2474b77a"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-57:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-57",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "yellowpaper-56-57-v0.5.0.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "yellowpaper-56-57-v0.5.0.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.57",
+        "note": "SECTION_1_NO_LONGER_CALLS_ACCUMULATOR_A_SUM_TREE_AND_MATCHES_F3"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "yellowpaper-56-57-v0.5.0.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-57",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/57#issuecomment-5818910111"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "10c3871d373ddadb444488af63a4ab54ef0346eea3fb775a08d807fd79f37b06"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "yellowpaper-issue-61:historical->3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "sourceId": "yellowpaper-issue-61",
+      "observedAt": "2026-09-24T17:21:10Z",
+      "affected": [
+        "yellowpaper-61-direct-rail-v0.5.0.json"
+      ],
+      "before": {
+        "fingerprint": null,
+        "result": "PASS",
+        "evidenceRef": "yellowpaper-61-direct-rail-v0.5.0.json"
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "reproductionStatus": "PASS",
+        "evidenceRef": "conformance/fixtures/yellowpaper-0.5.0-sync-3c97bbc.json#issues.61",
+        "note": "SECTION_1_1_NOW_DELEGATES_TASK_HASH_AND_REPORT_DATA_TO_APPENDIX_F1_V1"
+      },
+      "after": {
+        "status": "REPLAYED",
+        "result": "PASS",
+        "resolutionRef": "flop-labs/yellowpaper@3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+        "replayEvidenceRef": "yellowpaper-61-direct-rail-v0.5.0.json"
+      },
+      "provenance": {
+        "handoffId": "yellowpaper-0.5.0-sync-3c97bbc:issue-61",
+        "upstreamUrl": "https://github.com/flop-labs/yellowpaper/issues/61#issuecomment-5818913017"
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "bdf4effb99be91b4d3aee909b728767ddddc38b7e723a97efa72ea15973cef32"
+      }
+    }
+  ],
+  "summary": {
+    "DETECTED": 0,
+    "REPRODUCED": 0,
+    "UPSTREAM_POSTED": 0,
+    "UPSTREAM_RESOLVED": 1,
+    "REPLAYED": 6
+  },
+  "claimBoundary": "This history records observed protocol evolution and local replay evidence. Issue closure or source change alone never establishes normative resolution."
+}

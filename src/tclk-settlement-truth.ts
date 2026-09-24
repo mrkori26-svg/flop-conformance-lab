@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import { validateTclkIssue180LockTermsBinding } from "./tclk-lockterms-binding.js";
 import { assessTclkStreamCompleteness } from "./tclk-stream-completeness.js";
 import { assessTclkVenueTime } from "./tclk-venue-time.js";
+import { assessTclkHandshakeRetention } from "./tclk-handshake-retention.js";
+import { assessTclkPaymentKeyBoundary } from "./tclk-payment-key-boundary.js";
 
 type GateCase = {
   id: string;
@@ -11,6 +13,10 @@ type GateCase = {
   observation: boolean;
   time: boolean;
   complete: boolean;
+  handshake: boolean;
+  snapshot: boolean;
+  paymentKey: boolean;
+  actualWithinLockedMax: boolean;
   expected: "VERIFIED_MONEY_STATE" | "UNVERIFIED";
 };
 type Fixture = {
@@ -22,6 +28,8 @@ type Fixture = {
     roomTerminalStateIsMoneyState: boolean;
     railObjectValidityAloneIsSufficient: boolean;
     paper1CanSatisfyExactTermsGate: boolean;
+    expiredPublicHandshakeIsDurableEvidence: boolean;
+    schemaLexicalPaymentKeyValidityIsSufficient: boolean;
     normativeCompositionClaimed: boolean;
   };
 };
@@ -29,14 +37,15 @@ type Fixture = {
 const FIXTURE = new URL("../conformance/fixtures/tclk-settlement-truth-composition.json", import.meta.url);
 
 function classify(c: GateCase): "VERIFIED_MONEY_STATE" | "UNVERIFIED" {
-  return c.rail && c.ref && c.terms && c.observation && c.time && c.complete
+  return c.rail && c.ref && c.terms && c.observation && c.time && c.complete &&
+    c.handshake && c.snapshot && c.paymentKey && c.actualWithinLockedMax
     ? "VERIFIED_MONEY_STATE"
     : "UNVERIFIED";
 }
 
 export async function validateTclkSettlementTruthComposition(): Promise<Record<string, unknown>> {
   const fixture = JSON.parse(readFileSync(FIXTURE, "utf8")) as Fixture;
-  if (fixture.schema !== "flop.tclk-settlement-truth-composition/v1") throw new Error("TCLK_SETTLEMENT_TRUTH_SCHEMA");
+  if (fixture.schema !== "flop.tclk-settlement-truth-composition/v2") throw new Error("TCLK_SETTLEMENT_TRUTH_SCHEMA");
   if (fixture.upstream.repository !== "flop-labs/tclk") throw new Error("TCLK_SETTLEMENT_TRUTH_SOURCE");
   if (fixture.claimBoundary.normativeCompositionClaimed) throw new Error("TCLK_SETTLEMENT_TRUTH_MUST_REMAIN_COMMUNITY_EVIDENCE");
 
@@ -60,6 +69,20 @@ export async function validateTclkSettlementTruthComposition(): Promise<Record<s
   });
   if (time.allowDeadlineVerdict) throw new Error("TCLK_SETTLEMENT_TRUTH_96_PRECONDITION_DRIFT");
 
+  const retention = assessTclkHandshakeRetention({
+    offerRetained: false,
+    acceptRetained: true,
+    retainedSignedCopiesAdmissible: false,
+  });
+  if (retention.handshakeAuditable) throw new Error("TCLK_SETTLEMENT_TRUTH_181_PRECONDITION_DRIFT");
+
+  const paymentKey = assessTclkPaymentKeyBoundary({
+    schemaLexicallyValid: true,
+    runtimeOnCurveValid: false,
+    runtimeConstraintAdvertised: false,
+  });
+  if (paymentKey.contractKeyAcceptable) throw new Error("TCLK_SETTLEMENT_TRUTH_182_PRECONDITION_DRIFT");
+
   const results = fixture.cases.map((c) => {
     const actual = classify(c);
     if (actual !== c.expected) throw new Error(`TCLK_SETTLEMENT_TRUTH_CASE_${c.id}`);
@@ -75,5 +98,7 @@ export async function validateTclkSettlementTruthComposition(): Promise<Record<s
     paper1CanSatisfyExactTermsGate: fixture.claimBoundary.paper1CanSatisfyExactTermsGate,
     roomTerminalStateIsMoneyState: fixture.claimBoundary.roomTerminalStateIsMoneyState,
     railObjectValidityAloneIsSufficient: fixture.claimBoundary.railObjectValidityAloneIsSufficient,
+    expiredPublicHandshakeIsDurableEvidence: fixture.claimBoundary.expiredPublicHandshakeIsDurableEvidence,
+    schemaLexicalPaymentKeyValidityIsSufficient: fixture.claimBoundary.schemaLexicalPaymentKeyValidityIsSufficient,
   };
 }

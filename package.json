@@ -6,9 +6,12 @@
   "bin": {
     "flop-conformance": "dist/src/cli.js",
     "protocol-drift": "dist/src/drift-cli.js",
+    "protocol-evolution": "dist/src/protocol-evolution-cli.js",
     "interaction-observatory": "dist/src/interaction-cli.js",
     "runtime-observatory": "dist/src/runtime-cli.js",
-    "runtime-status": "dist/src/runtime-status-cli.js"
+    "runtime-status": "dist/src/runtime-status-cli.js",
+    "runtime-replay": "dist/src/runtime-replay-cli.js",
+    "longitudinal-observatory": "dist/src/longitudinal-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -34,8 +37,10 @@
     "docs/INTEGRATE_60_SECONDS.md",
     "docs/REPRODUCIBLE_DEMOS.md",
     "integrations/external",
+    "runtime-public",
     "docs/INTERACTION_OBSERVATORY.md",
     "docs/RUNTIME_OBSERVATORY.md",
+    "docs/RUNTIME_EVIDENCE.md",
     "docs/EXPERIMENTAL_PROTOCOL_PRIMITIVES.md",
     "docs/UPSTREAM_VALIDATION_PROGRAM.md",
     "docs/UPSTREAM_PARTICIPATION_POLICY.md",
@@ -54,13 +59,18 @@
     "package:smoke": "npm run build && node tools/package-smoke.js",
     "quickstart": "npm run build && node dist/src/cli.js verify --profile technocore-agent --input examples/external-consumer/technocore-agent.json --out conformance-report.json",
     "drift:snapshot": "npm run build && node dist/src/drift-cli.js snapshot --previous conformance/observatory/baseline.json --out conformance/observatory/current.json --events conformance/observatory/events.json",
+    "evolution:update": "npm run build && node dist/src/protocol-evolution-cli.js --handoff conformance/observatory/handoff.json --out conformance/observatory/evolution-history.json",
     "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
     "interactions:snapshot": "npm run build && node dist/src/interaction-cli.js snapshot --previous conformance/interactions/state.json --out conformance/interactions/current.json --events conformance/interactions/events.json",
     "runtime:f1": "npm run build && node dist/src/runtime-cli.js run --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --previous .runtime/reference-f1-latest.json --out .runtime/reference-f1-latest.json",
     "runtime:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/reference-f1-state.json --retry-budget 2 --history-limit 744",
     "runtime:status": "npm run build && node dist/src/runtime-status-cli.js --root .runtime --json runtime-public/runtime-index.json --markdown runtime-public/STATUS.md",
+    "longitudinal:sync": "npm run build && node dist/src/longitudinal-cli.js sync",
     "runtime:proof-api:f1": "npm run build && node dist/src/runtime-cli.js run --target external-flop-proof-api-f1 --input examples/external-consumer/direct-rail-f1.json --out .runtime/external-flop-proof-api-f1-latest.json",
-    "runtime:proof-api:corpus": "npm run build && node dist/src/external-f1-corpus-cli.js --input examples/external-consumer/direct-rail-f1.json --out .runtime/external-flop-proof-api-f1-corpus.json"
+    "runtime:proof-api:corpus": "npm run build && node dist/src/external-f1-corpus-cli.js --input examples/external-consumer/direct-rail-f1.json --out .runtime/external-flop-proof-api-f1-corpus.json",
+    "runtime:task-relay:paper": "npm run build && node dist/src/runtime-cli.js run --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --out .runtime/external-task-relay-paper-latest.json",
+    "runtime:task-relay:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744",
+    "runtime:replay": "npm run build && node dist/src/runtime-replay-cli.js"
   },
   "keywords": [
     "flop",

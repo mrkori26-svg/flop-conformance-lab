@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration } from "./runtime-target-registry.js";
+import { claimBoundaryFor, createRuntimeTarget, isRuntimeTargetName, RUNTIME_TARGET_NAMES, runtimeTargetRegistration } from "./runtime-target-registry.js";
+import { publishRuntimeBundle } from "./runtime-publication.js";
 import { readEvidenceBundle, runRuntimeTarget, writeEvidenceBundle } from "./runtime-observatory.js";
 import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState } from "./continuous-runtime.js";
+import { appendObservations, detectGitRevision, observationsFromRuntime } from "./longitudinal-observatory.js";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -15,24 +17,24 @@ function usage(): string {
     "usage:",
     "  runtime-observatory run --target reference-f1 --input case.json [--previous bundle.json] --out bundle.json",
     "  runtime-observatory cycle --target reference-f1 --input case.json --state state.json [--retry-budget 2] [--history-limit 168]",
-    `  targets: ${listRuntimeTargets().map((entry) => entry.id).join(" | ")}`,
+    `  targets: ${RUNTIME_TARGET_NAMES.join(" | ")}`,
   ].join("\n") + "\n";
 }
 
 const command = args[0];
 const targetName = flag("--target");
 const inputPath = flag("--input");
-if (!["run", "cycle"].includes(command ?? "") || !targetName || !runtimeTargetRegistration(targetName) || !inputPath) {
+if (!["run", "cycle"].includes(command ?? "") || !isRuntimeTargetName(targetName) || !inputPath) {
   process.stderr.write(usage());
   process.exit(2);
 }
 
 const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: unknown; id?: string } & Record<string, unknown>;
 const input = raw.input ?? raw;
-const testCase = { id: raw.id ?? "direct-rail-f1-reference", input };
 const registration = runtimeTargetRegistration(targetName)!;
+const testCase = { id: raw.id ?? registration.defaultCaseId, input };
 const target = createRuntimeTarget(targetName);
-const claimBoundary = registration.claimBoundary;
+const claimBoundary = claimBoundaryFor(targetName);
 
 try {
   if (command === "run") {
@@ -43,14 +45,16 @@ try {
     }
     const previousPath = flag("--previous");
     const previous = previousPath ? readEvidenceBundle(previousPath) : null;
-    const result = await runRuntimeTarget(targetName!, target, testCase, previous);
+    const result = await runRuntimeTarget(targetName, target, testCase, previous);
     writeEvidenceBundle(outPath, result.bundle);
+    const archive = publishRuntimeBundle("runtime-public", result.status, result.bundle);
     process.stdout.write(`${JSON.stringify({
       status: result.status,
       target: result.bundle.target,
       testCaseId: result.bundle.testCaseId,
       digest: result.bundle.digest,
       out: outPath,
+      archive,
       claimBoundary,
     }, null, 2)}\n`);
     if (result.status === "FAIL") process.exitCode = 1;
@@ -63,15 +67,19 @@ try {
     }
     const retryBudget = Number(flag("--retry-budget") ?? "2");
     const historyLimit = Number(flag("--history-limit") ?? "168");
-    const state = readRuntimeLoopState(statePath, targetName!, testCase.id, historyLimit);
+    const state = readRuntimeLoopState(statePath, targetName, testCase.id, historyLimit);
     const result = await runOperationalRuntimeCycle({
-      targetId: targetName!,
+      targetId: targetName,
       target,
       testCase,
       state,
       retryBudget,
     });
     writeRuntimeLoopState(statePath, result.state);
+    appendObservations(".runtime/longitudinal", observationsFromRuntime(result.entry, detectGitRevision(process.cwd())));
+    const archive = result.entry.bundle
+      ? publishRuntimeBundle("runtime-public", result.entry.status, result.entry.bundle)
+      : null;
     process.stdout.write(`${JSON.stringify({
       status: result.entry.status,
       targetId: result.entry.targetId,
@@ -83,6 +91,7 @@ try {
       delta: result.delta,
       metrics: result.state.metrics,
       state: statePath,
+      archive,
       claimBoundary,
     }, null, 2)}\n`);
     if (result.entry.status === "FAIL") process.exitCode = 1;

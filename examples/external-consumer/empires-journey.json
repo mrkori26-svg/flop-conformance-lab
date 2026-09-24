@@ -1,0 +1,46 @@
+{
+  "actor_did": "did:key:z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd",
+  "capability": "empire.recon",
+  "journey_id": "empires_d98c60a20a6cd5448e5bdf4a",
+  "native_receipt": {
+    "accepted": true,
+    "accepted_at": 1,
+    "actor_did": "did:key:z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd",
+    "details": {
+      "action": "recon",
+      "mode": "simulation"
+    },
+    "event_seq": 1,
+    "referee_did": "did:key:z6MkehRgf7yJbgaGfYsdoAsKdBPE3dj2CYhowQdcjqSJgvVd",
+    "request_id": "interop-recon-001",
+    "signature": "rFcR7CbmKsDzglSJ4BlTJ3kgKYhBw7HZoHdIqHZ1cBSFY4iCBTT_GIunt1WiWkujJBpyHbJTPA0VhoCSgJpbDw",
+    "state_after_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "state_before_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "native_receipt_digest": "c15c86dad28b2d4195f06ad69fc8c18a99891f7608156c5c7b1a2e2cb520be02",
+  "native_unsigned_digest": "e8188cff0c8d3cc972ff65bf1a6be1502b0aded9442894b8ae007c9a6942ef7d",
+  "request_id": "interop-recon-001",
+  "router_receipt": {
+    "receiptId": "runtime_receipt_interop_demo",
+    "router": {
+      "requestId": "interop-recon-001"
+    },
+    "runtime": {
+      "targetId": "flop-empires-season0"
+    },
+    "schema": "flop.router-runtime-execution/v1"
+  },
+  "schema": "flop-empires-journey-evidence/v1",
+  "semantic_digest": "0f76126c5029435f795858502ca41698d8f6787a83a8269353057bd0f7f9d82d",
+  "transition": {
+    "event_seq": 1,
+    "state_after_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "state_before_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "verification": {
+    "native_signature": true,
+    "replay": true,
+    "router_request_binding": true,
+    "runtime_binding": true
+  }
+}
