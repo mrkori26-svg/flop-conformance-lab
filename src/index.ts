@@ -386,9 +386,6 @@ export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
-<<<<<<< HEAD
 export * from './cross-system-conformance.js';
 export * from './cross-protocol-conformance.js';
-=======
 export * from "./longitudinal-observatory.js";
->>>>>>> 456c131 (feat: add peer telemetry evidence adapter)
