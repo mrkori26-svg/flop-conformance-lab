@@ -80,6 +80,8 @@ export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
 export * from "./evidence-envelope.js";
+export * from "./longitudinal-observatory.js";
+export * from "./peer-telemetry-adapter.js";
 
 function packageVersion(): string {
   const metadata = JSON.parse(
@@ -384,5 +386,9 @@ export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
+<<<<<<< HEAD
 export * from './cross-system-conformance.js';
 export * from './cross-protocol-conformance.js';
+=======
+export * from "./longitudinal-observatory.js";
+>>>>>>> 456c131 (feat: add peer telemetry evidence adapter)
