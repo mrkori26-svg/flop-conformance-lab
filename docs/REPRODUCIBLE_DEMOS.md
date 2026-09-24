@@ -27,7 +27,7 @@ npm run build
 node dist/src/cli.js verify --profile direct-rail-f1 --input examples/external-consumer/direct-rail-f1.json --out /tmp/direct-rail-report.json
 ```
 
-Expected boundary while Yellow Paper #61 is open: byte/vector conformance can succeed while the portable result remains `PARTIAL` because normative resolution and public runtime compatibility are separate questions.
+Current boundary after Yellow Paper sync `3c97bbc`: #61 is resolved and Appendix F.1 v1 is canonical, so the portable byte/vector profile can return `PASS`. Public runtime compatibility remains a separate, unclaimed property until an external public F.1 producer/runtime/SDK is exercised.
 
 ## 3. TCLK trust-boundary reproduction
 

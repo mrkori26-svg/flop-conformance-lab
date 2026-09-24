@@ -4,10 +4,12 @@ import { validateQuoteChannelReceiptFixture } from "./flop-quote-boundary.js";
 import { runAdversarialEvidenceFixture } from "./adversarial-evidence.js";
 import { validateYellowpaper5657Fixture } from "./yellowpaper-open-issues.js";
 import { validateYellowpaper61Fixture } from "./yellowpaper-61.js";
+import { validateYellowpaperResolutionSweep } from "./yellowpaper-resolution-sweep.js";
 import { validateDemandIndependenceFixture } from "./demand-independence.js";
 import { validateSybilEconomicsFixture } from "./sybil-economics.js";
 import { validateTclkIssue93Fixture } from "./tclk-stream-completeness.js";
 import { validateTclkIssue96Fixture } from "./tclk-venue-time.js";
+import { assessTclkRailEvidence } from "./tclk-rail-evidence.js";
 import { validateClientCrashSettlementFixture } from "./client-crash-settlement.js";
 import { validateContributionProof851Populations } from "./technocore-contribution-proof.js";
 import { validateEcosystemInteropFixture } from "./ecosystem-interop.js";
@@ -19,6 +21,8 @@ import { htlcReplayReadiness } from "./htlc-replay.js";
 import { validateAgentIdentityStakeLifecycleFixture } from "./agent-identity-stake-lifecycle.js";
 import { validateExternalTclkRailAdoptionFixture } from "./tclk-rail-adoption.js";
 import { validateTclkSettlementViewCanary } from "./tclk-settlement-view-canary.js";
+import { validateTclkIssue180LockTermsBinding } from "./tclk-lockterms-binding.js";
+import { validateTclkSettlementTruthComposition } from "./tclk-settlement-truth.js";
 import { validateValidatorPerformanceAmbiguity } from "./validator-performance-ambiguity.js";
 import { validateF3HidsKat } from "./f3-hids-kat.js";
 import { emptyPublicMeterKatBundle, validateMeterKatBundle } from "./meter-kat.js";
@@ -37,11 +41,13 @@ export * from "./flop-quote-boundary.js";
 export * from "./adversarial-evidence.js";
 export * from "./yellowpaper-open-issues.js";
 export * from "./yellowpaper-61.js";
+export * from "./yellowpaper-resolution-sweep.js";
 export * from "./demand-independence.js";
 export * from "./sybil-economics.js";
 export * from "./tclk-provisional-hardening.js";
 export * from "./tclk-stream-completeness.js";
 export * from "./tclk-venue-time.js";
+export * from "./tclk-rail-evidence.js";
 export * from "./work-evidence.js";
 export * from "./tcr1-adapter.js";
 export * from "./transport-reconciliation.js";
@@ -66,6 +72,8 @@ export * from "./technocore-contribution-vectors.js";
 export * from "./htlc-conformance.js";
 export * from "./tclk-rail-adoption.js";
 export * from "./tclk-settlement-view-canary.js";
+export * from "./tclk-lockterms-binding.js";
+export * from "./tclk-settlement-truth.js";
 export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
@@ -87,10 +95,12 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const adversarialEvidence = runAdversarialEvidenceFixture();
   const yellowpaper5657 = validateYellowpaper5657Fixture();
   const yellowpaper61 = validateYellowpaper61Fixture();
+  const yellowpaperResolutionSweep = validateYellowpaperResolutionSweep();
   const demandIndependence = validateDemandIndependenceFixture();
   const sybilEconomics = validateSybilEconomicsFixture();
   const tclkIssue93 = validateTclkIssue93Fixture();
   const tclkIssue96 = validateTclkIssue96Fixture();
+  const tclkRailBoundary = assessTclkRailEvidence({ transcriptValid: true, rail: "flop-htlc", ref: "field-observation", });
   const clientCrashSettlement = validateClientCrashSettlementFixture();
   const technocore851 = validateContributionProof851Populations();
   const ecosystemInterop = validateEcosystemInteropFixture();
@@ -103,6 +113,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const agentIdentityStakeLifecycle = validateAgentIdentityStakeLifecycleFixture();
   const externalTclkRailAdoption = validateExternalTclkRailAdoptionFixture();
   const tclkSettlementView = validateTclkSettlementViewCanary();
+  const tclkIssue180 = await validateTclkIssue180LockTermsBinding();
+  const tclkSettlementTruth = await validateTclkSettlementTruthComposition();
   const validatorPerformanceAmbiguity = validateValidatorPerformanceAmbiguity();
   const f3HidsKat = validateF3HidsKat();
   const meterKat = validateMeterKatBundle(emptyPublicMeterKatBundle);
@@ -127,10 +139,12 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "flop.htlc-pair-fixtures-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcPairs },
     { id: "flop.htlc-replay-hardening-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcReplay },
     { id: "technocore.contribution-proof-vectors", suite: "technocore", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: contributionVectors },
-    { id: "flop.direct-rail-f1-cross-language", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: directRailF1CrossLanguage },
+    { id: "flop.direct-rail-f1-cross-language", suite: "flop", status: "PASS" as const, normativeStatus: "TARGET_SPEC" as const, durationMs: 0, details: directRailF1CrossLanguage },
     { id: "ecosystem.interop-registry-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: ecosystemInterop },
     { id: "evidence.external-tclk-rail-adoption", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: externalTclkRailAdoption },
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
+    { id: "tclk.issue-180-lockterms-binding", suite: "tclk", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: tclkIssue180 },
+    { id: "tclk.settlement-truth-composition", suite: "tclk", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: tclkSettlementTruth },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
     { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },
     { id: "flop.conversion-evidence-boundary", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: { schema: "flop.conversion-evidence-bundle/v1", yellowpaperIssue: 76, senderAuthorship: "room|nonce|text", serverAssignedUnsigned: ["seq","ts"], conversionEligibility: "NOT_DERIVED", allocationCredit: "NOT_DERIVED" } },
@@ -213,6 +227,14 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       details: tclkIssue96,
     },
     {
+      id: "tclk.rail-evidence-boundary",
+      suite: "tclk",
+      status: "PASS" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
+      durationMs: 0,
+      details: { ...tclkRailBoundary },
+    },
+    {
       id: "flop.quote-open-channel-receipt",
       suite: "flop",
       status: "PASS" as const,
@@ -232,17 +254,25 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       id: "flop.yellowpaper-56-57-boundaries",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: yellowpaper5657,
+      details: { ...yellowpaper5657, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
     },
     {
       id: "flop.yellowpaper-61-direct-rail-hash-reportdata-conflict",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: yellowpaper61,
+      details: { ...yellowpaper61, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
+    },
+    {
+      id: "flop.yellowpaper-0.5.0-sync-3c97bbc",
+      suite: "flop",
+      status: "PASS" as const,
+      normativeStatus: "TARGET_SPEC" as const,
+      durationMs: 0,
+      details: yellowpaperResolutionSweep,
     },
     {
       id: "flop.e49-demand-independence",
@@ -264,9 +294,9 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       id: "flop.d0440-official-source-conflict",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: d0440Conflict,
+      details: { ...d0440Conflict, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
     },
     {
       id: "technocore.pr842-bounded-recovery",

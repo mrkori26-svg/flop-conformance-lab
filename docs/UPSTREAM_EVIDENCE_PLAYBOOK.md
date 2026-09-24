@@ -27,7 +27,7 @@ The `after` state is published only when the normative source or stable interfac
 
 ## Tracked boundaries
 - #26: quote comparability -> SessionOffer/opening envelope -> future Appendix F quote wire shape.
-- #44: wrong_path_orientation corpus discrepancy -> await upstream corpus/spec resolution -> rerun independent fixture.
+- #44: wrong_path_orientation corpus discrepancy -> resolved at `3c97bbc`; retain the old duplicated-sibling false negative and rerun the corrected non-duplicate mutation as a before -> resolution -> PASS regression.
 - #56: payable semantics/unit/origin -> remain OPEN_ISSUE until all three are normative -> rerun receipt fixture.
 - #57: sum-tree wording vs plain Merkle rule -> remain OPEN_ISSUE until wording/construction is reconciled -> rerun Merkle fixture.
 

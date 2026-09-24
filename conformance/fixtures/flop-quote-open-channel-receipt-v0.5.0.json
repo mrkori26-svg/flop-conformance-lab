@@ -4,20 +4,23 @@
   "classification": "TARGET_SPEC_BOUNDARY",
   "upstream": {
     "repository": "flop-labs/yellowpaper",
-    "commit": "3eaf2f25bc46a501df225cae4e4e991975f6b2a9",
+    "commit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
     "version": "0.5.0-draft",
     "issues": [26, 33],
-    "sections": ["§4.1", "§4.2", "§12.1 R12.1a", "Appendix F.3", "Appendix G", "E.54"],
+    "sections": ["§4.1", "§4.2", "§12.1 R12.1a", "Appendix F.3", "Appendix G", "E.55"],
     "maintainerClarification": {
       "issueCommentId": 5658227990,
-      "status": "UPSTREAM_MAINTAINER_DIRECTION",
-      "summary": "SessionOffer is the canonical opening-offer boundary; a fuller quote/discovery contract is planned for the Rust/TypeScript compute-channel SDK and Appendix F, downstream of flop-core#1597 and flop-core#1586. Cross-provider ranking remains fail-closed until then."
+      "correctionCommentId": 5808384402,
+      "resolutionCommentId": 5818897853,
+      "status": "UPSTREAM_E55_FIELDS_PINNED_PLANNED",
+      "summary": "E.55 now normatively records the required comparison-quote field set and keeps the full signed/versioned quote contract PLANNED in the Rust/TypeScript SDK plus Appendix F; #1597 and #1586 remain blockers, so cross-provider ranking stays fail-closed."
     },
     "publicRuntime": "PUBLIC_RUNTIME_UNAVAILABLE"
   },
   "quoteBoundary": {
-    "normativeStatus": "OPEN_ISSUE",
+    "normativeStatus": "TARGET_SPEC_PLANNED",
     "canonicalDiscoveryContract": null,
+    "requiredFieldsPinnedByE55": ["meter_profile","input_context_output_assumptions","cache_assumptions","verification_settlement_tier","expected_G_n","reserved_escrow","expected_payable_explicit_base_unit","transaction_fee","external_display_conversion"],
     "plannedNormativeHome": ["Rust compute-channel SDK", "TypeScript compute-channel SDK", "Appendix F signed wire fixture"],
     "blockers": ["flop-core#1597", "flop-core#1586"],
     "expected": {"status": "FAIL_CLOSED", "reason": "NO_COMPLETE_CANONICAL_COMPARISON_QUOTE"},
@@ -96,9 +99,10 @@
       "currentState": "BLOCKER",
       "promotionCondition": "reservation_price_formation_defined_normatively"
     },
-    "E.54": {
-      "currentState": "DIRECTION_RECORDED",
-      "promotionCondition": "quote_wire_shape_and_required_fields_bound_normatively"
+    "E.55": {
+      "currentState": "REQUIRED_FIELDS_PINNED_CONTRACT_STILL_PLANNED",
+      "sourceCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "promotionCondition": "versioned_signed_quote_contract_and_appendix_f_wire_fixture_available"
     },
     "afterAllResolved": {
       "action": "REPLAY_BEFORE_RESOLUTION_AFTER_FIXTURE",

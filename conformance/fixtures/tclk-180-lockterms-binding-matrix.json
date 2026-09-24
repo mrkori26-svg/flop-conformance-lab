@@ -1,0 +1,33 @@
+{
+  "schema": "flop.tclk-lockterms-binding-matrix/v1",
+  "classification": "COMMUNITY_EVIDENCE",
+  "upstream": {
+    "repository": "flop-labs/tclk",
+    "issue": 180,
+    "observedMain": "5cc4ab93efbc8999a3a7e1471b639deca25998ea",
+    "packageUnderTest": "@flop-labs/tclk@0.1.0"
+  },
+  "interfaceContract": "verifyLock is true iff ref holds a live lock matching LockTerms exactly",
+  "lockTerms": ["contract","lock","statement","amount","asset","payer","payee","claimByMs","refundAfterMs"],
+  "paper1StoredBindings": ["contract/ref","lock","statement","refundAfterMs"],
+  "paper1UnprovableBindings": ["amount","asset","payer","payee","claimByMs"],
+  "matrix": [
+    {"id":"exact","mutation":null,"paperExpected":true,"memoryExpected":true},
+    {"id":"contract","mutation":"contract","paperExpected":false,"memoryExpected":false},
+    {"id":"lock","mutation":"lock","paperExpected":false,"memoryExpected":false},
+    {"id":"statement","mutation":"statement","paperExpected":false,"memoryExpected":false},
+    {"id":"amount","mutation":"amount","paperExpected":true,"memoryExpected":false},
+    {"id":"asset","mutation":"asset","paperExpected":true,"memoryExpected":false},
+    {"id":"payer","mutation":"payer","paperExpected":true,"memoryExpected":false},
+    {"id":"payee","mutation":"payee","paperExpected":true,"memoryExpected":false},
+    {"id":"claimByMs","mutation":"claimByMs","paperExpected":true,"memoryExpected":false},
+    {"id":"refundAfterMs","mutation":"refundAfterMs","paperExpected":false,"memoryExpected":false},
+    {"id":"wrong_ref","mutation":"ref","paperExpected":false,"memoryExpected":false}
+  ],
+  "claimBoundary": {
+    "cryptographicallyValidRailObjectImpliesCorrectContractLock": false,
+    "paper1CanProveExactLockTerms": false,
+    "memoryRailCanProveExactLockTerms": true,
+    "normativeFixClaimed": false
+  }
+}

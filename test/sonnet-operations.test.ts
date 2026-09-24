@@ -9,7 +9,7 @@ import {
 } from "../src/sonnet-planning.js";
 import {
   assertFreshWordProposal, assertMatchingRosterConsents, assertRosterReadyBeforeWord,
-  beginIdempotentRequest, evaluateRosterAuthority, transitionContestState, verifyRefereeRecord, type ContestState,
+  beginIdempotentRequest, evaluateRosterAuthority, reconcileParticipantRegistration, transitionContestState, verifyRefereeRecord, type ContestState,
 } from "../src/sonnet-state.js";
 import {canonicalSonnetJson, SONNET_CONTEST_ID, SONNET_REFEREE_DID, SONNET_WRITER_DID, validateSonnetAction} from "../src/sonnet.js";
 
@@ -80,4 +80,31 @@ test("replayed accepted roster cannot trigger a second rebuild or withdrawal",()
   const accepted={...observation,status:"accepted" as const,receipt_seq:202};
   assert.deepEqual(evaluateRosterAuthority(observation,accepted,202),{state:"AUTHORITATIVE_REPLAY",shouldMutate:false,receiptSeq:202});
   assert.deepEqual(evaluateRosterAuthority(observation,accepted,203),{state:"AUTHORITATIVE_REPLAY",shouldMutate:false,receiptSeq:202});
+});
+
+test("authoritative ledger acceptance remains usable when the receipt is not observed",()=> {
+  const state=reconcileParticipantRegistration({request_id:"register-1",ledger:{status:"accepted",evidence:"ledger:intake_seq:17035"}});
+  assert.deepEqual(state,{disposition:"ACCEPTED",receipt_visibility:"NOT_OBSERVED",authoritative_source:"LEDGER",can_participate:true,evidence:["ledger:intake_seq:17035"]});
+});
+test("missing receipt without authoritative disposition remains unknown and cannot participate",()=> {
+  const state=reconcileParticipantRegistration({request_id:"register-unknown"});
+  assert.equal(state.disposition,"UNKNOWN");
+  assert.equal(state.receipt_visibility,"NOT_OBSERVED");
+  assert.equal(state.authoritative_source,"NONE");
+  assert.equal(state.can_participate,false);
+});
+test("an observed accepted receipt is authoritative when no ledger result is available",()=> {
+  const receipt={type:"sonnet.receipt.v1",contest_id:SONNET_CONTEST_ID,request_id:"register-2",status:"accepted"};
+  const state=reconcileParticipantRegistration({request_id:"register-2",receipt:{from:SONNET_REFEREE_DID,text:JSON.stringify(receipt)}});
+  assert.equal(state.disposition,"ACCEPTED");
+  assert.equal(state.receipt_visibility,"OBSERVED");
+  assert.equal(state.authoritative_source,"RECEIPT");
+  assert.equal(state.can_participate,true);
+});
+test("explicit rejection cannot be treated as pending and ledger/receipt conflicts fail closed",()=> {
+  const rejected=reconcileParticipantRegistration({ledger:{status:"rejected",evidence:"ledger:reject"}});
+  assert.equal(rejected.disposition,"REJECTED");
+  assert.equal(rejected.can_participate,false);
+  const acceptedReceipt={type:"sonnet.receipt.v1",contest_id:SONNET_CONTEST_ID,request_id:"register-3",status:"accepted"};
+  assert.throws(()=>reconcileParticipantRegistration({request_id:"register-3",ledger:{status:"rejected",evidence:"ledger:reject"},receipt:{from:SONNET_REFEREE_DID,text:JSON.stringify(acceptedReceipt)}}),/REFEREE_STATE_CONFLICT/);
 });

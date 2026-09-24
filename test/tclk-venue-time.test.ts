@@ -10,6 +10,20 @@ test("issue #96 fixture reproduces the unsigned venue-time trust boundary", () =
   assert.equal(result.trustBoundary, "UNTRUSTED_VENUE_TIME");
   assert.equal(result.failClosed, true);
   assert.equal(result.allowDeadlineVerdict, false);
+  const replay = result.pr175Replay as {
+    head: string;
+    transcriptTests: { passed: number; failed: number };
+    strictReveal: string;
+    strictRefund: string;
+    strictStateAfterTerminalRefusal: string;
+    terminalEvidenceForPlainTerminal: string;
+  };
+  assert.equal(replay.head, "ac2698c25d0c34a6122dd83be42334983ca8b62c");
+  assert.deepEqual(replay.transcriptTests, { passed: 13, failed: 0 });
+  assert.equal(replay.strictReveal, "REFUSED_UNSIGNED_VENUE_TIMESTAMP");
+  assert.equal(replay.strictRefund, "REFUSED_UNSIGNED_VENUE_TIMESTAMP");
+  assert.equal(replay.strictStateAfterTerminalRefusal, "locked");
+  assert.equal(replay.terminalEvidenceForPlainTerminal, "rail-required");
 });
 
 test("deadline-sensitive transcript with unsigned venue time fails closed", () => {

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 
 const FIXTURE_URL = new URL("../conformance/fixtures/flop-quote-open-channel-receipt-v0.5.0.json", import.meta.url);
-const PINNED_YELLOWPAPER_COMMIT = "3eaf2f25bc46a501df225cae4e4e991975f6b2a9";
+const PINNED_YELLOWPAPER_COMMIT = "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e";
 const RECEIPT_DOMAIN = "FLOP/COMPUTE_CHANNEL/RECEIPT";
 const U128_MAX = (1n << 128n) - 1n;
 const OPEN_CHANNEL_FIELDS = ["miner","model_hash","measured_root","decode_policy_hash","precision","enclave_key","agent_key","sla","escrow","nonce","settlement_class"] as const;
@@ -22,7 +22,14 @@ export function validateQuoteChannelReceiptFixture(): Record<string, unknown> {
   assert(fixture.upstream.issues.includes(26),"ISSUE_26_NOT_PINNED");
   assert(fixture.upstream.issues.includes(33),"ISSUE_33_NOT_PINNED");
   assert(fixture.upstream.maintainerClarification.issueCommentId===5658227990,"MAINTAINER_CLARIFICATION_NOT_PINNED");
+  assert(fixture.upstream.maintainerClarification.correctionCommentId===5808384402,"APPENDIX_CORRECTION_NOT_PINNED");
+  assert(fixture.upstream.maintainerClarification.resolutionCommentId===5818897853,"E55_RESOLUTION_COMMENT_NOT_PINNED");
+  assert(fixture.upstream.maintainerClarification.status==="UPSTREAM_E55_FIELDS_PINNED_PLANNED","E55_RESOLUTION_STATUS_DIVERGENCE");
+  assert(fixture.quoteBoundary.normativeStatus==="TARGET_SPEC_PLANNED","QUOTE_BOUNDARY_TARGET_STATUS_DIVERGENCE");
   assert(fixture.quoteBoundary.canonicalDiscoveryContract===null,"CANONICAL_QUOTE_SCHEMA_MUST_NOT_BE_INVENTED");
+  assert(fixture.quoteBoundary.requiredFieldsPinnedByE55.includes("meter_profile"),"E55_METER_PROFILE_NOT_PINNED");
+  assert(fixture.quoteBoundary.requiredFieldsPinnedByE55.includes("expected_G_n"),"E55_EXPECTED_GN_NOT_PINNED");
+  assert(fixture.quoteBoundary.requiredFieldsPinnedByE55.includes("expected_payable_explicit_base_unit"),"E55_PAYABLE_UNIT_NOT_PINNED");
   assert(fixture.quoteBoundary.expected.status==="FAIL_CLOSED","QUOTE_BOUNDARY_MUST_FAIL_CLOSED");
   assert(fixture.quoteBoundary.expected.reason==="NO_COMPLETE_CANONICAL_COMPARISON_QUOTE","QUOTE_BOUNDARY_REASON_DIVERGENCE");
   for(const forbidden of ["same_unit_implies_same_comparison_profile","min_escrow_is_accepted_payment","capacity_hint_is_guaranteed_capacity","receipt_fields_reconstruct_pre_session_quote"]){assert(fixture.quoteBoundary.mustNotInfer.includes(forbidden),`MISSING_GUARD_${forbidden}`);}
@@ -49,7 +56,8 @@ export function validateQuoteChannelReceiptFixture(): Record<string, unknown> {
 
   assert(fixture.resolutionCanaries["flop-core#1597"].currentState==="BLOCKER","GN_CANARY_MISSING");
   assert(fixture.resolutionCanaries["flop-core#1586"].currentState==="BLOCKER","RESERVATION_PRICE_CANARY_MISSING");
-  assert(fixture.resolutionCanaries["E.54"].currentState==="DIRECTION_RECORDED","E54_CANARY_MISSING");
+  assert(fixture.resolutionCanaries["E.55"].currentState==="REQUIRED_FIELDS_PINNED_CONTRACT_STILL_PLANNED","E55_CANARY_MISSING");
+  assert(fixture.resolutionCanaries["E.55"].sourceCommit===PINNED_YELLOWPAPER_COMMIT,"E55_SOURCE_COMMIT_DIVERGENCE");
   assert(JSON.stringify(fixture.resolutionCanaries.afterAllResolved.requiredShape)===JSON.stringify(["before","resolution","conformance_result"]),"RESOLUTION_REPLAY_SHAPE_DIVERGENCE");
 
   assert(!fixture.scope.networkMutation,"FIXTURE_MUST_BE_OFFLINE");
