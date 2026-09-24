@@ -14,10 +14,13 @@ A project is not counted as adopted merely because we prepared an adapter, opene
 
 ## Priority targets
 
-- **osr21/flop-protocol-reproducibility-audits**: direct-rail-f1 -> pinned Action -> retained report. Current external validation already makes this the shortest path to a real downstream dependency.
-- **congge918/technocore-tclk-deal-scout**: tclk-transcript -> export authenticated room evidence -> retained transcript result.
-- **Mariukasfak/flop-evidence-scout**: continuous observer output -> technocore-agent/EvidenceBundle-compatible export. Do not require the full Lab stack.
-- **UfukNode/technocore-did-tool** and **zunmax/technocore-did-starter**: technocore-agent profile only; validate DID/mailbox/signature evidence with no key-custody changes.
+- **osr21/flop-protocol-reproducibility-audits**: `direct-rail-f1` -> pinned Action -> retained report.
+- **congge918/technocore-tclk-deal-scout**: authenticated `offer + accept` -> `tclk-transcript` -> retained report.
+- **Mariukasfak/flop-evidence-scout**: append-only signed-post archive -> `evidence-envelope` -> retained artifact. Do not require the full Lab stack.
+- **UfukNode/technocore-did-tool**: `technocore-agent` over its generated mailbox proof, with no key-custody change.
+- **zunmax/technocore-did-starter**: `technocore-signed-message` over one generated signed record. Do not claim mailbox reachability because the project does not expose mailbox semantics.
+
+Prepared and locally verified fork branches are listed in `adoption/READY_TO_PROPOSE.md`.
 
 ## Upstream contribution format
 

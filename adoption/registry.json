@@ -1,16 +1,16 @@
 {
     "schema":  "flop-conformance-adoption-registry/v1",
-    "updatedAt":  "2026-09-13T23:55:11Z",
+    "updatedAt":  "2026-09-24T21:15:00Z",
     "entries":  [
                     {
                         "implementation":  "Mariukasfak/flop-evidence-scout",
-                        "profile":  "technocore-agent",
+                        "profile":  "evidence-envelope",
                         "status":  "PROPOSED",
                         "evidence":  {
                                          "issue":  "https://github.com/Mariukasfak/flop-evidence-scout/issues/9",
                                          "labCommit":  "3ddcad34cec2edfdc10f5f230156c4c1f0ea0b70"
                                      },
-                        "claim":  "Proposal opened; no external CI consumption is claimed yet."
+                        "claim":  "Existing proposal remains non-adoption; current preferred integration is a portable evidence-envelope export from the signed archive."
                     },
                     {
                         "implementation":  "Noobna/flop-sentinel",
@@ -41,10 +41,10 @@
                     },
                     {
                         "implementation":  "zunmax/technocore-did-starter",
-                        "profile":  "technocore-agent",
+                        "profile":  "technocore-signed-message",
                         "status":  "CANDIDATE",
                         "evidence":  {
-                                         "reason":  "Widely forked Technocore DID onboarding tool; a narrow profile could validate generated public identity/signature evidence without changing key custody."
+                                         "reason":  "Project signs canonical Technocore room messages but does not expose mailbox semantics; use the narrower signed-message profile."
                                      },
                         "claim":  "Candidate only; no proposal delivery or adoption claim."
                     },

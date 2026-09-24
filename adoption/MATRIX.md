@@ -4,11 +4,11 @@ This matrix is evidence-gated. A proposal, mention, fork, star, self-test, or in
 
 | Project | Profile / relationship | State | External pinned integration | External retained CI evidence |
 | --- | --- | --- | --- | --- |
-| Mariukasfak/flop-evidence-scout | `technocore-agent` | PROPOSED | no | no |
+| Mariukasfak/flop-evidence-scout | `evidence-envelope` preferred; prior proposal used `technocore-agent` | PROPOSED | no | no |
 | congge918/technocore-tclk-deal-scout | `tclk-transcript` | CANDIDATE | no | no |
 | Noobna/flop-sentinel | `tclk-transcript` | CANDIDATE | no | no |
 | UfukNode/technocore-did-tool | `technocore-agent` | CANDIDATE | no | no |
-| zunmax/technocore-did-starter | `technocore-agent` | CANDIDATE | no | no |
+| zunmax/technocore-did-starter | `technocore-signed-message` | CANDIDATE | no | no |
 | doboongkun/flop-agent-lab-tclk | `tclk-transcript` | PROPOSED | no | no |
 | osr21/flop-protocol-reproducibility-audits | `direct-rail-f1` peer evidence | EXTERNAL_VALIDATION | no | no |
 
