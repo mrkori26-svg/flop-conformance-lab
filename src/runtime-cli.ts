@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
-import { ReferenceF1RuntimeTarget } from "./runtime-target-f1.js";
-import { Osr21F1VerifierTarget } from "./runtime-target-external-f1.js";
-import { FlopProofApiF1VerifierTarget } from "./runtime-target-flop-proof-api-f1.js";
+import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration } from "./runtime-target-registry.js";
 import { readEvidenceBundle, runRuntimeTarget, writeEvidenceBundle } from "./runtime-observatory.js";
 import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState } from "./continuous-runtime.js";
 import type { DirectRailF1Input } from "./direct-rail-f1.js";
@@ -18,14 +16,14 @@ function usage(): string {
     "usage:",
     "  runtime-observatory run --target reference-f1 --input case.json [--previous bundle.json] --out bundle.json",
     "  runtime-observatory cycle --target reference-f1 --input case.json --state state.json [--retry-budget 2] [--history-limit 168]",
-    "  targets: reference-f1 | external-osr21-f1 | external-flop-proof-api-f1",
+    `  targets: ${listRuntimeTargets().map((entry) => entry.id).join(" | ")}`,
   ].join("\n") + "\n";
 }
 
 const command = args[0];
 const targetName = flag("--target");
 const inputPath = flag("--input");
-if (!["run", "cycle"].includes(command ?? "") || !["reference-f1", "external-osr21-f1", "external-flop-proof-api-f1"].includes(targetName ?? "") || !inputPath) {
+if (!["run", "cycle"].includes(command ?? "") || !targetName || !runtimeTargetRegistration(targetName) || !inputPath) {
   process.stderr.write(usage());
   process.exit(2);
 }
@@ -33,14 +31,9 @@ if (!["run", "cycle"].includes(command ?? "") || !["reference-f1", "external-osr
 const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: DirectRailF1Input; id?: string };
 const input = raw.input ?? raw as unknown as DirectRailF1Input;
 const testCase = { id: raw.id ?? "direct-rail-f1-reference", input };
-const target = targetName === "external-osr21-f1"
-  ? new Osr21F1VerifierTarget()
-  : targetName === "external-flop-proof-api-f1"
-    ? new FlopProofApiF1VerifierTarget()
-    : new ReferenceF1RuntimeTarget();
-const claimBoundary = targetName === "external-osr21-f1" || targetName === "external-flop-proof-api-f1"
-  ? "EXTERNAL_VERIFIER_NOT_PUBLIC_FLOP_RUNTIME"
-  : "REFERENCE_RUNTIME_ONLY_NOT_PUBLIC_FLOP_RUNTIME";
+const registration = runtimeTargetRegistration(targetName)!;
+const target = createRuntimeTarget(targetName);
+const claimBoundary = registration.claimBoundary;
 
 try {
   if (command === "run") {
