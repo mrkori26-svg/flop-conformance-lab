@@ -1,0 +1,178 @@
+{
+  "schema": "flop.longitudinal-latest/v1",
+  "methodologyVersion": "1.0.0",
+  "generatedAt": "2026-09-24T21:14:21.431Z",
+  "observationCount": 334,
+  "chainHead": null,
+  "metrics": {
+    "runtime_availability": {
+      "metric": "runtime_availability",
+      "samples": 6,
+      "numerator": 6,
+      "denominator": 6,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 6,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "interaction_success": {
+      "metric": "interaction_success",
+      "samples": 3,
+      "numerator": 0,
+      "denominator": 15,
+      "rate": 0,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 3
+      },
+      "failures": {
+        "COVERAGE_LOST": 3
+      }
+    },
+    "signature_verification": {
+      "metric": "signature_verification",
+      "samples": 32,
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 32
+      },
+      "failures": {}
+    },
+    "room_retention": {
+      "metric": "room_retention",
+      "samples": 32,
+      "numerator": 64,
+      "denominator": 64,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 32,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "mailbox_validity": {
+      "metric": "mailbox_validity",
+      "samples": 32,
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 32
+      },
+      "failures": {}
+    },
+    "tclk_parse_rate": {
+      "metric": "tclk_parse_rate",
+      "samples": 3,
+      "numerator": 15,
+      "denominator": 15,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 3,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "conformance_drift": {
+      "metric": "conformance_drift",
+      "samples": 130,
+      "numerator": 37,
+      "denominator": 37,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 37,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 93
+      },
+      "failures": {
+        "OBSERVER_UNAVAILABLE": 93
+      }
+    },
+    "failure_classifications": {
+      "metric": "failure_classifications",
+      "samples": 96,
+      "numerator": 96,
+      "denominator": 96,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 96
+      },
+      "failures": {
+        "COVERAGE_LOST": 3,
+        "OBSERVER_UNAVAILABLE": 93
+      }
+    }
+  },
+  "metricDefinitions": {
+    "runtime_availability": {
+      "unit": "ratio",
+      "numerator": "successful target observations",
+      "denominator": "scheduled target observations",
+      "semantics": "Observer failures are not target failures; indeterminate observations remain UNKNOWN."
+    },
+    "interaction_success": {
+      "unit": "ratio",
+      "numerator": "eligible interaction surfaces inspected successfully",
+      "denominator": "eligible interaction surfaces attempted",
+      "semantics": "Measures observation success, not social approval or adoption."
+    },
+    "signature_verification": {
+      "unit": "ratio",
+      "numerator": "cryptographically verified signed objects",
+      "denominator": "signed or signature-relevant objects observed",
+      "semantics": "INVALID, UNVERIFIED, NOT_PRESENT and SIGNER_UNAVAILABLE remain distinct."
+    },
+    "room_retention": {
+      "unit": "ratio",
+      "numerator": "rooms with complete retained coverage",
+      "denominator": "rooms inspected",
+      "semantics": "Generation reset, retention gap, partial window and unknown window are not counted as complete."
+    },
+    "mailbox_validity": {
+      "unit": "ratio",
+      "numerator": "mailbox objects passing structure, identity and signature checks",
+      "denominator": "mailbox objects inspected",
+      "semantics": "No denominator means no mailbox claim; absence of observations is not success."
+    },
+    "tclk_parse_rate": {
+      "unit": "ratio",
+      "numerator": "TCLK frames parsed under the pinned parser revision",
+      "denominator": "TCLK frames presented",
+      "semantics": "Parser exceptions and malformed frames are failures; unavailable inputs are UNKNOWN."
+    },
+    "conformance_drift": {
+      "unit": "ratio",
+      "numerator": "sources unchanged or conformant",
+      "denominator": "sources compared",
+      "semantics": "DRIFT is distinct from FAIL and UNKNOWN and retains source revision evidence."
+    },
+    "failure_classifications": {
+      "unit": "classification",
+      "numerator": "classified failure observations",
+      "denominator": "failure observations",
+      "semantics": "TARGET_FAILURE, OBSERVER_FAILURE and INDETERMINATE are separate dimensions."
+    }
+  }
+}
