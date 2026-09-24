@@ -15,6 +15,10 @@ if($LASTEXITCODE -ne 0){ exit $LASTEXITCODE }
 & node.exe dist/src/drift-cli.js snapshot --previous $previous --out (Join-Path $obs 'current.json') --events (Join-Path $obs 'events.json') --handoff (Join-Path $obs 'handoff.json')
 $code = $LASTEXITCODE
 if($code -eq 0 -or $code -eq 3){
+  & node.exe dist/src/protocol-evolution-cli.js --handoff (Join-Path $obs 'handoff.json') --out (Join-Path $obs 'evolution-history.json')
+  if($LASTEXITCODE -ne 0){ exit $LASTEXITCODE }
+}
+if($code -eq 0 -or $code -eq 3){
   $events = Get-Content (Join-Path $obs 'events.json') -Raw | ConvertFrom-Json
   if($events.events.Count -gt 0){
     $stamp=(Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
