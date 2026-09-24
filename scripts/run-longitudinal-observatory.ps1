@@ -24,8 +24,13 @@ $driftExit = $LASTEXITCODE
 $driftOutput | Add-Content $log
 $driftHealth = if ($driftExit -eq 0) { "NO_CHANGE" } elseif ($driftExit -eq 3) { "CHANGE_DETECTED" } else { "COLLECTOR_ERROR" }
 $handoff = Join-Path $repo "conformance\observatory\handoff.json"
-$replay = Join-Path $frozen "conformance\observatory\resolution-replay-latest.json"
-$evolution = Join-Path $frozen "conformance\observatory\evolution-history.json"
+$runtimeEvolution = Join-Path $frozen ".runtime\longitudinal"
+New-Item -ItemType Directory -Force -Path $runtimeEvolution | Out-Null
+$replay = Join-Path $runtimeEvolution "resolution-replay-latest.json"
+$evolution = Join-Path $runtimeEvolution "evolution-history.json"
+if (-not (Test-Path $evolution) -and (Test-Path (Join-Path $frozen "conformance\observatory\evolution-history.json"))) {
+  Copy-Item (Join-Path $frozen "conformance\observatory\evolution-history.json") $evolution
+}
 if (Test-Path $handoff) {
   & node (Join-Path $frozen "tools\resolution-replay.mjs") --handoff $handoff --out $replay *>> $log
   $replayExit = $LASTEXITCODE
