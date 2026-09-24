@@ -76,6 +76,7 @@ export * from "./tclk-settlement-view-canary.js";
 export * from "./tclk-lockterms-binding.js";
 export * from "./tclk-settlement-truth.js";
 export * from "./settlement-composition.js";
+export * from "./settlement-runtime-evidence.js";
 export * from "./tclk-handshake-retention.js";
 export * from "./tclk-payment-key-boundary.js";
 export * from "./validator-performance-ambiguity.js";
