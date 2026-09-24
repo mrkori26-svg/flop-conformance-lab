@@ -411,7 +411,7 @@ function verifyDirectRailF1(rawInput: unknown): PortableConformanceResult {
     checks.push(check("direct-rail-f1.reject-legacy-u64", assessment.rejectsLegacyTaskU64 ? "PASS" : "FAIL", assessment.rejectsLegacyTaskU64 ? "Implementation evidence rejects the recorded 136-byte legacy task form." : "Implementation evidence accepts the recorded 136-byte legacy task form."));
     checks.push(check("direct-rail-f1.reject-legacy-u32", assessment.rejectsLegacyTaskU32 ? "PASS" : "FAIL", assessment.rejectsLegacyTaskU32 ? "Implementation evidence rejects the recorded 132-byte legacy task form." : "Implementation evidence accepts the recorded 132-byte legacy task form."));
     checks.push(check("direct-rail-f1.reject-bare-report", assessment.rejectsBareReportData ? "PASS" : "FAIL", assessment.rejectsBareReportData ? "Implementation evidence rejects bare 32-byte report_data." : "Implementation evidence accepts bare 32-byte report_data."));
-    checks.push(check("direct-rail-f1.normative-state", "WARN", "Yellow Paper #61 remains OPEN_ISSUE; vector conformance is not an upstream protocol-resolution claim.", { specState: assessment.specState }));
+    checks.push(check("direct-rail-f1.normative-state", "PASS", "Yellow Paper #61 is resolved at 3c97bbc: Appendix F.1 v1 is the canonical task_hash/report_data definition. Public runtime compatibility remains a separate, unclaimed property.", { specState: assessment.specState, resolutionCommit: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" }));
     return finalize("direct-rail-f1", input, checks);
   } catch (error) {
     return failureResult("direct-rail-f1", rawInput, error);

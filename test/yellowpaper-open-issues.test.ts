@@ -44,10 +44,12 @@ test("#56/#57 resolution canaries require explicit normative evidence before TAR
   assert.equal(status.followUpPolicy.releasePolicy, "BATCH_WITH_NEXT_CONFORMANCE_LAB_RELEASE");
 });
 
-test("Lab report classifies #56/#57 as OPEN_ISSUE rather than normative", async () => {
+test("Lab report preserves #56/#57 as historical evidence after 3c97bbc resolution", async () => {
   const { runLab } = await import("../src/index.js");
   const report = await runLab();
   const item = report.cases.find((entry) => entry.id === "flop.yellowpaper-56-57-boundaries");
   assert.equal(item?.status, "PASS");
-  assert.equal(item?.normativeStatus, "OPEN_ISSUE");
+  assert.equal(item?.normativeStatus, "LOCAL_POLICY");
+  assert.equal((item?.details as any)?.historical, true);
+  assert.equal((item?.details as any)?.resolvedBy, "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e");
 });

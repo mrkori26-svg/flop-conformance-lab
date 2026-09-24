@@ -149,6 +149,6 @@ The useful integration target is not a badge by itself. A downstream repository 
 
 ## Profile: `direct-rail-f1`
 
-Use this profile as an admission/release gate for a public direct-rail producer or verifier. It recomputes the Appendix F.1 `task_hash`, verifies the 64-byte `report_data`, and requires evidence that the two recorded legacy task forms plus bare 32-byte report data are rejected. Until Yellow Paper #61 is resolved, successful byte-level conformance returns `PARTIAL` with an explicit normative-state warning. See `examples/external-consumer/direct-rail-f1.json`.
+Use this profile as an admission/release gate for a public direct-rail producer or verifier. It recomputes the Appendix F.1 `task_hash`, verifies the 64-byte `report_data`, and requires evidence that the two recorded legacy task forms plus bare 32-byte report data are rejected. Yellow Paper #61 was resolved by `3c97bbc`, so exact F.1 evidence now returns `PASS`; public runtime compatibility remains separate and is not claimed. See `examples/external-consumer/direct-rail-f1.json`.
 
 The Lab also pins independent Python reproduction evidence from `osr21/flop-protocol-reproducibility-audits@f701db3a211746b65747d69f1e480d8e4500cfb9`. That cross-language agreement is evidence about the public vector only; it is not a claim about private runtimes, deployed compatibility, or upstream ratification.

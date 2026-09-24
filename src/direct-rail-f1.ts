@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { blake2b } from "@noble/hashes/blake2.js";
 
-export const DIRECT_RAIL_F1_SPEC_STATE = "OPEN_ISSUE" as const;
+export const DIRECT_RAIL_F1_SPEC_STATE = "RESOLVED_TARGET_SPEC" as const;
+export const DIRECT_RAIL_F1_RESOLUTION_COMMIT = "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e";
 export const DIRECT_RAIL_F1_YELLOWPAPER_COMMIT = "cb3cbf97a346ff85aca6dba5e924434270ca672c";
 export const DIRECT_RAIL_F1_EXPECTED_TASK_HASH = "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d";
 export const DIRECT_RAIL_F1_LEGACY_U64 = "9ae6090bc6b2b21caa773820ec2802e22bedde93729b3b6ac42e0d78892f6a0d";
@@ -115,7 +116,10 @@ export function validateDirectRailF1CrossLanguageEvidence() {
   if (!fixture.implementations.some((item: any) => item.language === "Python" && item.repo === "osr21/flop-protocol-reproducibility-audits")) {
     throw new Error("DIRECT_RAIL_F1_EXTERNAL_EVIDENCE_MISSING");
   }
-  if (fixture.claimBoundary.runtimeCompatibility !== "NOT_CLAIMED" || fixture.claimBoundary.upstreamResolution !== "NOT_CLAIMED") {
+  if (fixture.yellowpaper.resolution?.commit !== DIRECT_RAIL_F1_RESOLUTION_COMMIT || fixture.yellowpaper.resolution?.state !== "RESOLVED_TARGET_SPEC") {
+    throw new Error("DIRECT_RAIL_F1_RESOLUTION_PIN");
+  }
+  if (fixture.claimBoundary.runtimeCompatibility !== "NOT_CLAIMED" || fixture.claimBoundary.upstreamResolution !== "RESOLVED_3C97BBC") {
     throw new Error("DIRECT_RAIL_F1_CLAIM_BOUNDARY");
   }
   return fixture;
