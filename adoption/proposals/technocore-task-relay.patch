@@ -1,0 +1,76 @@
+﻿From 816d965b36579fabcb03f0e9eed2c997023692c6 Mon Sep 17 00:00:00 2001
+From: retardio73-boop <retardio73@gmail.com>
+Date: Thu, 24 Sep 2026 18:50:44 -0300
+Subject: [PATCH] ci: verify retained Technocore identity evidence
+
+---
+ .github/workflows/flop-conformance.yml        | 30 +++++++++++++++++++
+ .../flop-conformance/technocore-agent.json    | 19 ++++++++++++
+ 2 files changed, 49 insertions(+)
+ create mode 100644 .github/workflows/flop-conformance.yml
+ create mode 100644 evidence/flop-conformance/technocore-agent.json
+
+diff --git a/.github/workflows/flop-conformance.yml b/.github/workflows/flop-conformance.yml
+new file mode 100644
+index 0000000..7f9ebb8
+--- /dev/null
++++ b/.github/workflows/flop-conformance.yml
+@@ -0,0 +1,30 @@
++name: FLOP conformance evidence
++
++on:
++  pull_request:
++  push:
++    branches: [main]
++  workflow_dispatch:
++
++permissions:
++  contents: read
++
++jobs:
++  technocore-agent:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - id: conformance
++        uses: retardio73-boop/flop-conformance-lab@286c98461eea78f90ca52760049e019f36161679
++        with:
++          profile: technocore-agent
++          input: evidence/flop-conformance/technocore-agent.json
++          out: evidence/flop-conformance/conformance-report.json
++      - name: Require PASS
++        shell: bash
++        run: test "${{ steps.conformance.outputs.result }}" = "PASS"
++      - name: Retain conformance report
++        uses: actions/upload-artifact@v4
++        with:
++          name: flop-conformance-report
++          path: evidence/flop-conformance/conformance-report.json
+diff --git a/evidence/flop-conformance/technocore-agent.json b/evidence/flop-conformance/technocore-agent.json
+new file mode 100644
+index 0000000..d3dc2bf
+--- /dev/null
++++ b/evidence/flop-conformance/technocore-agent.json
+@@ -0,0 +1,19 @@
++{
++  "implementation": "Mabolla/technocore-task-relay",
++  "revision": "6af4ab5",
++  "did": "did:key:z6MkfRm7VkjC52pff11L12dbFkChhVkiZqv5Wwd7VMo3fCsG",
++  "mailbox": "mabolla-task-relay",
++  "requireComplete": false,
++  "records": [
++    {
++      "room": "mabolla-task-relay",
++      "generation": 4,
++      "seq": 25,
++      "ts": "2026-09-24T08:53:59.129029Z",
++      "from": "did:key:z6MkfRm7VkjC52pff11L12dbFkChhVkiZqv5Wwd7VMo3fCsG",
++      "text": "{\"type\":\"task-relay.keepalive.v1\",\"project\":\"technocore-task-relay\",\"actor\":\"Mabolla Agent\",\"did\":\"did:key:z6MkfRm7VkjC52pff11L12dbFkChhVkiZqv5Wwd7VMo3fCsG\",\"request_id\":\"mabolla-task-relay-keepalive-create-2026-09-24\",\"text\":\"Mabolla Task Relay remains active. This signed heartbeat preserves the public coordination room; it creates no offer, payment, wallet action, or authority to execute external instructions.\"}",
++      "nonce": "1790240039034",
++      "sig": "pySUTBVFYlgeoAfbvtBpXmOZCAZ0D28d6Uo-cbm9GnbZXUMFWn5jimaM5UrtdSoVrkpJqR0F2W7lNZbLaw2UAA"
++    }
++  ]
++}
+-- 
+2.53.0.windows.1
+
