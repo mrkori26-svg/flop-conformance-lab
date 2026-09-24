@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
 
 const args = process.argv.slice(2);
 const value = (flag, fallback) => {
@@ -33,6 +34,12 @@ const runners = {
 };
 const compactError = (error) =>
   error instanceof Error ? error.message.slice(0, 500) : String(error).slice(0, 500);
+const stable = (value) => {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(stable).join(",")}]`;
+  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stable(value[key])}`).join(",")}}`;
+};
+const sha256 = (value) => createHash("sha256").update(stable(value)).digest("hex");
 
 async function replayCase(caseId) {
   const runner = runners[caseId];
@@ -53,6 +60,11 @@ for (const item of handoff.items ?? []) {
   const anyPass = cases.some((entry) => entry.status === "PASS");
   const anyUnknown = cases.some((entry) => entry.status === "UNKNOWN");
   const status = anyFail ? "FAIL" : anyPass && anyUnknown ? "PARTIAL" : anyPass ? "PASS" : "UNKNOWN";
+  const evidencePair = {
+    before: { fingerprint: item.previousFingerprint, result: item.beforeResult ?? "UNKNOWN", evidenceRef: item.reproduction?.evidenceRef ?? null },
+    change: { kind: item.change, fingerprint: item.currentFingerprint },
+    after: { result: status, cases },
+  };
   items.push({
     handoffId: item.id,
     sourceId: item.sourceId,
@@ -60,6 +72,8 @@ for (const item of handoff.items ?? []) {
     previousFingerprint: item.previousFingerprint,
     currentFingerprint: item.currentFingerprint,
     status,
+    evidencePair,
+    pairDigest: sha256(evidencePair),
     cases,
   });
 }
