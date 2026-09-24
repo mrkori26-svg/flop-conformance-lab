@@ -57,3 +57,6 @@ An entry is promoted to `VERIFIED_EXTERNAL_CI` only after those references can b
 Adoption is tracked separately from external validation, upstream recognition, and protocol interoperability. See [`STACK_ADOPTION.md`](STACK_ADOPTION.md) for the stack-wide view.
 
 Verified adopters are credited, with consent, in the registry and next relevant release notes with immutable evidence links. Stars, forks and maintainer self-tests remain excluded from adoption counts.
+
+## Incremental path
+Use [docs/INCREMENTAL_ADOPTION.md](../docs/INCREMENTAL_ADOPTION.md) to move a project from one fixture to a pinned CI dependency without requiring adoption of the whole stack.

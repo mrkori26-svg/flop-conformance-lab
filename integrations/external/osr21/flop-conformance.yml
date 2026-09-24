@@ -21,7 +21,7 @@ jobs:
           python-version: '3.12'
       - run: python tools/build-direct-rail-input.py
       - id: conformance
-        uses: retardio73-boop/flop-conformance-lab@4a06a5cb73a588180c58ecb1868b2c57dc7ab55c
+        uses: retardio73-boop/flop-conformance-lab@ebec8f7c8e581de18d637314c84b02c9c0e67c82
         with:
           profile: direct-rail-f1
           input: evidence/flop-direct-rail-f1.json
