@@ -9,6 +9,7 @@ import { validateDemandIndependenceFixture } from "./demand-independence.js";
 import { validateSybilEconomicsFixture } from "./sybil-economics.js";
 import { validateTclkIssue93Fixture } from "./tclk-stream-completeness.js";
 import { validateTclkIssue96Fixture } from "./tclk-venue-time.js";
+import { assessTclkRailEvidence } from "./tclk-rail-evidence.js";
 import { validateClientCrashSettlementFixture } from "./client-crash-settlement.js";
 import { validateContributionProof851Populations } from "./technocore-contribution-proof.js";
 import { validateEcosystemInteropFixture } from "./ecosystem-interop.js";
@@ -46,6 +47,7 @@ export * from "./sybil-economics.js";
 export * from "./tclk-provisional-hardening.js";
 export * from "./tclk-stream-completeness.js";
 export * from "./tclk-venue-time.js";
+export * from "./tclk-rail-evidence.js";
 export * from "./work-evidence.js";
 export * from "./tcr1-adapter.js";
 export * from "./transport-reconciliation.js";
@@ -98,6 +100,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const sybilEconomics = validateSybilEconomicsFixture();
   const tclkIssue93 = validateTclkIssue93Fixture();
   const tclkIssue96 = validateTclkIssue96Fixture();
+  const tclkRailBoundary = assessTclkRailEvidence({ transcriptValid: true, rail: "flop-htlc", ref: "field-observation", });
   const clientCrashSettlement = validateClientCrashSettlementFixture();
   const technocore851 = validateContributionProof851Populations();
   const ecosystemInterop = validateEcosystemInteropFixture();
@@ -222,6 +225,14 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       normativeStatus: "OPEN_ISSUE" as const,
       durationMs: 0,
       details: tclkIssue96,
+    },
+    {
+      id: "tclk.rail-evidence-boundary",
+      suite: "tclk",
+      status: "PASS" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
+      durationMs: 0,
+      details: { ...tclkRailBoundary },
     },
     {
       id: "flop.quote-open-channel-receipt",
