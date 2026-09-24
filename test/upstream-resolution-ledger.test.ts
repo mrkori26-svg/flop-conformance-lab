@@ -10,10 +10,13 @@ test("upstream ledger requires evidence lifecycle rather than issue-close promot
   assert.deepEqual(ledger.policy.lifecycle, ["issue", "independent_reproduction", "fixture", "current_result", "upstream_decision", "fixture_update", "before_decision_after"]);
 });
 
-test("#26 records the SessionOffer decision while comparison quote remains unresolved", () => {
-  assert.match(ledger.issues["26"].current, /SESSIONOFFER_OPENING_ENVELOPE_PINNED/);
-  assert.match(ledger.issues["26"].current, /COMPARISON_QUOTE_STILL_UNRESOLVED/);
-  assert.equal(ledger.issues["26"].fixture, "flop-session-offer-boundary-v0.5.0.json");
+test("#26 replays E.55 required fields while the signed quote contract remains planned", () => {
+  assert.match(ledger.issues["26"].current, /E55_REQUIRED_FIELDS_PINNED/);
+  assert.match(ledger.issues["26"].current, /VERSIONED_SIGNED_QUOTE_CONTRACT_STILL_PLANNED/);
+  assert.match(ledger.issues["26"].current, /CROSS_PROVIDER_RANKING_FAIL_CLOSED/);
+  assert.equal(ledger.issues["26"].resolutionCommit, "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e");
+  assert.equal(ledger.issues["26"].publicationState, "REPLAYED");
+  assert.equal(ledger.issues["26"].fixture, "flop-quote-open-channel-receipt-v0.5.0.json");
 });
 
 test("#44 #56 and #57 remain open until upstream resolution is replayable", () => {

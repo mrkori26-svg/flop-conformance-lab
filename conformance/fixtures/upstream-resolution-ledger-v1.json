@@ -24,11 +24,14 @@
   "issues": {
     "26": {
       "before": "NO_CANONICAL_COMPARISON_QUOTE; CROSS_PROVIDER_RANKING_FAIL_CLOSED",
-      "current": "SESSIONOFFER_OPENING_ENVELOPE_PINNED; COMPARISON_QUOTE_STILL_UNRESOLVED",
-      "upstreamDecision": "MAINTAINER_CLARIFIED_E55_SDK_APPENDIX_F_DIRECTION",
+      "current": "E55_REQUIRED_FIELDS_PINNED; VERSIONED_SIGNED_QUOTE_CONTRACT_STILL_PLANNED; CROSS_PROVIDER_RANKING_FAIL_CLOSED",
+      "upstreamDecision": "E55_FIELDS_PINNED_IN_0_5_DRAFT",
       "correctionCommentId": 5808384402,
-      "fixture": "flop-session-offer-boundary-v0.5.0.json",
-      "next": "REPLAY_WHEN_1597_1586_AND_QUOTE_WIRE_SHAPE_LAND"
+      "resolutionCommentId": 5818897853,
+      "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "publicationState": "REPLAYED",
+      "next": "WAIT_FOR_1597_1586_AND_VERSIONED_SIGNED_QUOTE_WIRE_FIXTURE_THEN_REPLAY"
     },
     "44": {
       "before": "WRONG_PATH_ORIENTATION_NEGATIVE_VECTOR_RECOMPUTES_COMMITTED_ROOT",
