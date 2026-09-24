@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildProtocolEvolutionHistory, evolutionRecordFromHandoff } from "../src/protocol-evolution.js";
+import { attachResolutionReplay, buildProtocolEvolutionHistory, evolutionRecordFromHandoff } from "../src/protocol-evolution.js";
 import { makeDriftHandoff, recordPublicationReplay, recordReproduction, recordUpstreamPost, recordUpstreamResolution, recordPublicationCandidate } from "../src/drift-handoff.js";
 import type { DriftEvent } from "../src/protocol-drift.js";
 
@@ -48,4 +48,14 @@ test("resolved replay becomes a longitudinal REPLAYED record", () => {
   assert.equal(history.records[0]!.after.result, "PASS");
   assert.equal(history.records[0]!.after.resolutionRef, "flop-labs/yellowpaper@3c97bbc");
   assert.equal(history.records[0]!.after.replayEvidenceRef, "evidence/replay.json");
+});
+
+test("local resolution replay attaches evidence without promoting upstream lifecycle", () => {
+  const handoff=makeDriftHandoff([event],"2026-09-24T20:00:00Z");
+  const history=buildProtocolEvolutionHistory([handoff],"2026-09-24T21:00:00Z");
+  const updated=attachResolutionReplay(history,{items:[{sourceId:"yellowpaper-main",previousFingerprint:"before123",currentFingerprint:"after456",status:"PASS",pairDigest:"a".repeat(64)}]},"conformance/observatory/resolution-replay-latest.json");
+  assert.equal(updated.records[0]!.after.status,"DETECTED");
+  assert.equal(updated.records[0]!.after.localReplay?.result,"PASS");
+  assert.equal(updated.records[0]!.after.localReplay?.pairDigest,"a".repeat(64));
+  assert.match(updated.records[0]!.integrity.digest,/^[0-9a-f]{64}$/);
 });

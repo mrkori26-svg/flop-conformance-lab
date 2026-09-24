@@ -16,8 +16,10 @@ node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/extern
 $runtimeExit = $LASTEXITCODE
 node dist/src/interaction-cli.js snapshot --previous (Join-Path $state "interaction-current.json") --out (Join-Path $state "interaction-current.json") --events (Join-Path $state "interaction-events.json") *>> $log
 $interactionExit = $LASTEXITCODE
-node dist/src/drift-cli.js snapshot --previous (Join-Path $state "drift-current.json") --out (Join-Path $state "drift-current.json") --events (Join-Path $state "drift-events.json") *>> $log
+$driftOutput = & node dist/src/drift-cli.js snapshot --previous (Join-Path $state "drift-current.json") --out (Join-Path $state "drift-current.json") --events (Join-Path $state "drift-events.json") 2>&1
 $driftExit = $LASTEXITCODE
+$driftOutput | Add-Content $log
+$driftHealth = if ($driftExit -eq 0) { "NO_CHANGE" } elseif ($driftExit -eq 3) { "CHANGE_DETECTED" } else { "COLLECTOR_ERROR" }
 $tclkRevision = "npm:@flop-labs/tclk@0.1.0"
 $tclkProbe = node tools/tclk-parse-probe.mjs 2>> $log
 $tclkExit = $LASTEXITCODE
@@ -29,6 +31,7 @@ if ($tclkExit -eq 0) {
 }
 node dist/src/longitudinal-cli.js sync *>> $log
 $syncExit = $LASTEXITCODE
-"[$(Get-Date -Format o)] longitudinal:end runtime=$runtimeExit interaction=$interactionExit drift=$driftExit tclk=$tclkExit sync=$syncExit" | Add-Content $log
+"[$(Get-Date -Format o)] longitudinal:end runtime=$runtimeExit interaction=$interactionExit drift=$driftHealth($driftExit) tclk=$tclkExit sync=$syncExit" | Add-Content $log
 if ($syncExit -ne 0) { exit $syncExit }
+if ($driftExit -ne 0 -and $driftExit -ne 3) { exit $driftExit }
 exit 0
