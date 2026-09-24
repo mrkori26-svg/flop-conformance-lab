@@ -5,7 +5,13 @@
     "repository": "flop-labs/yellowpaper",
     "commit": "cb3cbf97a346ff85aca6dba5e924434270ca672c",
     "issue": 61,
-    "state": "OPEN_ISSUE"
+    "state": "HISTORICAL_OPEN_ISSUE_VECTOR",
+    "resolution": {
+      "state": "RESOLVED_TARGET_SPEC",
+      "commit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "commentId": 5818913017,
+      "summary": "Section 1.1 now delegates task_hash and report_data to Appendix F.1 v1."
+    }
   },
   "expected": {
     "taskPreimageBytes": 183,
@@ -38,7 +44,7 @@
   },
   "claimBoundary": {
     "runtimeCompatibility": "NOT_CLAIMED",
-    "upstreamResolution": "NOT_CLAIMED",
+    "upstreamResolution": "RESOLVED_3C97BBC",
     "privateImplementationCoverage": "NOT_CLAIMED",
     "purpose": "cross-language release-gate evidence"
   }

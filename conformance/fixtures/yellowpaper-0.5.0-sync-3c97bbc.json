@@ -1,0 +1,111 @@
+{
+  "schema": "flop.yellowpaper-resolution-sweep.v1",
+  "id": "yellowpaper-0.5.0-sync-3c97bbc",
+  "classification": "UPSTREAM_RESOLUTION_SWEEP",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "version": "0.5.0-draft",
+    "resolutionCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+    "sourceCommit": "flop-core@c65e3fc5",
+    "committedAt": "2026-09-24T17:21:10Z",
+    "yellowpaperSha256": "6d4be92d320523fb492e8847a0a7d9e3044563c7c1d9d77f1ea2d3837df86f19",
+    "wireCorpusSha256": "a66f89cbe6ed6e4e44e9fb87ad8a44c81ed1c9f28d7b1041259a3b22673609c4",
+    "files": ["yellowpaper.md", "evidence/generate-wire-format-vectors.py", "evidence/wire-format-v1.json", "params/flop-protocol-params.yaml", "decisions/v0.5.md"]
+  },
+  "evidenceBundle": {
+    "schema": "flop.evidence-bundle.v1",
+    "bundleId": "yellowpaper-0.5.0-sync-3c97bbc",
+    "requiredFields": ["upstream_before", "upstream_resolution_commit", "fixture", "old_result", "new_result", "classification", "provenance"]
+  },
+  "issues": {
+    "17": {
+      "fixture": "flop-client-crash-settlement-v0.5.0.json",
+      "upstream_before": "CLIENT_CRASH_PATH_CLARIFIED_BY_COMMENT_BUT_NOT_EXPLICIT_IN_A7",
+      "old_result": "TARGET_SPEC_BOUNDARY_FROM_MAINTAINER_CLARIFICATION",      "resolution": "A7_EXPLICITLY_STATES_CRASH_IS_NOT_AN_EXCEPTION_AND_R12_1D_APPLIES",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_REPLAYED",
+      "resolutionCommentId": 5818891476
+    },
+    "26": {
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "upstream_before": "NO_COMPLETE_CANONICAL_COMPARISON_QUOTE",
+      "old_result": "CROSS_PROVIDER_RANKING_FAIL_CLOSED",
+      "resolution": "E55_PINS_REQUIRED_FIELDS_BUT_VERSIONED_SIGNED_QUOTE_CONTRACT_REMAINS_PLANNED",
+      "new_result": "PARTIAL",
+      "classification": "PARTIALLY_RESOLVED_UPSTREAM",
+      "resolutionCommentId": 5818897853,
+      "remaining": ["flop-core#1597", "flop-core#1586", "versioned_signed_quote_contract", "appendix_f_wire_fixture"]
+    },
+    "44": {
+      "fixture": "flop-wire-v1-yellowpaper-44.json",
+      "upstream_before": "WRONG_PATH_ORIENTATION_FLIPPED_DUPLICATED_ODD_SIBLING_AND_STILL_REACHED_ROOT",
+      "old_result": "UPSTREAM_VECTOR_EXPECTATION_CONFLICT",
+      "resolution": "GENERATOR_NOW_FLIPS_NON_DUPLICATED_SIBLING_AND_REGENERATED_CORPUS_REJECTS",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_REPLAYED",
+      "resolutionCommentId": 5818905442,
+      "resolvedVector": {"id": "wrong_path_orientation", "expected": "reject LeafNotInRoot", "mutation": "flip sibling_is_left"}
+    },
+    "54": {
+      "fixture": "flop-d0440-source-conflict.json",
+      "upstream_before": "PUBLIC_GITHUB_MIRROR_STALE_AT_3_5B_WHILE_LIVE_SPEC_WAS_D0440_4_4B",
+      "old_result": "FAIL_CLOSED_SOURCE_DRIFT",      "resolution": "PUBLIC_MIRROR_NOW_CARRIES_D0440_4_4B_AND_1_2M_VALIDATOR_BOND",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_SOURCES_CONVERGED",
+      "resolutionCommentId": 5818908492,
+      "resolved": {"genesis_supply": "4400000000", "validator_min_stake": "1200000", "decision": "D-0440"}
+    },
+    "56": {
+      "fixture": "yellowpaper-56-57-v0.5.0.json",
+      "upstream_before": "PAYABLE_SEMANTICS_UNIT_AND_ORIGIN_UNRESOLVED",
+      "old_result": "FAIL_CLOSED",
+      "resolution": "R12_1I_DEFINES_PAYABLE_AS_1E_18_FLOP_BASE_UNITS_WITH_PATH_SPECIFIC_DERIVATION",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_REPLAYED",
+      "resolutionCommentId": 5818909345,
+      "payable": {
+        "unit": "1e-18 FLOP base units",
+        "cooperative_settle": "full_reserved_escrow",
+        "force_settle": "R12.1d_tariff_P",
+        "forward_channel": "stored_contract_payment_override"
+      }
+    },
+    "57": {
+      "fixture": "yellowpaper-56-57-v0.5.0.json",
+      "upstream_before": "SECTION_1_SUM_TREE_WORDING_CONFLICTED_WITH_F3_PLAIN_MERKLE_NODE_RULE",
+      "old_result": "TARGET_SPEC_STRUCTURAL_PASS_WITH_OPEN_TEXT_CONFLICT",
+      "resolution": "SECTION_1_NO_LONGER_CALLS_ACCUMULATOR_A_SUM_TREE_AND_MATCHES_F3",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_EXISTING_IMPLEMENTATION_CONFORMANT",
+      "resolutionCommentId": 5818910111
+    },
+    "61": {
+      "fixture": "yellowpaper-61-direct-rail-v0.5.0.json",
+      "upstream_before": "SECTION_1_1_TASK_HASH_AND_REPORT_DATA_CONFLICTED_WITH_APPENDIX_F1",
+      "old_result": "FAIL_CLOSED_ON_SECTION_CONFLICT",      "resolution": "SECTION_1_1_NOW_DELEGATES_TASK_HASH_AND_REPORT_DATA_TO_APPENDIX_F1_V1",
+      "new_result": "PASS",
+      "classification": "RESOLVED_UPSTREAM_REPLAYED",
+      "resolutionCommentId": 5818913017,
+      "f1": {
+        "domain": "FLOP/POUI/TASK",
+        "taskPreimageBytes": 183,
+        "nonceEncoding": "u64LE",
+        "reportDataBytes": 64,
+        "reportDataLayout": "sha256_digest_plus_32_zero_bytes"
+      }
+    }
+  },
+  "architecture": {
+    "flow": ["E.55 canonical discovery quote", "Session Router", "F.1 execution identity", "Execution Receipt", "EvidenceBundle", "Conformance Lab"],
+    "quoteGate": "E55_REQUIRED_FIELDS_PINNED_FULL_SIGNED_CONTRACT_STILL_PLANNED",
+    "executionIdentity": "APPENDIX_F1_V1",
+    "runtimeCompatibility": "NOT_CLAIMED",
+    "externalRuntime": "NOT_YET_CERTIFIED"
+  },
+  "scope": {
+    "historicalFixturesPreserved": true,
+    "issueCloseAloneTreatedAsResolution": false,
+    "resolutionCommitPinned": true,
+    "runtimeCompatibilityClaimed": false
+  }
+}

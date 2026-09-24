@@ -4,6 +4,7 @@ import { validateQuoteChannelReceiptFixture } from "./flop-quote-boundary.js";
 import { runAdversarialEvidenceFixture } from "./adversarial-evidence.js";
 import { validateYellowpaper5657Fixture } from "./yellowpaper-open-issues.js";
 import { validateYellowpaper61Fixture } from "./yellowpaper-61.js";
+import { validateYellowpaperResolutionSweep } from "./yellowpaper-resolution-sweep.js";
 import { validateDemandIndependenceFixture } from "./demand-independence.js";
 import { validateSybilEconomicsFixture } from "./sybil-economics.js";
 import { validateTclkIssue93Fixture } from "./tclk-stream-completeness.js";
@@ -39,6 +40,7 @@ export * from "./flop-quote-boundary.js";
 export * from "./adversarial-evidence.js";
 export * from "./yellowpaper-open-issues.js";
 export * from "./yellowpaper-61.js";
+export * from "./yellowpaper-resolution-sweep.js";
 export * from "./demand-independence.js";
 export * from "./sybil-economics.js";
 export * from "./tclk-provisional-hardening.js";
@@ -91,6 +93,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const adversarialEvidence = runAdversarialEvidenceFixture();
   const yellowpaper5657 = validateYellowpaper5657Fixture();
   const yellowpaper61 = validateYellowpaper61Fixture();
+  const yellowpaperResolutionSweep = validateYellowpaperResolutionSweep();
   const demandIndependence = validateDemandIndependenceFixture();
   const sybilEconomics = validateSybilEconomicsFixture();
   const tclkIssue93 = validateTclkIssue93Fixture();
@@ -133,7 +136,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "flop.htlc-pair-fixtures-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcPairs },
     { id: "flop.htlc-replay-hardening-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcReplay },
     { id: "technocore.contribution-proof-vectors", suite: "technocore", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: contributionVectors },
-    { id: "flop.direct-rail-f1-cross-language", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: directRailF1CrossLanguage },
+    { id: "flop.direct-rail-f1-cross-language", suite: "flop", status: "PASS" as const, normativeStatus: "TARGET_SPEC" as const, durationMs: 0, details: directRailF1CrossLanguage },
     { id: "ecosystem.interop-registry-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: ecosystemInterop },
     { id: "evidence.external-tclk-rail-adoption", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: externalTclkRailAdoption },
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
@@ -240,17 +243,25 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       id: "flop.yellowpaper-56-57-boundaries",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: yellowpaper5657,
+      details: { ...yellowpaper5657, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
     },
     {
       id: "flop.yellowpaper-61-direct-rail-hash-reportdata-conflict",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: yellowpaper61,
+      details: { ...yellowpaper61, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
+    },
+    {
+      id: "flop.yellowpaper-0.5.0-sync-3c97bbc",
+      suite: "flop",
+      status: "PASS" as const,
+      normativeStatus: "TARGET_SPEC" as const,
+      durationMs: 0,
+      details: yellowpaperResolutionSweep,
     },
     {
       id: "flop.e49-demand-independence",
@@ -272,9 +283,9 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
       id: "flop.d0440-official-source-conflict",
       suite: "flop",
       status: "PASS" as const,
-      normativeStatus: "OPEN_ISSUE" as const,
+      normativeStatus: "LOCAL_POLICY" as const,
       durationMs: 0,
-      details: d0440Conflict,
+      details: { ...d0440Conflict, historical: true, resolvedBy: "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e" },
     },
     {
       id: "technocore.pr842-bounded-recovery",
