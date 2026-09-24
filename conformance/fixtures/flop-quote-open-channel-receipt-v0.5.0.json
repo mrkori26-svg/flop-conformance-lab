@@ -7,9 +7,10 @@
     "commit": "3eaf2f25bc46a501df225cae4e4e991975f6b2a9",
     "version": "0.5.0-draft",
     "issues": [26, 33],
-    "sections": ["§4.1", "§4.2", "§12.1 R12.1a", "Appendix F.3", "Appendix G", "E.54"],
+    "sections": ["§4.1", "§4.2", "§12.1 R12.1a", "Appendix F.3", "Appendix G", "E.55"],
     "maintainerClarification": {
       "issueCommentId": 5658227990,
+      "correctionCommentId": 5808384402,
       "status": "UPSTREAM_MAINTAINER_DIRECTION",
       "summary": "SessionOffer is the canonical opening-offer boundary; a fuller quote/discovery contract is planned for the Rust/TypeScript compute-channel SDK and Appendix F, downstream of flop-core#1597 and flop-core#1586. Cross-provider ranking remains fail-closed until then."
     },
@@ -96,7 +97,7 @@
       "currentState": "BLOCKER",
       "promotionCondition": "reservation_price_formation_defined_normatively"
     },
-    "E.54": {
+    "E.55": {
       "currentState": "DIRECTION_RECORDED",
       "promotionCondition": "quote_wire_shape_and_required_fields_bound_normatively"
     },

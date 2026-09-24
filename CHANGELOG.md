@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Correct Yellow Paper #26 quote-contract appendix provenance from E.54 to E.55 per maintainer correction comment `5808384402`; no Router behavior changes.
+
 - Upstream Participation Policy v1.1 fails closed on security-sensitive findings: public issue/comment/PR candidates are rejected with `PRIVATE_SECURITY_CHANNEL_REQUIRED` and must follow the upstream private vulnerability-reporting path.
 - Add a normative-for-this-repository upstream participation policy and executable publication gate: evidence before opinion, no self-promotion in normative threads, comments/reviews require new evidence, and local/provisional artifacts cannot self-promote to FLOP protocol law.
 - Add `flop.conversion-evidence-bundle/v1` and a language-neutral Yellow Paper #76 canary that verifies participant-held Technocore authorship while keeping server `seq`/`ts` unauthenticated and conversion/allocation credit `NOT_DERIVED` pending E.38/E.40.
@@ -16,7 +18,7 @@
 - Include Sonnet receipt-authoritative roster replay hardening, Yellow Paper #61, Technocore PR #851 deployed populations, and TCLK #152 contactability evidence from current main.
 
 - Add a pinned TCLK issue #93 adversarial conformance canary for stream completeness / deletion trust: honest `claimed` becomes `refunded` after deleting the signed reveal while every surviving signature remains valid and every fold step remains `ok`; delete+renumber also demonstrates that unsigned `seq` gap checks are diagnostic rather than proof of completeness. Downstream settlement evidence fails closed as `UNTRUSTED_STREAM_COMPLETENESS` without prescribing an upstream normative fix.
-- Incorporate Yellow Paper issue #26 maintainer direction: `StandingOffer` / `SessionOffer` is the current canonical opening-offer boundary, while complete cross-provider quote comparison remains fail-closed pending `flop-core#1597`, `flop-core#1586`, and the E.54 SDK / Appendix F quote contract.
+- Incorporate Yellow Paper issue #26 maintainer direction: `StandingOffer` / `SessionOffer` is the current canonical opening-offer boundary, while complete cross-provider quote comparison remains fail-closed pending `flop-core#1597`, `flop-core#1586`, and the E.55 SDK / Appendix F quote contract.
 - Add a reproducible issue #17 client-crash settlement fixture pinned to the maintainer clarification and runtime commit `41d0009a...`: once unilateral settlement is selected, R12.1d applies; crash adds no surcharge; the current 1% audit-pool earmark is carved from `P`; and payout conservation is tested offline.
 - Keep broader E.24 settlement-mode priority explicitly out of scope rather than treating the client-crash clarification as a full E.24 resolution.
 

@@ -15,6 +15,8 @@ test("SessionOffer is pinned as the canonical opening envelope, not a comparison
   const fixture = load();
   assert.equal(fixture.classification, "PINNED_UPSTREAM");
   assert.equal(fixture.source.commit, "41d0009a6acecbb4e0d9fe8d1c9c1ab82210eb46");
+  assert.equal(fixture.source.yellowpaperOpenItem, "E.55");
+  assert.equal(fixture.source.correctionCommentId, 5808384402);
   assert.equal(fixture.quote.status, "FAIL_CLOSED");
   assert.equal(fixture.openingOffer.status, "CANONICAL_OPENING_ENVELOPE");
   assert.equal(fixture.invariants.sessionOfferIsComparisonQuote, false);

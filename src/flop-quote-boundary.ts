@@ -22,6 +22,7 @@ export function validateQuoteChannelReceiptFixture(): Record<string, unknown> {
   assert(fixture.upstream.issues.includes(26),"ISSUE_26_NOT_PINNED");
   assert(fixture.upstream.issues.includes(33),"ISSUE_33_NOT_PINNED");
   assert(fixture.upstream.maintainerClarification.issueCommentId===5658227990,"MAINTAINER_CLARIFICATION_NOT_PINNED");
+  assert(fixture.upstream.maintainerClarification.correctionCommentId===5808384402,"APPENDIX_CORRECTION_NOT_PINNED");
   assert(fixture.quoteBoundary.canonicalDiscoveryContract===null,"CANONICAL_QUOTE_SCHEMA_MUST_NOT_BE_INVENTED");
   assert(fixture.quoteBoundary.expected.status==="FAIL_CLOSED","QUOTE_BOUNDARY_MUST_FAIL_CLOSED");
   assert(fixture.quoteBoundary.expected.reason==="NO_COMPLETE_CANONICAL_COMPARISON_QUOTE","QUOTE_BOUNDARY_REASON_DIVERGENCE");
@@ -49,7 +50,7 @@ export function validateQuoteChannelReceiptFixture(): Record<string, unknown> {
 
   assert(fixture.resolutionCanaries["flop-core#1597"].currentState==="BLOCKER","GN_CANARY_MISSING");
   assert(fixture.resolutionCanaries["flop-core#1586"].currentState==="BLOCKER","RESERVATION_PRICE_CANARY_MISSING");
-  assert(fixture.resolutionCanaries["E.54"].currentState==="DIRECTION_RECORDED","E54_CANARY_MISSING");
+  assert(fixture.resolutionCanaries["E.55"].currentState==="DIRECTION_RECORDED","E55_CANARY_MISSING");
   assert(JSON.stringify(fixture.resolutionCanaries.afterAllResolved.requiredShape)===JSON.stringify(["before","resolution","conformance_result"]),"RESOLUTION_REPLAY_SHAPE_DIVERGENCE");
 
   assert(!fixture.scope.networkMutation,"FIXTURE_MUST_BE_OFFLINE");
