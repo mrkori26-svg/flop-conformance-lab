@@ -13,7 +13,7 @@ import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
 import { verifyEvidenceEnvelopeValue } from "./evidence-envelope-verifier.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "evidence-envelope"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "technocore-signed-message", "flop-market-adapter", "direct-rail-f1", "evidence-envelope"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -419,6 +419,46 @@ function verifyDirectRailF1(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function verifyTechnocoreSignedMessage(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "PROFILE_INPUT");
+    const did = requiredString(input, "did");
+    const record = normalizeTransportRecord(input.record);
+    const checks: PortableCheck[] = [];
+    try {
+      didKeyBytes(did);
+      checks.push(check("signed-message.did-key", "PASS", "DID decodes as an Ed25519 did:key."));
+    } catch (error) {
+      checks.push(check("signed-message.did-key", "FAIL", error instanceof Error ? error.message : "INVALID_DID"));
+    }
+    const signatureValid = verifyTechnocoreRecord(record);
+    checks.push(check(
+      "signed-message.signature",
+      signatureValid ? "PASS" : "FAIL",
+      signatureValid ? "Technocore signature verifies over room|nonce|text." : "Technocore signature failed verification.",
+    ));
+    checks.push(check(
+      "signed-message.did-binding",
+      record.from === did ? "PASS" : "FAIL",
+      record.from === did ? "Signed record is authored by the declared DID." : "Signed record is authored by a different DID.",
+    ));
+    checks.push(check(
+      "signed-message.transport-representable",
+      transportRepresentable(record.text) ? "PASS" : "FAIL",
+      transportRepresentable(record.text) ? "Signed text is transport-representable." : "Signed text is not transport-representable.",
+    ));
+    checks.push(check(
+      "signed-message.scope-boundary",
+      "PASS",
+      "This profile verifies one signed transport record only; it does not prove mailbox reachability, retained history, settlement, or identity.",
+      { timeAuthority: "VENUE_METADATA_UNAUTHENTICATED" },
+    ));
+    return finalize("technocore-signed-message", input, checks);
+  } catch (error) {
+    return failureResult("technocore-signed-message", rawInput, error);
+  }
+}
+
 function verifyEvidenceEnvelopeProfile(rawInput: unknown): PortableConformanceResult {
   try {
     const input = asObject(rawInput, "PROFILE_INPUT");
@@ -447,6 +487,7 @@ function verifyEvidenceEnvelopeProfile(rawInput: unknown): PortableConformanceRe
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
+  if (profile === "technocore-signed-message") return verifyTechnocoreSignedMessage(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
   if (profile === "evidence-envelope") return verifyEvidenceEnvelopeProfile(input);
