@@ -23,6 +23,17 @@ export interface RuntimeVerification {
   checks: Array<{ id: string; ok: boolean; detail?: string }>;
 }
 
+export interface RuntimeReproduction {
+  command: string;
+  runtime: string;
+  platform: string;
+  arch: string;
+  sourceRevision?: string;
+  sourceFiles?: Record<string, string>;
+  dependencies?: Record<string, string>;
+  notes?: string[];
+}
+
 export interface RuntimeTarget<TInput = unknown> {
   discover(): Promise<boolean>;
   fingerprint(): Promise<Record<string, string | number | boolean | null>>;
@@ -30,14 +41,17 @@ export interface RuntimeTarget<TInput = unknown> {
   execute(testCase: RuntimeTestCase<TInput>): Promise<RuntimeExecution>;
   collectEvidence(testCase: RuntimeTestCase<TInput>, execution: RuntimeExecution): Promise<unknown>;
   verify(testCase: RuntimeTestCase<TInput>, execution: RuntimeExecution, evidence: unknown): Promise<RuntimeVerification>;
+  reproduction?(testCase: RuntimeTestCase<TInput>): Promise<Partial<RuntimeReproduction>>;
 }
 
 export interface EvidenceBundle {
   schema: "flop.runtime-evidence-bundle/v1";
   target: { id: string; fingerprint: Record<string, string | number | boolean | null>; capabilities: string[] };
   testCaseId: string;
+  input: unknown;
   runId: string;
   observedAt: string;
+  reproduction: RuntimeReproduction;
   execution: RuntimeExecution;
   evidence: unknown;
   verification: RuntimeVerification;
@@ -66,7 +80,41 @@ export function verifyRouterRuntimeExecutionReceipt(value: unknown): boolean {
     execution: receipt.execution,
     evidenceRefs: receipt.evidenceRefs,
   };
-  return digest(semantic) === receipt.semanticDigest;
+  return `sha256:${digest(semantic)}` === receipt.semanticDigest;
+}
+
+function evidenceReceipt(value: unknown): unknown {
+  if (!value || typeof value !== "object") return value ?? null;
+  const receipt = value as Record<string, any>;
+  if (receipt.schema !== "flop.router-runtime-execution/v1") return value;
+  return {
+    schema: receipt.schema,
+    router: receipt.router,
+    runtime: receipt.runtime,
+    testCaseId: receipt.testCaseId,
+    execution: receipt.execution ? {
+      status: receipt.execution.status,
+      outputDigest: receipt.execution.outputDigest,
+      transcriptDigest: receipt.execution.transcriptDigest,
+      railEvidenceDigest: receipt.execution.railEvidenceDigest,
+      reason: receipt.execution.reason,
+    } : null,
+    evidenceRefs: receipt.evidenceRefs,
+  };
+}
+
+export function verifyEvidenceBundleIntegrity(bundle: EvidenceBundle): boolean {
+  const semanticEvidence = {
+    target: bundle.target,
+    testCaseId: bundle.testCaseId,
+    input: bundle.input,
+    output: bundle.execution.output,
+    railEvidence: bundle.execution.railEvidence ?? null,
+    executionReceipt: evidenceReceipt(bundle.execution.executionReceipt),
+    evidence: bundle.evidence,
+    verification: bundle.verification,
+  };
+  return digest(semanticEvidence) === bundle.digest;
 }
 
 export function compareEvidence(previous: EvidenceBundle | null, current: EvidenceBundle): RuntimeStatus {
@@ -86,7 +134,11 @@ export async function runRuntimeTarget<TInput>(
   previous: EvidenceBundle | null = null,
 ): Promise<{ status: RuntimeStatus; bundle: EvidenceBundle }> {
   if (!await target.discover()) throw new Error(`RUNTIME_TARGET_UNAVAILABLE_${targetId}`);
-  const [fingerprint, capabilities] = await Promise.all([target.fingerprint(), target.capabilities()]);
+  const [fingerprint, capabilities, reproductionExtra] = await Promise.all([
+    target.fingerprint(),
+    target.capabilities(),
+    target.reproduction ? target.reproduction(testCase) : Promise.resolve({}),
+  ]);
   const execution = await target.execute(testCase);
   const evidence = await target.collectEvidence(testCase, execution);
   const targetVerification = await target.verify(testCase, execution, evidence);
@@ -100,12 +152,21 @@ export async function runRuntimeTarget<TInput>(
     ],
   };
   const observedAt = new Date().toISOString();
+  const reproduction: RuntimeReproduction = {
+    command: `runtime-observatory run --target ${targetId} --input <case.json> --out <bundle.json>`,
+    runtime: process.version,
+    platform: process.platform,
+    arch: process.arch,
+    ...reproductionExtra,
+  };
   const core = {
     schema: "flop.runtime-evidence-bundle/v1" as const,
     target: { id: targetId, fingerprint, capabilities: [...capabilities].sort() },
     testCaseId: testCase.id,
+    input: testCase.input,
     runId: `${targetId}:${testCase.id}:${observedAt}`,
     observedAt,
+    reproduction,
     execution,
     evidence,
     verification,
@@ -113,9 +174,10 @@ export async function runRuntimeTarget<TInput>(
   const semanticEvidence = {
     target: core.target,
     testCaseId: core.testCaseId,
+    input: core.input,
     output: core.execution.output,
     railEvidence: core.execution.railEvidence ?? null,
-    executionReceipt: core.execution.executionReceipt ?? null,
+    executionReceipt: evidenceReceipt(core.execution.executionReceipt),
     evidence: core.evidence,
     verification: core.verification,
   };

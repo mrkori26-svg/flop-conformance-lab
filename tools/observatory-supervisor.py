@@ -38,7 +38,7 @@ def run_script(name):
     }
 
 def cycle():
-    results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1")]
+    results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1"), run_script("run-longitudinal-cycle.ps1")]
     state = {
         "schema": "flop.observatory-supervisor/v1",
         "checkedAt": datetime.now(timezone.utc).isoformat(),
