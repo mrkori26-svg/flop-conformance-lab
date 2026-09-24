@@ -80,7 +80,6 @@ export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
 export * from "./evidence-envelope.js";
-export * from "./longitudinal-observatory.js";
 export * from "./peer-telemetry-adapter.js";
 
 function packageVersion(): string {
@@ -386,9 +385,5 @@ export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
-<<<<<<< HEAD
-export * from "./longitudinal-observatory.js";
-=======
 export * from './cross-system-conformance.js';
 export * from './cross-protocol-conformance.js';
->>>>>>> origin/main
