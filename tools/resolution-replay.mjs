@@ -31,6 +31,20 @@ const runners = {
   "yellowpaper-0.5.0-sync-3c97bbc": () => lab.validateYellowpaperResolutionSweep(),
   "tclk.settlement-truth-composition": () => lab.validateTclkSettlementTruthComposition(),
   "tclk.issue-180-lockterms-binding": () => lab.validateTclkIssue180LockTermsBinding(),
+  "tclk.transport": async () => {
+    const report = await lab.runLab();
+    const required = ["tclk.offer-vector","tclk.contract-vector","tclk.canonical-roundtrip","tclk.malformed-fails-closed"];
+    const cases = required.map((id) => report.cases.find((entry) => entry.id === id));
+    if (cases.some((entry) => !entry || entry.status !== "PASS")) throw new Error("TCLK_TRANSPORT_CONFORMANCE_FAILED");
+    return { required, statuses: cases.map((entry) => ({ id: entry.id, status: entry.status })) };
+  },
+  "tclk.release-vectors": async () => {
+    const report = await lab.runLab();
+    const required = ["tclk.offer-vector","tclk.contract-vector","tclk.canonical-roundtrip"];
+    const cases = required.map((id) => report.cases.find((entry) => entry.id === id));
+    if (cases.some((entry) => !entry || entry.status !== "PASS")) throw new Error("TCLK_RELEASE_VECTORS_FAILED");
+    return { required, statuses: cases.map((entry) => ({ id: entry.id, status: entry.status })) };
+  },
 };
 const compactError = (error) =>
   error instanceof Error ? error.message.slice(0, 500) : String(error).slice(0, 500);
