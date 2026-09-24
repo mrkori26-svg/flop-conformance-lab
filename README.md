@@ -1,5 +1,9 @@
 # FLOP Conformance Lab
 
+> **FLOP Tools / PROVE** · [ROUTE: Session Router](https://github.com/retardio73-boop/flop-session-router) · [OBSERVE: Control Center](https://github.com/retardio73-boop/flop-control-center)
+>
+> `discover -> route -> execute -> receipt -> verify -> observe`
+
 **Claims are cheap. Attach a reproducible conformance result.**
 
 Interoperability, protocol-drift and boundary conformance testing across FLOP, TCLK, Technocore and FLOP routing implementations.
