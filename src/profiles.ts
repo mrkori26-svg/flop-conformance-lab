@@ -1,4 +1,5 @@
 ﻿import { readFileSync } from "node:fs";
+import { createHash, createPublicKey, verify as verifySignature } from "node:crypto";
 import { tryDecodeFrame } from "@flop-labs/tclk";
 import {
   analyzeTranscriptEvidence,
@@ -12,7 +13,7 @@ import type { TransportRecord } from "./types.js";
 import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -418,10 +419,90 @@ function verifyDirectRailF1(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function canonicalJson(value: unknown): string {
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  const object = value as JsonObject;
+  return `{${Object.keys(object).sort().map((key) =>
+    `${JSON.stringify(key)}:${canonicalJson(object[key])}`).join(",")}}`;
+}
+
+function sha256Json(value: unknown): string {
+  return createHash("sha256").update(canonicalJson(value), "utf8").digest("hex");
+}
+
+function verifyEmpiresReceiptSignature(receipt: JsonObject): boolean {
+  try {
+    const did = requiredString(receipt, "referee_did");
+    const signature = requiredString(receipt, "signature");
+    const unsigned = { ...receipt };
+    delete unsigned.signature;
+    const raw = didKeyBytes(did);
+    const spki = Buffer.concat([Buffer.from("302a300506032b6570032100", "hex"), raw]);
+    return verifySignature(
+      null,
+      Buffer.from(canonicalJson(unsigned), "utf8"),
+      createPublicKey({ key: spki, format: "der", type: "spki" }),
+      Buffer.from(signature, "base64url"),
+    );
+  } catch {
+    return false;
+  }
+}
+
+function verifyEmpiresJourney(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "PROFILE_INPUT");
+    if (requiredString(input, "schema") !== "flop-empires-journey-evidence/v1") {
+      throw new Error("INVALID_EMPIRES_JOURNEY_SCHEMA");
+    }
+    const nativeReceipt = asObject(input.native_receipt, "NATIVE_RECEIPT");
+    const routerReceipt = asObject(input.router_receipt, "ROUTER_RECEIPT");
+    const transition = asObject(input.transition, "TRANSITION");
+    const verification = asObject(input.verification, "VERIFICATION");
+    const checks: PortableCheck[] = [];
+    checks.push(check("empires.native-signature",
+      verifyEmpiresReceiptSignature(nativeReceipt) ? "PASS" : "FAIL",
+      "Empires native referee receipt signature is independently verified."));
+    checks.push(check("empires.native-digest",
+      sha256Json(nativeReceipt) === input.native_receipt_digest ? "PASS" : "FAIL",
+      "Native receipt digest matches the canonical receipt."));
+    const router = asObject(routerReceipt.router, "ROUTER");
+    const runtime = asObject(routerReceipt.runtime, "RUNTIME");
+    const requestBound = router.requestId === nativeReceipt.request_id;
+    const runtimeBound = runtime.targetId === "flop-empires-season0";
+    checks.push(check("empires.router-request-binding",
+      requestBound ? "PASS" : "FAIL",
+      requestBound ? "Router request binds to the native receipt." : "Router request does not bind to the native receipt."));
+    checks.push(check("empires.runtime-binding",
+      runtimeBound ? "PASS" : "FAIL",
+      runtimeBound ? "Runtime target is FLOP Empires Season 0." : "Runtime target mismatch."));
+    const transitionBound =
+      transition.event_seq === nativeReceipt.event_seq &&
+      transition.state_before_hash === nativeReceipt.state_before_hash &&
+      transition.state_after_hash === nativeReceipt.state_after_hash;
+    checks.push(check("empires.state-transition",
+      transitionBound ? "PASS" : "FAIL",
+      transitionBound ? "Transition is bound to the native receipt." : "Transition diverges from the native receipt."));
+    checks.push(check("empires.replay",
+      verification.replay === true ? "PASS" : "FAIL",
+      verification.replay === true ? "Independent replay is reported verified." : "Independent replay is not verified."));
+    const core = { ...input };
+    delete core.semantic_digest;
+    checks.push(check("empires.semantic-digest",
+      sha256Json(core) === input.semantic_digest ? "PASS" : "FAIL",
+      "Journey semantic digest matches its canonical content."));
+    return finalize("empires-journey", input, checks);
+  } catch (error) {
+    return failureResult("empires-journey", rawInput, error);
+  }
+}
+
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
+  if (profile === "empires-journey") return verifyEmpiresJourney(input);
   throw new Error(`UNKNOWN_EXTERNAL_PROFILE:${profile}`);
 }
