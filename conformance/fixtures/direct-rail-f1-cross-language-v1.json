@@ -1,0 +1,51 @@
+{
+  "schema": "flop.direct-rail-f1-cross-language/v1",
+  "observedAt": "2026-09-16",
+  "yellowpaper": {
+    "repository": "flop-labs/yellowpaper",
+    "commit": "cb3cbf97a346ff85aca6dba5e924434270ca672c",
+    "issue": 61,
+    "state": "HISTORICAL_OPEN_ISSUE_VECTOR",
+    "resolution": {
+      "state": "RESOLVED_TARGET_SPEC",
+      "commit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "commentId": 5818913017,
+      "summary": "Section 1.1 now delegates task_hash and report_data to Appendix F.1 v1."
+    }
+  },
+  "expected": {
+    "taskPreimageBytes": 183,
+    "taskHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d",
+    "reportPreimageBytes": 145,
+    "reportDataBytes": 64,
+    "legacyTaskU64Hex": "9ae6090bc6b2b21caa773820ec2802e22bedde93729b3b6ac42e0d78892f6a0d",
+    "legacyTaskU32Hex": "818d514b1bb027eb18cd620c65afec9d70e9d8e01b145285ef775512beb1919f"
+  },
+  "implementations": [
+    {
+      "repo": "retardio73-boop/flop-conformance-lab",
+      "commit": "902317385121fd576e194fd965e0de3471aa8753",
+      "language": "TypeScript",
+      "role": "source-level fail-closed conformance harness"
+    },
+    {
+      "repo": "osr21/flop-protocol-reproducibility-audits",
+      "commit": "f701db3a211746b65747d69f1e480d8e4500cfb9",
+      "language": "Python",
+      "role": "independent standard-library F.1 reference verifier"
+    }
+  ],
+  "agreement": {
+    "canonicalTaskHashExact": true,
+    "canonicalReportDataExact": true,
+    "rejectLegacyTaskU64": true,
+    "rejectLegacyTaskU32": true,
+    "rejectBare32ByteReportData": true
+  },
+  "claimBoundary": {
+    "runtimeCompatibility": "NOT_CLAIMED",
+    "upstreamResolution": "RESOLVED_3C97BBC",
+    "privateImplementationCoverage": "NOT_CLAIMED",
+    "purpose": "cross-language release-gate evidence"
+  }
+}

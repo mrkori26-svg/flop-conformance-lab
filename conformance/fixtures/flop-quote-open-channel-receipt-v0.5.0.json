@@ -1,57 +1,76 @@
 {
-  "schemaVersion": "1",
+  "schemaVersion": "2",
   "id": "FLOP_QUOTE_OPEN_CHANNEL_RECEIPT_V0_5_0_BOUNDARY",
   "classification": "TARGET_SPEC_BOUNDARY",
   "upstream": {
     "repository": "flop-labs/yellowpaper",
-    "commit": "3eaf2f25bc46a501df225cae4e4e991975f6b2a9",
+    "commit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
     "version": "0.5.0-draft",
     "issues": [26, 33],
-    "sections": [
-      "§4.1",
-      "§4.2",
-      "§12.1 R12.1a",
-      "Appendix F.3",
-      "Appendix G"
-    ],
+    "sections": ["§4.1", "§4.2", "§12.1 R12.1a", "Appendix F.3", "Appendix G", "E.55"],
+    "maintainerClarification": {
+      "issueCommentId": 5658227990,
+      "correctionCommentId": 5808384402,
+      "resolutionCommentId": 5818897853,
+      "status": "UPSTREAM_E55_FIELDS_PINNED_PLANNED",
+      "summary": "E.55 now normatively records the required comparison-quote field set and keeps the full signed/versioned quote contract PLANNED in the Rust/TypeScript SDK plus Appendix F; #1597 and #1586 remain blockers, so cross-provider ranking stays fail-closed."
+    },
     "publicRuntime": "PUBLIC_RUNTIME_UNAVAILABLE"
   },
   "quoteBoundary": {
-    "normativeStatus": "OPEN_ISSUE",
+    "normativeStatus": "TARGET_SPEC_PLANNED",
     "canonicalDiscoveryContract": null,
-    "expected": {
-      "status": "FAIL_CLOSED",
-      "reason": "NO_CANONICAL_QUOTE_DISCOVERY_CONTRACT"
-    },
+    "requiredFieldsPinnedByE55": ["meter_profile","input_context_output_assumptions","cache_assumptions","verification_settlement_tier","expected_G_n","reserved_escrow","expected_payable_explicit_base_unit","transaction_fee","external_display_conversion"],
+    "plannedNormativeHome": ["Rust compute-channel SDK", "TypeScript compute-channel SDK", "Appendix F signed wire fixture"],
+    "blockers": ["flop-core#1597", "flop-core#1586"],
+    "expected": {"status": "FAIL_CLOSED", "reason": "NO_COMPLETE_CANONICAL_COMPARISON_QUOTE"},
     "mustNotInfer": [
       "aggregate_gn_is_currency",
       "aggregate_gn_is_physical_flops",
       "external_per_token_price_to_channel_escrow",
-      "numeric_ranking_across_unlike_quote_units"
+      "numeric_ranking_across_unlike_quote_units",
+      "same_unit_implies_same_comparison_profile",
+      "min_escrow_is_accepted_payment",
+      "capacity_hint_is_guaranteed_capacity",
+      "receipt_fields_reconstruct_pre_session_quote"
     ]
+  },
+  "sessionOfferBoundary": {
+    "normativeStatus": "TARGET_SPEC",
+    "objects": ["StandingOffer", "SessionOffer v1 spot", "SessionOffer v2 forward"],
+    "authoritativelyBinds": [
+      "miner",
+      "chain_genesis",
+      "model_hash",
+      "precision",
+      "enclave_key",
+      "min_escrow",
+      "sla_bounds",
+      "capacity_hint",
+      "expiry",
+      "nonce",
+      "signature",
+      "forward_terms_if_v2"
+    ],
+    "acceptanceAdditionallyBinds": [
+      "agent",
+      "measured_root",
+      "decode_policy_hash",
+      "receipt_key",
+      "actual_escrow",
+      "settlement_class"
+    ],
+    "semantics": {
+      "min_escrow": "FLOOR_NOT_ACCEPTED_PAYMENT",
+      "capacity_hint": "ADVISORY_NOT_GUARANTEE",
+      "comparisonQuote": "NOT_COMPLETE"
+    }
   },
   "openChannelTarget": {
     "normativeStatus": "TARGET_SPEC",
-    "source": "Appendix G extrinsic table",
-    "fields": [
-      "miner",
-      "model_hash",
-      "measured_root",
-      "decode_policy_hash",
-      "precision",
-      "enclave_key",
-      "agent_key",
-      "sla",
-      "escrow",
-      "nonce",
-      "settlement_class"
-    ],
-    "quoteBridgeCritical": [
-      "model_hash",
-      "precision",
-      "escrow",
-      "settlement_class"
-    ],
+    "source": "Appendix G extrinsic table plus SessionOffer acceptance boundary",
+    "fields": ["miner", "model_hash", "measured_root", "decode_policy_hash", "precision", "enclave_key", "agent_key", "sla", "escrow", "nonce", "settlement_class"],
+    "quoteBridgeCritical": ["model_hash", "precision", "escrow", "settlement_class"],
     "escrowUnitStatus": "UNRESOLVED_FOR_QUOTE_NORMALIZATION"
   },
   "receiptTarget": {
@@ -60,18 +79,9 @@
     "signatureScheme": "sr25519",
     "domainAscii": "FLOP/COMPUTE_CHANNEL/RECEIPT",
     "versionByte": 1,
-    "binds": [
-      "channel_id",
-      "final_root",
-      "aggregate_gn",
-      "payable"
-    ],
-    "encoding": {
-      "channel_id": "raw bytes",
-      "final_root": "raw bytes",
-      "aggregate_gn": "u128LE",
-      "payable": "u128LE"
-    },
+    "binds": ["channel_id", "final_root", "aggregate_gn", "payable"],
+    "semanticBoundary": "POST_SESSION_SETTLEMENT_NOT_PRE_SESSION_QUOTE",
+    "encoding": {"channel_id": "raw bytes", "final_root": "raw bytes", "aggregate_gn": "u128LE", "payable": "u128LE"},
     "vector": {
       "channelIdHex": "1111111111111111111111111111111111111111111111111111111111111111",
       "finalRootHex": "2222222222222222222222222222222222222222222222222222222222222222",
@@ -80,35 +90,47 @@
       "expectedMessageHex": "464c4f502f434f4d505554455f4348414e4e454c2f5245434549505401111111111111111111111111111111111111111111111111111111111111111122222222222222222222222222222222222222222222222222222222222222222a000000000000000000000000000000e8030000000000000000000000000000"
     }
   },
+  "resolutionCanaries": {
+    "flop-core#1597": {
+      "currentState": "BLOCKER",
+      "promotionCondition": "long_context_Gn_reproducible_normatively"
+    },
+    "flop-core#1586": {
+      "currentState": "BLOCKER",
+      "promotionCondition": "reservation_price_formation_defined_normatively"
+    },
+    "E.55": {
+      "currentState": "REQUIRED_FIELDS_PINNED_CONTRACT_STILL_PLANNED",
+      "sourceCommit": "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e",
+      "promotionCondition": "versioned_signed_quote_contract_and_appendix_f_wire_fixture_available"
+    },
+    "afterAllResolved": {
+      "action": "REPLAY_BEFORE_RESOLUTION_AFTER_FIXTURE",
+      "requiredShape": ["before", "resolution", "conformance_result"]
+    }
+  },
   "cases": [
     {
       "id": "external-per-token-quote",
       "inputClass": "NON_NORMATIVE_DISCOVERY_OBSERVATION",
       "publishedUnit": "external-per-token",
-      "expected": {
-        "status": "FAIL_CLOSED",
-        "stage": "quote_to_open_channel",
-        "reason": "NO_CANONICAL_QUOTE_DISCOVERY_CONTRACT"
-      }
+      "expected": {"status": "FAIL_CLOSED", "stage": "quote_to_open_channel", "reason": "NO_COMPLETE_CANONICAL_COMPARISON_QUOTE"}
     },
     {
-      "id": "reserved-session-with-unresolved-pay-unit",
+      "id": "same-unit-without-comparison-profile",
       "inputClass": "NON_NORMATIVE_DISCOVERY_OBSERVATION",
       "publishedUnit": "reserved-session",
-      "expected": {
-        "status": "FAIL_CLOSED",
-        "stage": "quote_to_open_channel",
-        "reason": "CHANNEL_PAY_UNIT_UNRESOLVED"
-      }
+      "expected": {"status": "FAIL_CLOSED", "stage": "quote_to_open_channel", "reason": "COMPARISON_PROFILE_UNPROVEN"}
+    },
+    {
+      "id": "session-offer-min-escrow-is-not-price",
+      "inputClass": "TARGET_SPEC_OPENING_OFFER",
+      "expected": {"status": "PASS", "stage": "quote_to_open_channel", "reason": "MIN_ESCROW_PRESERVED_AS_FLOOR_ONLY"}
     },
     {
       "id": "receipt-binding-after-authoritative-channel-input",
       "inputClass": "TARGET_SPEC_STRUCTURAL_VECTOR",
-      "expected": {
-        "status": "PASS",
-        "stage": "open_channel_to_receipt",
-        "reason": "BYTE_EXACT_RECEIPT_BINDING"
-      }
+      "expected": {"status": "PASS", "stage": "open_channel_to_receipt", "reason": "BYTE_EXACT_RECEIPT_BINDING"}
     }
   ],
   "scope": {

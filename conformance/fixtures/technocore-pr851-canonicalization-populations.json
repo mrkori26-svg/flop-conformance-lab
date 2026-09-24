@@ -1,0 +1,55 @@
+{
+  "id": "technocore.pr851-deployed-canonicalization-populations",
+  "classification": "PROVISIONAL_PR",
+  "upstream": {
+    "repository": "flop-labs/technocore-chat",
+    "pr": 851,
+    "head": "a59919f447bfd64b5661f968dcaf7e3b93f06854",
+    "state": "OPEN",
+    "sourceIssue": 828
+  },
+  "deployedPopulations": [
+    {
+      "rule": "did-starter-json-v1",
+      "verifiedCorpusCount": 112,
+      "signedPayloadShape": "compact sorted UTF-8 JSON over artifact_url, commit, schema=technocore-contribution-v1; DID is verification key",
+      "mustRemainVerifiable": true
+    },
+    {
+      "rule": "technocore-sdk-pipe-v1",
+      "verifiedCorpusCount": 2,
+      "signedPayloadShape": "previously published Technocore SDK pipe canonicalization",
+      "mustRemainVerifiableOrReceiveVersionedMigration": true
+    }
+  ],
+  "deployedOuterProof": {
+    "schema": "technocore-contribution-proof-v1",
+    "requiredFields": ["artifact_url", "commit", "did", "signature", "schema"]
+  },
+  "commitGrammar": {
+    "accepted": "lowercase hexadecimal Git object id of exactly 40 or 64 characters",
+    "silentLowercasingForbidden": true
+  },
+  "promotionCanary": {
+    "currentState": "PROVISIONAL_PR",
+    "promotionTarget": "RELEASE_CONFORMANCE",
+    "promoteOnlyWhenAll": [
+      "pr_851_merged_or_equivalent_normative_release_landed",
+      "deployed_outer_five_field_proof_is_accepted",
+      "commit_grammar_is_explicit_and_enforced",
+      "both_deployed_canonicalization_populations_remain_verifiable_or_pipe_population_has_explicit_versioned_deprecation_and_migration",
+      "fixed_regression_vector_exists_for_each_supported_deployed_population"
+    ],
+    "forbidPromotionWhen": [
+      "compatibility_claim_exceeds_corpus_evidence",
+      "existing_deployed_proof_shape_is_rejected",
+      "one_deployed_canonicalization_population_is_silently_dropped"
+    ]
+  },
+  "scope": {
+    "claimPrMerged": false,
+    "claimSingleCanonicalizationRatified": false,
+    "generateSignatures": false,
+    "networkMutation": false
+  }
+}

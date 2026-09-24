@@ -1,0 +1,58 @@
+{
+  "schema": "flop.validator-performance-ambiguity/v1",
+  "classification": "OPEN_SPEC_GAP_CANARY",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "issue": 74,
+    "version": "0.5.0",
+    "sections": [
+      "§15.4",
+      "R15.5",
+      "Appendix A"
+    ]
+  },
+  "weights": {
+    "uptime": 0.4,
+    "blockRate": 0.3,
+    "accuracy": 0.2,
+    "latency": 0.1
+  },
+  "history": {
+    "uptimeRaw": 0.98,
+    "uptimeDuty": 0.94,
+    "blocksAuthored": 72,
+    "expectedBabeOpportunities": 90,
+    "networkBlockRateReference": 100,
+    "quorumAgreement": 0.97,
+    "assignedDutyAccuracy": 0.92,
+    "networkLatencyScore": 0.88,
+    "dutyLatencyScore": 0.76
+  },
+  "profiles": {
+    "rawNetwork": {
+      "uptime": "uptimeRaw",
+      "blockRate": "blocksAuthored/networkBlockRateReference",
+      "accuracy": "quorumAgreement",
+      "latency": "networkLatencyScore"
+    },
+    "dutyNormalized": {
+      "uptime": "uptimeDuty",
+      "blockRate": "blocksAuthored/expectedBabeOpportunities",
+      "accuracy": "assignedDutyAccuracy",
+      "latency": "dutyLatencyScore"
+    }
+  },
+  "requiredNormativeDefinitions": [
+    "measurement_window",
+    "uptime_observation_definition",
+    "block_rate_denominator_and_expected_opportunity_model",
+    "accuracy_denominator_and_failure_treatment",
+    "latency_reference_and_normalization",
+    "missing_data_policy",
+    "rotation_snapshot_timing"
+  ],
+  "scope": {
+    "claimPreferredProfile": false,
+    "claimCurrentValidatorSet": false
+  }
+}

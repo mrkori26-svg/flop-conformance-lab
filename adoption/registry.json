@@ -1,0 +1,65 @@
+{
+    "schema":  "flop-conformance-adoption-registry/v1",
+    "updatedAt":  "2026-09-13T23:55:11Z",
+    "entries":  [
+                    {
+                        "implementation":  "Mariukasfak/flop-evidence-scout",
+                        "profile":  "technocore-agent",
+                        "status":  "PROPOSED",
+                        "evidence":  {
+                                         "issue":  "https://github.com/Mariukasfak/flop-evidence-scout/issues/9",
+                                         "labCommit":  "3ddcad34cec2edfdc10f5f230156c4c1f0ea0b70"
+                                     },
+                        "claim":  "Proposal opened; no external CI consumption is claimed yet."
+                    },
+                    {
+                        "implementation":  "Noobna/flop-sentinel",
+                        "profile":  "tclk-transcript",
+                        "status":  "CANDIDATE",
+                        "evidence":  {
+                                         "reason":  "Existing independent downstream reproduction; external issue creation blocked by GitHub integration permissions."
+                                     },
+                        "claim":  "Candidate only; no integration or adoption claim."
+                    },
+                    {
+                        "implementation":  "congge918/technocore-tclk-deal-scout",
+                        "profile":  "tclk-transcript",
+                        "status":  "CANDIDATE",
+                        "evidence":  {
+                                         "reason":  "Strong structural fit for positive TCLK evidence; external issue creation blocked by GitHub integration permissions."
+                                     },
+                        "claim":  "Candidate only; no integration or adoption claim."
+                    },
+                    {
+                        "implementation":  "UfukNode/technocore-did-tool",
+                        "profile":  "technocore-agent",
+                        "status":  "CANDIDATE",
+                        "evidence":  {
+                                         "reason":  "Repository has a live Technocore identity workflow and is structurally suitable for independent DID/mailbox/signature evidence. Attempted issue creation returned GitHub 403 for this integration."
+                                     },
+                        "claim":  "Candidate only; no proposal delivery or adoption claim."
+                    },
+                    {
+                        "implementation":  "zunmax/technocore-did-starter",
+                        "profile":  "technocore-agent",
+                        "status":  "CANDIDATE",
+                        "evidence":  {
+                                         "reason":  "Widely forked Technocore DID onboarding tool; a narrow profile could validate generated public identity/signature evidence without changing key custody."
+                                     },
+                        "claim":  "Candidate only; no proposal delivery or adoption claim."
+                    },
+                    {
+                        "implementation":  "doboongkun/flop-agent-lab-tclk",
+                        "profile":  "tclk-transcript",
+                        "status":  "PROPOSED",
+                        "evidence":  {
+                                         "technocoreRoom":  "flop-agent-lab",
+                                         "generation":  0,
+                                         "seq":  251,
+                                         "did":  "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+                                         "reason":  "Signed public proposal delivered in the project-declared Technocore contribution room after GitHub issue creation was blocked by integration permissions."
+                                     },
+                        "claim":  "Proposal publicly delivered and read back; no downstream integration or adoption claim yet."
+                    }
+                ]
+}

@@ -1,0 +1,299 @@
+{
+  "schema": "flop.protocol-drift-registry.v1",
+  "classification": "LOCAL_POLICY",
+  "sources": [
+    {
+      "id": "yellowpaper-main",
+      "kind": "github-ref",
+      "repository": "flop-labs/yellowpaper",
+      "ref": "main",
+      "affects": [
+        "flop.quote-open-channel-receipt",
+        "flop.yellowpaper-56-57-boundaries",
+        "flop.direct-rail-f1-cross-language",
+        "flop.htlc-conformance-v1",
+        "flop.htlc-pair-fixtures-v1"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-56",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 56,
+      "affects": [
+        "flop.yellowpaper-56-57-boundaries",
+        "flop.quote-open-channel-receipt"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-57",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 57,
+      "affects": [
+        "flop.yellowpaper-56-57-boundaries"
+      ]
+    },
+    {
+      "id": "technocore-main",
+      "kind": "github-ref",
+      "repository": "flop-labs/technocore-chat",
+      "ref": "main",
+      "affects": [
+        "technocore.transport",
+        "technocore.contribution-proof-v1"
+      ]
+    },
+    {
+      "id": "technocore-pr-851",
+      "kind": "github-pr",
+      "repository": "flop-labs/technocore-chat",
+      "pr": 851,
+      "affects": [
+        "technocore.contribution-proof-v1"
+      ]
+    },
+    {
+      "id": "tclk-main",
+      "kind": "github-ref",
+      "repository": "flop-labs/tclk",
+      "ref": "main",
+      "affects": [
+        "tclk.release-vectors",
+        "tclk.transport",
+        "flop.reference-journey",
+        "flop.htlc-conformance-v1"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-5",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 5,
+      "affects": [
+        "flop.htlc-conformance-v1",
+        "flop.htlc-pair-fixtures-v1"
+      ]
+    },
+    {
+      "id": "tclk-issue-57",
+      "kind": "github-issue",
+      "repository": "flop-labs/tclk",
+      "issue": 57,
+      "affects": [
+        "flop.htlc-conformance-v1"
+      ]
+    },
+    {
+      "id": "tclk-pr-58",
+      "kind": "github-pr",
+      "repository": "flop-labs/tclk",
+      "pr": 58,
+      "affects": [
+        "flop.htlc-conformance-v1"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-16",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 16,
+      "affects": [
+        "flop.htlc-pair-fixtures-v1"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-51",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 51,
+      "affects": [
+        "flop.htlc-pair-fixtures-v1"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-58-agent-stake-lifecycle",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 58,
+      "affects": [
+        "flop.agent-identity-stake-lifecycle",
+        "flop.issue-58-sybil-economics"
+      ]
+    },
+    {
+      "id": "tclk-issue-172-settlement-view",
+      "kind": "github-issue",
+      "repository": "flop-labs/tclk",
+      "issue": 172,
+      "affects": [
+        "tclk.settlement-view-rail-evidence"
+      ]
+    },
+    {
+      "id": "tclk-pr-173-settlement-view",
+      "kind": "github-pr",
+      "repository": "flop-labs/tclk",
+      "pr": 173,
+      "affects": [
+        "tclk.settlement-view-rail-evidence"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-74-validator-performance",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 74,
+      "affects": [
+        "flop.validator-performance-score-ambiguity",
+        "flop.validator-conformance-target"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-73-hids",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 73,
+      "affects": [
+        "flop.f3-hids-kat"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-55-meter",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 55,
+      "affects": [
+        "flop.meter-kat"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-62-soft",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 62,
+      "affects": [
+        "flop.soft-telemetry-evidence"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-71-htlc-residual",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 71,
+      "affects": [
+        "flop.htlc-residual-witness"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-67-validator-rotation",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 67,
+      "affects": [
+        "flop.validator-rotation-witness"
+      ]
+    },
+    {
+      "id": "technocore-pr-842-export",
+      "kind": "github-pr",
+      "repository": "flop-labs/technocore-chat",
+      "pr": 842,
+      "affects": [
+        "technocore.retained-window-proof"
+      ]
+    },
+    {
+      "id": "technocore-pr-800-retained-floor",
+      "kind": "github-pr",
+      "repository": "flop-labs/technocore-chat",
+      "pr": 800,
+      "affects": [
+        "technocore.retained-window-proof"
+      ]
+    },
+    {
+      "id": "tclk-recent-activity",
+      "kind": "github-repo-activity",
+      "repository": "flop-labs/tclk",
+      "affects": [
+        "tclk.transport",
+        "tclk.settlement-view-rail-evidence",
+        "tclk.venue-time-trust",
+        "tclk.stream-completeness"
+      ]
+    },
+    {
+      "id": "yellowpaper-recent-activity",
+      "kind": "github-repo-activity",
+      "repository": "flop-labs/yellowpaper",
+      "affects": [
+        "flop.protocol-spec",
+        "flop.direct-rail-f1-cross-language"
+      ]
+    },
+    {
+      "id": "tclk-issue-93-stream-completeness",
+      "kind": "github-issue",
+      "repository": "flop-labs/tclk",
+      "issue": 93,
+      "affects": [
+        "tclk.stream-completeness"
+      ]
+    },
+    {
+      "id": "tclk-issue-96-venue-time",
+      "kind": "github-issue",
+      "repository": "flop-labs/tclk",
+      "issue": 96,
+      "affects": [
+        "tclk.venue-time-trust"
+      ]
+    },
+    {
+      "id": "tclk-pr-166-trusted-time",
+      "kind": "github-pr",
+      "repository": "flop-labs/tclk",
+      "pr": 166,
+      "affects": [
+        "tclk.venue-time-trust"
+      ]
+    },
+    {
+      "id": "tclk-pr-175-strict-deadlines",
+      "kind": "github-pr",
+      "repository": "flop-labs/tclk",
+      "pr": 175,
+      "affects": [
+        "tclk.venue-time-trust"
+      ]
+    },
+    {
+      "id": "tclk-issue-176-presig-validation",
+      "kind": "github-issue",
+      "repository": "flop-labs/tclk",
+      "issue": 176,
+      "affects": [
+        "tclk.transport"
+      ]
+    },
+    {
+      "id": "tclk-pr-177-presig-validation",
+      "kind": "github-pr",
+      "repository": "flop-labs/tclk",
+      "pr": 177,
+      "affects": [
+        "tclk.transport"
+      ]
+    },
+    {
+      "id": "yellowpaper-issue-61-direct-rail",
+      "kind": "github-issue",
+      "repository": "flop-labs/yellowpaper",
+      "issue": 61,
+      "affects": [
+        "flop.direct-rail-f1-cross-language"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+name: adoption-watch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 9 * * *'
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Search public downstream signals
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node tools/adoption-watch.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adoption-watch
+          path: reports/adoption-watch.json
+          retention-days: 30

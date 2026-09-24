@@ -1,0 +1,83 @@
+{
+  "id": "flop.yellowpaper-61-direct-rail-hash-reportdata-conflict",
+  "classification": "OPEN_ISSUE",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "commit": "cb3cbf97a346ff85aca6dba5e924434270ca672c",
+    "issue": 61,
+    "issueState": "OPEN",
+    "version": "v0.5.0-draft"
+  },
+  "resolutionCanary": {
+    "currentState": "OPEN_ISSUE",
+    "promotionTarget": "TARGET_SPEC",
+    "promoteOnlyWhenAll": [
+      "section_1_1_task_hash_reconciled_with_appendix_f1_or_normatively_delegated",
+      "section_1_1_report_data_reconciled_with_appendix_f1_or_normatively_delegated",
+      "r6_5e_task_hash_binding_reconciled_with_appendix_f1",
+      "wire_corpus_matches_resolved_normative_rule",
+      "new_upstream_source_pinned_by_commit"
+    ],
+    "forbidPromotionWhen": [
+      "section_1_1_and_appendix_f1_disagree",
+      "r6_5e_omits_domain_or_genesis_binding",
+      "report_data_length_is_ambiguous"
+    ],
+    "followUpPolicy": {
+      "mode": "SINGLE_TECHNICAL_FOLLOW_UP_AFTER_RESOLUTION",
+      "requiredShape": ["before", "resolution", "conformance_result"],
+      "noFollowUpWhileOpen": true,
+      "releasePolicy": "BATCH_WITH_NEXT_CONFORMANCE_LAB_RELEASE"
+    }
+  },
+  "taskHashBoundary": {
+    "status": "FAIL_CLOSED_ON_SECTION_CONFLICT",
+    "appendixF1": {
+      "domainAscii": "FLOP/POUI/TASK",
+      "versionByteHex": "01",
+      "genesisHashHex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "agentAccountId32Hex": "1111111111111111111111111111111111111111111111111111111111111111",
+      "nonce": 7,
+      "nonceEncoding": "u64LE",
+      "modelHashHex": "0202020202020202020202020202020202020202020202020202020202020202",
+      "payloadHashHex": "0505050505050505050505050505050505050505050505050505050505050505",
+      "commitHashHex": "0606060606060606060606060606060606060606060606060606060606060606",
+      "preimageBytes": 183,
+      "expectedHashHex": "8d06cbf826718cda29c2ec2aa363ea13cebc118947eed5fa5d4dbb364357920d"
+    },
+    "section11LegacyComparators": [
+      {
+        "nonceEncoding": "u64LE",
+        "preimageBytes": 136,
+        "hashHex": "9ae6090bc6b2b21caa773820ec2802e22bedde93729b3b6ac42e0d78892f6a0d"
+      },
+      {
+        "nonceEncoding": "u32LE",
+        "preimageBytes": 132,
+        "hashHex": "818d514b1bb027eb18cd620c65afec9d70e9d8e01b145285ef775512beb1919f"
+      }
+    ]
+  },
+  "reportDataBoundary": {
+    "status": "FAIL_CLOSED_ON_SECTION_CONFLICT",
+    "gnWeight": 42,
+    "latencyMs": 500,
+    "modelHashHex": "0202020202020202020202020202020202020202020202020202020202020202",
+    "outputHashHex": "0303030303030303030303030303030303030303030303030303030303030303",
+    "decodePolicyHashHex": "be572af01bd68df9c660da094b7796244dd29435d532c63c9f42efe6bdabd796",
+    "teeTypeScaleHex": "00",
+    "sha256Hex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff7",
+    "zeroPadBytes": 32,
+    "expectedLengthBytes": 64,
+    "expectedReportDataHex": "3165c6d38fbf992485c8c8640476f9a7a5db94523a32387e838d205d178bfff70000000000000000000000000000000000000000000000000000000000000000",
+    "section11DescribedLengthBytes": 32
+  },
+  "scope": {
+    "networkMutation": false,
+    "liveValidation": false,
+    "signatureGeneration": false,
+    "claimIssueResolved": false,
+    "claimSection11NormativePrecedence": false,
+    "claimAppendixF1RatificationBeyondCurrentDraft": false
+  }
+}

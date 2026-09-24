@@ -1,0 +1,33 @@
+{
+  "schema": "technocore.recovery-boundary.v1",
+  "classification": "PROVISIONAL_PR",
+  "observedAt": "2026-09-13",
+  "source": {
+    "pr": 842,
+    "url": "https://github.com/flop-labs/technocore-chat/pull/842",
+    "head": "793f412799966f4cb28a5366bc640ff8de250c28"
+  },
+  "cases": [
+    {
+      "id": "page-miss-ring-hit",
+      "expected": "RECOVERED_RETAINED_RING"
+    },
+    {
+      "id": "page-miss-ring-miss",
+      "expected": "UNAVAILABLE"
+    },
+    {
+      "id": "page-miss-not-expired",
+      "expected": "a read_room miss alone MUST NOT imply expiry"
+    },
+    {
+      "id": "bounded-recovery",
+      "expected": "recovery adapters expose a limit and continuation marker rather than requiring an unbounded full-ring result"
+    }
+  ],
+  "nonClaims": [
+    "PR #842 is not merged or released.",
+    "The Lab does not depend on an unbounded export_room response.",
+    "Retention loss remains possible after the ring evicts a record."
+  ]
+}

@@ -6,7 +6,11 @@
     "repository": "flop-labs/yellowpaper",
     "version": "0.5.0-draft",
     "issue": 58,
-    "openItems": ["E.38", "E.40", "E.49"],
+    "openItems": [
+      "E.38",
+      "E.40",
+      "E.49"
+    ],
     "agentIdentityMinStake": "10"
   },
   "model": {
@@ -106,16 +110,155 @@
     ]
   },
   "empiricalLane": {
-    "status": "WAITING_FOR_PUBLIC_DATASET",
-    "sourceClaim": "Issue #58 reports signature-verifying Technocore observations and offers the dataset/transcripts, but the Lab has not imported or independently verified them.",
-    "acceptanceRequirements": [
-      "publicly retrievable immutable dataset or fixture subset",
-      "documented capture scope and sampling limitations",
-      "offline-verifiable signatures or hashes",
-      "deterministic parser/reproducer",
-      "no inference from DID count to operator count without an explicit evidence rule"
-    ],
-    "importedObservations": 0
+    "status": "REPRODUCED_SNAPSHOT_WITH_COVERAGE_CAVEAT",
+    "sourceRepository": "lastbubble2035/tca",
+    "sourceCommit": "df23b6b5b5a1f5c9a3547dae86bbbe062c45b8a3",
+    "analysisFiles": {
+      "tclkScript": "analysis/tclk_structure.py",
+      "tclkOutput": "analysis/tclk-structure.json",
+      "sonnetScript": "analysis/sonnet_registration.py",
+      "sonnetOutput": "analysis/sonnet-registration.json"
+    },
+    "verified": {
+      "scriptHashesMatchCommittedOutputs": true,
+      "tclkScriptSha256": "d3cb2a87a11047dd3813ff0dc64b64be1e12f92eb9c030d1012d5cdcbc0e9099",
+      "sonnetScriptSha256": "443672b1049613dba2191ae274b3e4ab9e2240e0adbb1e8590ada901437fad65",
+      "outputFilesPublicAndImmutableAtPinnedCommit": true
+    },
+    "observedClaims": {
+      "classification": "STRUCTURAL_OBSERVATIONS_ONLY",
+      "operatorAttribution": "NOT_CLAIMED",
+      "tclk": {
+        "acceptsTotal": 3724422,
+        "acceptsMatchedToOffer": 3704334,
+        "selfAcceptEvents": 1102,
+        "distinctPayerPayeePairs": 393764,
+        "identitiesOnBothSides": 5239,
+        "statementReuseAcrossDids": 204,
+        "statementReuseMaxDids": 4,
+        "maxHubCounterparties": 15277,
+        "windowFirstObserved": "2026-09-02T07:12:14.258871Z",
+        "windowLastObserved": "2026-09-18T00:52:24.634429Z"
+      },
+      "sonnet": {
+        "messagesArchived": 3207919,
+        "distinctRegisteringDids": 3082368,
+        "registrationsTotal": 3182349,
+        "voterRegistrations": 3158839,
+        "refereeReceiptedDids": 999,
+        "accountsUnderMultipleDids": 188,
+        "accountsWithMultipleAcceptedDids": 116,
+        "largestDidsPerDeclaredAccount": 238,
+        "captureCoverageReported": "89.8%",
+        "captureHolesReported": 362813
+      }
+    },
+    "remainingBlocker": {
+      "status": "COVERAGE_AMBIGUITY_REMAINS",
+      "reason": "Two independent frozen tclk-offers snapshots now reproduce end-to-end. The denser corroborating snapshot covers 97.8% of its sequence range, strongly supporting capture loss as the cause of the earlier 69.7% lane's missing sequence values, but neither snapshot is a complete full-room capture.",
+      "requiredForFullRoomCoverageClaim": [
+        "publish a complete authoritative room export or equivalent evidence accounting for every sequence value",
+        "retain the distinction between structural observations and operator attribution",
+        "obtain upstream normative resolution separately from empirical reproduction"
+      ]
+    },
+    "claimBoundary": {
+      "regeneratedCountsFromOriginalInput": true,
+      "scriptIntegrityVerified": true,
+      "outputIntegrityPinned": true,
+      "normativeResolution": false,
+      "operatorAttribution": false,
+      "fullRoomCoverage": false
+    },
+    "reproduction": {
+      "sourceRepository": "justuncase1210-del/technocore-archive",
+      "scriptCommit": "afb58c1294f79d93e68027345b6e3cf3a05e4d7f",
+      "outputCommit": "b83bdff73886a281653592fe18b06ed453937876",
+      "scriptPath": "tclk_sybil_signals_v2.py",
+      "scriptSha256": "c66aa19206a62513520f5115571c996b1026487914bc0c845297009f77d46217",
+      "snapshotReleaseTag": "tclk-snapshot-2026-09-18",
+      "snapshotAsset": "tclk-offers-snapshot-20260918T055113Z.jsonl.gz",
+      "snapshotGzipBytes": 792709967,
+      "snapshotGzipSha256": "905a2faa6480cdf75b0331bfefdf4e013b5101509baa779ae995316daf39596d",
+      "snapshotDecompressedSha256": "d275f9e6bc44d752298d796646a72a1ea8037a7cd07f4b4fdb7ee6020cf3e705",
+      "expectedOutputPath": "analysis/tclk_sybil_signals_output_2026-09-18.json",
+      "expectedOutputSha256": "c54aac608aa8c9f6560247db6f464230530385cf6802f4ca712c144dd6c4912b",
+      "invocation": "python tclk_sybil_signals_v2.py tclk-offers.jsonl --max-mem-mb 2048 --out reproduced.json",
+      "reproducedOn": {
+        "platform": "Windows",
+        "python": "3.12.10",
+        "semanticJsonEqual": true,
+        "rawOutputSha256": "f969b416b10b3097bbba58016c34d8935c4c5c673d4c9090b50ed12d412bc0b0",
+        "lfNormalizedOutputSha256": "c54aac608aa8c9f6560247db6f464230530385cf6802f4ca712c144dd6c4912b",
+        "newlineNote": "Windows text mode emitted CRLF. Replacing CRLF with LF yields the exact published output hash; parsed JSON is exactly equal."
+      },
+      "observed": {
+        "totalRecords": 4295367,
+        "distinctSigners": 82762,
+        "offersParsed": 556780,
+        "acceptsParsed": 2702214,
+        "acceptsResolvedToOffer": 2530365,
+        "selfAccepts": 1093,
+        "reciprocalWashPairs": 23494,
+        "reciprocalPairAccepts": 111714,
+        "crossDidStatementReuse": 172
+      },
+      "captureCoverage": {
+        "seqFirst": 1177,
+        "seqLast": 6139597,
+        "seqRange": 6138421,
+        "distinctCapturedSeq": 4277681,
+        "missingSeq": 1860740,
+        "coveragePct": 69.7,
+        "interpretation": "Coverage caveat only. Missing seq values may be dropped capture frames or other room traffic sharing the counter; the reproduction does not resolve that ambiguity."
+      }
+    },
+    "corroboration": {
+      "repository": "lastbubble2035/tca",
+      "commit": "fc9ea0ce41a2484a1cbbb8cc919e3b9fb6304700",
+      "status": "REPRODUCED_SNAPSHOT_WITH_COVERAGE_CAVEAT",
+      "reproduction": {
+        "ciRun": "https://github.com/retardio73-boop/flop-conformance-lab/actions/runs/35400991297",
+        "sourceScriptPath": "analysis/tclk_structure.py",
+        "sourceScriptSha256": "d3cb2a87a11047dd3813ff0dc64b64be1e12f92eb9c030d1012d5cdcbc0e9099",
+        "importScriptPath": "tca_import_snapshot.py",
+        "importScriptSha256": "ab7fbb840b54e9530e569781293916247d01af3a5c0c203516af024db65736ba",
+        "snapshotReleaseTag": "tclk-snapshot-2026-09-18",
+        "snapshotAsset": "tclk-offers-snapshot-20260918T151701Z.jsonl.gz",
+        "snapshotGzipBytes": 1129534154,
+        "snapshotGzipSha256": "df22adf7f5f7ff059737506788800a1090fe554e4c330b22aeab00bdbb2c3ffb",
+        "snapshotDecompressedSha256": "5393e97658364c838f3447cfa83def782dbf66eaac0f4b3d4f724ab3dac0cc77",
+        "expectedOutputPath": "analysis/tclk-structure-close.json",
+        "expectedOutputSha256": "b5f7b0bd3b608ba65c2343522a3c0f28939595a7ab584703891474ce5a81474d",
+        "semanticJsonEqual": true,
+        "observed": {
+          "acceptsTotal": 3897507,
+          "acceptsMatchedToOffer": 3877422,
+          "selfAcceptEvents": 1102,
+          "distinctPayerPayeePairs": 415687,
+          "identitiesOnBothSides": 5588,
+          "statementReuseAcrossDids": 204,
+          "statementReuseMaxDids": 4,
+          "maxHubCounterparties": 16494
+        },
+        "captureCoverage": {
+          "totalLines": 6134989,
+          "signedLines": 5393024,
+          "seqFirst": 1,
+          "seqLast": 6273427,
+          "missingSeq": 138438,
+          "coveragePct": 97.8,
+          "firstObserved": "2026-09-02T07:12:14Z",
+          "lastObserved": "2026-09-18T12:00:00Z",
+          "interpretation": "Independent frozen snapshot reproduced end-to-end. Coverage is high but not complete; structural observations only."
+        },
+        "claimBoundary": {
+          "operatorAttribution": false,
+          "normativeResolution": false,
+          "fullRoomCoverage": false
+        }
+      }
+    }
   },
   "scope": {
     "sybilDetector": false,

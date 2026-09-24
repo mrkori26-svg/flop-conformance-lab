@@ -14,3 +14,64 @@ jobs:
         run: python3 conformance/reproductions/noobna-flop-sentinel-tclk.py
       - name: Reproduce downstream Sentinel Sonnet receipt trust gap
         run: python3 conformance/reproductions/noobna-sonnet-receipt-auth.py
+
+  upstream-tclk-trust-boundaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: flop-labs/tclk
+          ref: 5cc4ab93efbc8999a3a7e1471b639deca25998ea
+          path: upstream-tclk
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: corepack enable
+      - name: Install pinned upstream
+        working-directory: upstream-tclk
+        run: pnpm install --frozen-lockfile
+      - name: Build pinned upstream and MCP
+        working-directory: upstream-tclk
+        run: pnpm build:all
+      - name: Reproduce TCLK #93 against pinned upstream
+        env:
+          TCLK_UPSTREAM_ROOT: ${{ github.workspace }}/upstream-tclk
+        run: node conformance/reproductions/tclk-93-upstream.mjs
+      - name: Reproduce TCLK #96 against pinned upstream
+        env:
+          TCLK_UPSTREAM_ROOT: ${{ github.workspace }}/upstream-tclk
+        run: node conformance/reproductions/tclk-96-upstream.mjs
+
+  upstream-yellowpaper-wire-corpus:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: flop-labs/yellowpaper
+          ref: cb3cbf97a346ff85aca6dba5e924434270ca672c
+          path: upstream-yellowpaper
+      - name: Check openagentsearch flop-wire-v1 report against pinned corpus
+        env:
+          YELLOWPAPER_UPSTREAM_ROOT: ${{ github.workspace }}/upstream-yellowpaper
+        run: python3 conformance/reproductions/flop-wire-v1-openagentsearch.py
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: consumer
+        uses: ./
+        with:
+          profile: technocore-agent
+          input: examples/external-consumer/technocore-agent.json
+          out: conformance-report.json
+      - name: Assert portable result
+        run: |
+          test -f conformance-report.json
+          node -e 'const r=require("./conformance-report.json"); if(!["PASS","PARTIAL"].includes(r.result)) process.exit(2)'
+      - name: Upload retained evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: action-smoke-conformance-report
+          path: conformance-report.json

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1",
+  "id": "FLOP_CLIENT_CRASH_R12_1D_SETTLEMENT_V0_5_0",
+  "classification": "TARGET_SPEC_BOUNDARY",
+  "upstream": {
+    "yellowpaperRepository": "flop-labs/yellowpaper",
+    "yellowpaperVersion": "0.5.0-draft",
+    "issue": 17,
+    "issueState": "OPEN",
+    "maintainerClarificationCommentId": 5658222921,
+    "runtimeRepository": "flop-labs/flop-core",
+    "runtimeCommit": "41d0009a6acecbb4e0d9fe8d1c9c1ab82210eb46",
+    "sections": ["§13.5 A7", "R12.1d", "E.24"]
+  },
+  "clarifiedBoundary": {
+    "clientCrashIsPayoutException": false,
+    "selectedPath": ["force_settle", "challenge_window", "finalize"],
+    "tariff": "P = BasePerTurn * turn_count + aggregate_gn",
+    "grossMinerSettlementLeg": "P",
+    "agentRefund": "(E - P) - floor(phi * (E - P))",
+    "penaltySink": "floor(phi * (E - P))",
+    "currentPhiPpm": 200000,
+    "auditPoolPpmOfP": 10000,
+    "auditPoolTreatment": "CARVED_FROM_P_NOT_ADDED_CLIENT_CHARGE",
+    "crashSurcharge": "NONE"
+  },
+  "vectors": [
+    {
+      "id": "partial-use-client-crash",
+      "escrow": "1000",
+      "basePerTurn": "10",
+      "turnCount": "20",
+      "aggregateGn": "300",
+      "phiPpm": 200000,
+      "auditPoolPpm": 10000,
+      "expected": {
+        "tariffP": "500",
+        "unusedEscrow": "500",
+        "penaltySink": "100",
+        "agentRefund": "400",
+        "auditPool": "5",
+        "minerTransfer": "495",
+        "clientNetCost": "600",
+        "conservationTotal": "1000"
+      }
+    },
+    {
+      "id": "full-use-no-unused-escrow",
+      "escrow": "500",
+      "basePerTurn": "10",
+      "turnCount": "20",
+      "aggregateGn": "300",
+      "phiPpm": 200000,
+      "auditPoolPpm": 10000,
+      "expected": {
+        "tariffP": "500",
+        "unusedEscrow": "0",
+        "penaltySink": "0",
+        "agentRefund": "0",
+        "auditPool": "5",
+        "minerTransfer": "495",
+        "clientNetCost": "500",
+        "conservationTotal": "500"
+      }
+    }
+  ],
+  "invariants": [
+    "CLIENT_CRASH_NOT_PAYOUT_EXCEPTION",
+    "UNILATERAL_PATH_USES_R12_1D",
+    "AUDIT_POOL_CARVED_FROM_P",
+    "CRASH_ADDS_NO_SURCHARGE",
+    "PAYOUT_CONSERVES_ESCROW"
+  ],
+  "scope": {
+    "networkMutation": false,
+    "liveSettlement": false,
+    "signatureGeneration": false,
+    "claimsBroaderE24Resolution": false
+  }
+}

@@ -1,10 +1,31 @@
 # FLOP Conformance Lab
 
+**Claims are cheap. Attach a reproducible conformance result.**
+
 Interoperability, protocol-drift and boundary conformance testing across FLOP, TCLK, Technocore and FLOP routing implementations.
 
 > **Alpha community project. Not an official FLOP Labs product.**
 
 This independent project is not an official FLOP Labs validator and carries no endorsement. TCLK tests TCLK itself; this Lab focuses on boundaries between TCLK, Technocore signed transport, signing/canonicalization, routing implementations, and FLOP target semantics. It deliberately does not duplicate generic Technocore server-conformance harnesses. It performs no settlement and requires no production DID, wallet, FLOP token, passphrase, or API key.
+
+## For agents and downstream builders
+
+If you only need to prove or inspect interoperability, **do not adopt the full Lab**. Run one narrow evidence profile and retain the portable result:
+
+```yaml
+- id: conformance
+  uses: retardio73-boop/flop-conformance-lab@f5b7287b623c181c353720b69e21098da5184be5
+  with:
+    profile: technocore-agent
+    input: evidence/agent.json
+    out: conformance-report.json
+```
+
+The output schema is `flop-conformance-result/v1`. `PASS` means the supplied evidence passed that profile; `PARTIAL` tells you which evidence is still missing; `FAIL` is a hard failure for the supplied evidence. The Action also exposes `result` and `report` outputs.
+
+Automated agents should start at [`AGENTS.md`](AGENTS.md). Upstream publication from this repository is governed by the [Upstream Participation Policy](docs/UPSTREAM_PARTICIPATION_POLICY.md), which is normative for this repository but does not create FLOP protocol law. Humans can start with the [60-second integration path](docs/INTEGRATE_60_SECONDS.md), then use the [full integration guide](docs/external-integration.md). The current v1 integration surface is temporarily frozen under [`docs/API_STABILITY.md`](docs/API_STABILITY.md). External implementations with reproducible evidence can [submit it through the issue form](../../issues/new?template=conformance-evidence.yml); verified external CI use is tracked separately from candidates/proposals in the [adoption matrix](adoption/MATRIX.md) and registry.
+
+A downstream repo may also publish `.well-known/flop-conformance.json` as a discovery pointer; see the [discovery manifest](docs/discovery-manifest.md). The pointer itself is never proof.
 
 ## Builder identity
 
@@ -21,9 +42,12 @@ On Windows, the optional productive signer is loaded from a CurrentUser DPAPI cr
 - `integration`: signed-transport identity must match the TCLK frame party; protocol-valid and transport-representable values remain distinct.
 - `evidence`: adversarial trust-boundary fixtures for world-writable room content, transcript completeness/order, unauthenticated venue time, settlement confidence, mailbox reachability and lossless transport nonces.
 - `router`: optional adapter conformance against a built Session Router module.
-- `flop`: target-spec reporting only while an authoritative public runtime adapter is unavailable; E.51 wire closure remains explicitly unresolved.
+- `htlc`: offline §10/TCLK settlement-boundary conformance with R10.2, R10.5, provisional tclk/2 observations, and E.48 kept pending. See [`docs/HTLC_CONFORMANCE.md`](docs/HTLC_CONFORMANCE.md).
+- `flop`: target-spec reporting against pinned Yellow Paper semantics while an authoritative public runtime adapter is unavailable. The 0.5.0 sync at `3c97bbc` resolves the #17/#44/#54/#56/#57/#61 canaries and pins E.55 quote fields partially; live runtime compatibility remains separate.
 
 `RELEASE_CONFORMANCE` is active against pinned `@flop-labs/tclk@0.1.0` vectors. `UPSTREAM_CONFORMANCE` is `MANIFEST_ONLY`: exact upstream SHAs are recorded but no second behavioral lane is claimed. `TARGET_SPEC_CONFORMANCE` is active for explicit target semantics. `LIVE_CONFORMANCE` is `PUBLIC_RUNTIME_UNAVAILABLE`. Open pull requests and issues are provisional, never silently normative.
+
+The first multi-issue resolution lifecycle is retained in [`docs/YELLOWPAPER_3C97BBC_RESOLUTION_SWEEP.md`](docs/YELLOWPAPER_3C97BBC_RESOLUTION_SWEEP.md): #17/#44/#54/#56/#57/#61 replay to PASS after upstream sync `3c97bbc`, while #26 remains intentionally PARTIAL.
 
 `UPSTREAM_COMPATIBILITY_WORKAROUND`: the released TCLK ID helpers hash every enumerable property supplied by the caller. The Lab exports `normativeOfferId` and `normativeContractId`, which whitelist only normative protocol fields so transport/runtime metadata cannot change an offer or contract ID. Official vectors remain unmodified; this workaround is covered by regression tests and should be removed only after a verified compatible upstream release.
 
@@ -45,6 +69,18 @@ The suite distinguishes:
 
 See [`docs/adversarial-evidence-suite-v1.md`](docs/adversarial-evidence-suite-v1.md).
 
+## Ecosystem interoperability
+
+`conformance/fixtures/ecosystem-interop-v1.json` pins community projects used as vector, receipt, transport, observability, security, discovery, or downstream integration references. Community behavior is never promoted to FLOP/TCLK normative status by inclusion. TCR-1 receipts may be adapted into `flop.work-evidence.v1` only after cryptographic and artifact verification; allocation credit remains `NOT_DERIVED`.
+
+## Protocol Drift Observatory
+
+`conformance/observatory/registry.json` maps upstream Yellow Paper, Technocore and TCLK sources to the fixtures they can invalidate. A scheduled read-only workflow compares those sources with the committed baseline; any changed fingerprint marks affected results `UNKNOWN` and requires fixture regeneration instead of silently promoting new upstream behavior. See [`docs/protocol-drift-observatory.md`](docs/protocol-drift-observatory.md).
+
+The Lab also contains a deliberately partial [`flop.reference-journey.v1`](conformance/fixtures/flop-reference-journey-v1.json): discover → quote → validate → route → open channel → turn → receipt → close → settlement representation. It preserves Yellow Paper #26/#56 blockers and never represents the journey as live FLOP execution.
+
+Experimental agent discovery and reputation-evidence schemas are documented in [`docs/experimental-agent-economics.md`](docs/experimental-agent-economics.md). They are local research surfaces intended for Router, Inference Market, Control Center and Empires; they are not FLOP or Technocore standards and define no universal reputation score.
+
 ## Run
 
 ```powershell
@@ -57,6 +93,23 @@ node dist/src/cli.js run --router-module ..\flop-session-router\dist\src\index.j
 
 Every command works with stdin closed. No passphrase, wallet, browser login or network mutation is required.
 
+## Use from another implementation
+
+The Lab also exposes narrow evidence profiles so downstream tools can run cross-system checks in their own CI without adopting the full Lab:
+
+```bash
+node dist/src/cli.js profiles
+node dist/src/cli.js verify --profile technocore-agent --input evidence/agent.json --out conformance-report.json
+node dist/src/cli.js verify --profile tclk-transcript --input evidence/transcript.json --out conformance-report.json
+node dist/src/cli.js verify --profile direct-rail-f1 --input examples/external-consumer/direct-rail-f1.json --out direct-rail-report.json
+```
+
+The portable output schema is `flop-conformance-result/v1`. `PASS`, `PARTIAL`, and `FAIL` distinguish verified supplied evidence from incomplete evidence and hard conformance failures. A profile PASS is not a FLOP Labs certification and never upgrades transcript activity into a settlement claim.
+
+`direct-rail-f1` is a release gate for Appendix F.1 bytes and negative legacy cases. Yellow Paper #61 was resolved by `3c97bbc`, so exact F.1 evidence can now return `PASS`; that PASS still does not claim public runtime compatibility or private implementation coverage.
+
+A reusable root `action.yml` provides the same interface for GitHub Actions. Consumers should pin an immutable release tag or commit and retain `conformance-report.json` as CI evidence. See [`docs/external-integration.md`](docs/external-integration.md) and [`schemas/flop-conformance-result-v1.schema.json`](schemas/flop-conformance-result-v1.schema.json). Ready-to-apply external adapter/workflow bundles live under [`integrations/external/`](integrations/external/), and three bounded public reproductions are indexed in [`docs/REPRODUCIBLE_DEMOS.md`](docs/REPRODUCIBLE_DEMOS.md).
+
 ## Normative classifications
 
 Every result is marked `RELEASE_NORMATIVE`, `PINNED_UPSTREAM`, `PROVISIONAL_PR`, `OPEN_ISSUE`, `TARGET_SPEC`, or `LOCAL_POLICY`. The release lane is pinned to package integrity and commit SHA. Floating `main` is never a deterministic CI dependency.
@@ -67,8 +120,14 @@ The adversarial evidence suite is `LOCAL_POLICY` backed by public field evidence
 
 ## Maturity
 
-Release `v0.1.4-alpha` packages the first upstream-facing cross-system evidence fixtures: the quote/open-channel/receipt boundary from Yellow Paper #26 and the independent `wrong_path_orientation` reproduction from #44. The development branch adds `adversarial-evidence-suite-v1`, extending the Lab from byte/schema conformance into explicit evidence-quality and trust-boundary classification. Coverage remains intentionally focused rather than exhaustive. The public FLOP runtime lane remains `PUBLIC_RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
+Release `v0.1.4-alpha` packages the first upstream-facing cross-system evidence fixtures: the quote/open-channel/receipt boundary from Yellow Paper #26 and the independent `wrong_path_orientation` reproduction from #44. Development `main` additionally exposes portable downstream profiles, a path-portable GitHub Action, explicit adoption tracking, and adversarial evidence classification. Coverage remains intentionally focused rather than exhaustive. The public FLOP runtime lane remains `PUBLIC_RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
 
 ## Security
 
 All remote room text is untrusted. The Lab never executes room content, follows embedded URLs, signs arbitrary bytes, mutates golden vectors, or performs live settlement. See `SECURITY.md`.
+
+## Operator tooling
+
+For local multi-repository observability around the Lab and adjacent FLOP tooling, use [FLOP Control Center](https://github.com/retardio73-boop/flop-control-center). It keeps operational health separate from conformance evidence: dashboard health is not a conformance result, certification, or settlement proof.
+
+Try the read-only synthetic demo with `python server_public.py --demo`. The current adoption-oriented release is [v0.2.0-alpha](https://github.com/retardio73-boop/flop-control-center/releases/tag/v0.2.0-alpha).

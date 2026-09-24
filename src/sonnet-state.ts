@@ -71,3 +71,35 @@ export function reconcileParticipantRegistration(input: {
 }
 
 export function beginIdempotentRequest(existing:{request_id:string;canonical:string}|undefined,payload:Record<string,unknown>):{request_id:string;canonical:string}{const requestId=payload.request_id;if(typeof requestId!=="string"||requestId.length===0)throw new Error("INVALID_REQUEST_ID");const candidate={request_id:requestId,canonical:canonicalSonnetJson(payload)};if(!existing)return candidate;if(existing.request_id!==requestId||existing.canonical!==candidate.canonical)throw new Error("REQUEST_ID_RETRY_CONFLICT");return existing;}
+
+export type RosterObservation = {contest_id:string; signer:string; request_id:string; canonical:string};
+export type AcceptedRosterReceipt = RosterObservation & {status:"accepted"; receipt_seq:number};
+export type RosterAuthorityEvaluation = {
+  state:"PENDING_OR_REPLAY"|"AUTHORITATIVE_ACCEPTED"|"AUTHORITATIVE_REPLAY";
+  shouldMutate:boolean;
+  receiptSeq?:number;
+};
+
+/**
+ * A visible roster post is not authoritative by itself. Only a matching accepted
+ * referee receipt can advance local state. Re-observing the same request after
+ * its accepted receipt was already applied is a replay and must not trigger a
+ * rebuild, withdrawal, or any other state mutation.
+ */
+export function evaluateRosterAuthority(
+  observation:RosterObservation,
+  receipt:AcceptedRosterReceipt|undefined,
+  lastAppliedReceiptSeq?:number,
+):RosterAuthorityEvaluation {
+  if(observation.contest_id!==SONNET_CONTEST_ID)throw new Error("INVALID_ROSTER_CONTEST");
+  if(!observation.signer||!observation.request_id||!observation.canonical)throw new Error("INCOMPLETE_ROSTER_OBSERVATION");
+  if(!receipt)return {state:"PENDING_OR_REPLAY",shouldMutate:false};
+  if(receipt.status!=="accepted"||!Number.isSafeInteger(receipt.receipt_seq)||receipt.receipt_seq<0)throw new Error("INVALID_ACCEPTED_ROSTER_RECEIPT");
+  const sameTuple=receipt.contest_id===observation.contest_id&&receipt.signer===observation.signer&&receipt.request_id===observation.request_id;
+  if(!sameTuple||receipt.canonical!==observation.canonical)return {state:"PENDING_OR_REPLAY",shouldMutate:false};
+  if(lastAppliedReceiptSeq!==undefined){
+    if(!Number.isSafeInteger(lastAppliedReceiptSeq)||lastAppliedReceiptSeq<0)throw new Error("INVALID_LAST_APPLIED_RECEIPT_SEQ");
+    if(receipt.receipt_seq<=lastAppliedReceiptSeq)return {state:"AUTHORITATIVE_REPLAY",shouldMutate:false,receiptSeq:receipt.receipt_seq};
+  }
+  return {state:"AUTHORITATIVE_ACCEPTED",shouldMutate:true,receiptSeq:receipt.receipt_seq};
+}

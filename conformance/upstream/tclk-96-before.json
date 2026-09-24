@@ -1,0 +1,29 @@
+{
+  "schema": "flop.upstream-boundary-baseline.v1",
+  "issue": "https://github.com/flop-labs/tclk/issues/96",
+  "classification": "OFFICIAL_BUT_TBD",
+  "observedAt": "2026-09-14T05:35:00Z",
+  "upstreamCommit": "5cc4ab93efbc8999a3a7e1471b639deca25998ea",
+  "upstreamState": "OPEN",
+  "maintainerTriage": {
+    "actor": "sv",
+    "severity": "HIGHEST_OPEN_SEVERITY",
+    "noOpenPrPreventsFailure": true,
+    "designDecisionRequired": true
+  },
+  "before": {
+    "signaturePreimage": "room|nonce|text",
+    "venueTimestampAuthenticated": false,
+    "deadlineUsesVenueTimestamp": true,
+    "allSignaturesRemainValidAfterTimestampEdit": true,
+    "honestTerminalStatus": "claimed",
+    "tamperedTerminalStatus": "refunded",
+    "reproduction": "conformance/reproductions/tclk-96-upstream.mjs",
+    "labBoundary": "UNTRUSTED_VENUE_TIME",
+    "deadlineVerdictAllowed": false,
+    "settlementTrust": "SETTLEMENT_UNVERIFIED"
+  },
+  "resolution": null,
+  "after": null,
+  "transitionRule": "Replace resolution/after only from an upstream maintainer decision, merged fix, or released behavior; rerun the same reproduction before changing conformance classification."
+}

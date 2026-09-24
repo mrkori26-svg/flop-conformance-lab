@@ -1,0 +1,96 @@
+{
+  "schema": "flop.htlc-replay-cross-language-v1",
+  "classification": "LOCAL_TEST_VECTOR",
+  "canonicalization": "@flop-labs/tclk canonicalJson for rawEvidenceSha256",
+  "vectors": [
+    {
+      "id": "evm-finalized",
+      "input": {
+        "chainId": 11155111,
+        "assetId": "ETH",
+        "event": "CLAIMED",
+        "transactionHash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+        "blockHash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+        "blockNumber": 123,
+        "timestamp": 1700000000,
+        "hashLockHex": "1111111111111111111111111111111111111111111111111111111111111111",
+        "participantBinding": "payer->payee",
+        "amount": "42",
+        "finalityTag": "finalized",
+        "rawRpc": {
+          "jsonrpc": "2.0",
+          "result": {
+            "status": "0x1",
+            "blockNumber": "0x7b"
+          }
+        }
+      },
+      "expected": {
+        "schema": "flop.htlc-pair-leg-evidence.v1",
+        "rail": "EVM",
+        "chainId": "eip155:11155111",
+        "assetId": "ETH",
+        "event": "CLAIMED",
+        "txRef": "0x2222222222222222222222222222222222222222222222222222222222222222",
+        "blockId": "0x3333333333333333333333333333333333333333333333333333333333333333",
+        "blockNumber": 123,
+        "observedAt": 1700000000,
+        "hashLockHex": "1111111111111111111111111111111111111111111111111111111111111111",
+        "participantBinding": "payer->payee",
+        "amount": "42",
+        "finality": {
+          "status": "FINALIZED",
+          "policy": "evm-tag:finalized"
+        },
+        "rawEvidenceSha256": "fcc98387feb6bcbecd4ee7da7e3d41143cb1a15a305adc4f3e2090936a56e35d",
+        "verified": true
+      }
+    },
+    {
+      "id": "btc-confirmed",
+      "input": {
+        "network": "testnet",
+        "assetId": "BTC",
+        "event": "CLAIMED",
+        "txid": "2222222222222222222222222222222222222222222222222222222222222222",
+        "blockHash": "3333333333333333333333333333333333333333333333333333333333333333",
+        "blockHeight": 456,
+        "confirmations": 6,
+        "requiredConfirmations": 6,
+        "timestamp": 1700000100,
+        "hashLockHex": "1111111111111111111111111111111111111111111111111111111111111111",
+        "participantBinding": "payer->payee",
+        "amountSats": "4200",
+        "rawRpc": {
+          "txid": "2222222222222222222222222222222222222222222222222222222222222222",
+          "status": {
+            "confirmed": true,
+            "block_height": 456,
+            "block_hash": "3333333333333333333333333333333333333333333333333333333333333333"
+          }
+        }
+      },
+      "expected": {
+        "schema": "flop.htlc-pair-leg-evidence.v1",
+        "rail": "BTC",
+        "chainId": "bip122:testnet",
+        "assetId": "BTC",
+        "event": "CLAIMED",
+        "txRef": "2222222222222222222222222222222222222222222222222222222222222222",
+        "blockId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "blockNumber": 456,
+        "observedAt": 1700000100,
+        "hashLockHex": "1111111111111111111111111111111111111111111111111111111111111111",
+        "participantBinding": "payer->payee",
+        "amount": "4200",
+        "finality": {
+          "status": "CONFIRMED",
+          "depth": 6,
+          "policy": "btc-confirmations:6"
+        },
+        "rawEvidenceSha256": "aa03e7736e653527721b012b0e8b619b7de22c9240e676de2edf25f08bff3b00",
+        "verified": true
+      }
+    }
+  ]
+}

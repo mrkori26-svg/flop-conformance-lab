@@ -1,0 +1,34 @@
+{
+  "schema": "flop.soft-reference-pin.v1",
+  "classification": "PROVISIONAL_EXTERNAL_PROPOSAL",
+  "observedAt": "2026-09-15",
+  "source": {
+    "repo": "osr21/flop-soft-verification-reference",
+    "commit": "8c6f57cb64fa28c2a7e2293642c4f90504c1f64a",
+    "vectorsSha256": "7c1203ac557ecd2857dfa9c70b73245aa86a223c9c486c2d2254416bb39fe9ba"
+  },
+  "status": "illustrative-non-consensus",
+  "boundaries": ["E.33", "E.43", "E.44", "E.45"],
+  "selectedVectors": [
+    {
+      "id": "unsafe-aggregate-exposure-reject",
+      "p_effective_lower_bound": 0.2,
+      "collectibleCollateral": 550,
+      "aggregateExposure": 110,
+      "expected": "UNSAFE_AGGREGATE_EXPOSURE"
+    },
+    {
+      "id": "safe-concurrent-opening-accept",
+      "p_effective_lower_bound": 0.2,
+      "collectibleCollateral": 600,
+      "aggregateExposure": 110,
+      "expected": "OPENED",
+      "safetyMargin": 10
+    }
+  ],
+  "policy": {
+    "normativePromotion": "FORBIDDEN_WITHOUT_UPSTREAM_DECISION",
+    "reuse": "differential-fixture-only",
+    "allocationInference": "FORBIDDEN"
+  }
+}

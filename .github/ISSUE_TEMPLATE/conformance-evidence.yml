@@ -1,0 +1,79 @@
+name: Submit conformance evidence
+description: Register reproducible external use of a FLOP Conformance Lab profile.
+title: "Evidence: <owner/repo> / <profile>"
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit reproducible profile-scoped evidence. This is not a certification request and does not imply FLOP Labs endorsement.
+  - type: input
+    id: repository
+    attributes:
+      label: Implementation repository
+      placeholder: owner/repo
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Immutable implementation revision
+      placeholder: commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Profile
+      options:
+        - technocore-agent
+        - tclk-transcript
+    validations:
+      required: true
+  - type: input
+    id: labref
+    attributes:
+      label: Immutable Lab ref
+      placeholder: commit SHA or immutable release tag
+    validations:
+      required: true
+  - type: input
+    id: report
+    attributes:
+      label: Retained conformance report
+      description: Link to conformance-report.json at the submitted revision or immutable artifact.
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Input evidence or deterministic generator
+      description: Link to retained input or the code/step that deterministically creates it.
+    validations:
+      required: true
+  - type: input
+    id: ci
+    attributes:
+      label: External CI run
+      description: Link to the run that produced or verified the submitted result.
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - PASS
+        - PARTIAL
+        - FAIL
+    validations:
+      required: true
+  - type: checkboxes
+    id: attest
+    attributes:
+      label: Attestation
+      options:
+        - label: I understand this is profile-scoped evidence, not FLOP Labs certification or endorsement.
+          required: true
+        - label: The links above are public and reproducible without secrets.
+          required: true

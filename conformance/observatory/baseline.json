@@ -1,0 +1,295 @@
+{
+  "schema": "flop.protocol-drift-snapshot.v1",
+  "generatedAt": "2026-09-24T14:53:04.571Z",
+  "observations": [
+    {
+      "id": "yellowpaper-main",
+      "state": {
+        "sha": "cb3cbf97a346ff85aca6dba5e924434270ca672c"
+      },
+      "fingerprint": "eyJzaGEiOiJjYjNjYmY5N2EzNDZmZjg1YWNhNmRiYTVlOTI0NDM0MjcwY2E2NzJjIn0"
+    },
+    {
+      "id": "yellowpaper-issue-56",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-16T19:16:09Z",
+        "title": "ambiguity: the agent receipt signs payable:u128LE, a value the document defines nowhere and settle does not carry"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogdGhlIGFnZW50IHJlY2VpcHQgc2lnbnMgcGF5YWJsZTp1MTI4TEUsIGEgdmFsdWUgdGhlIGRvY3VtZW50IGRlZmluZXMgbm93aGVyZSBhbmQgc2V0dGxlIGRvZXMgbm90IGNhcnJ5IiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMTZUMTk6MTY6MDlaIn0"
+    },
+    {
+      "id": "yellowpaper-issue-57",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-12T15:33:28Z",
+        "title": "erratum: §1's hash table still calls the transcript accumulator an \"aggregate_gn sum-tree\"; F.3's node rule carries no sum"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImVycmF0dW06IMKnMSdzIGhhc2ggdGFibGUgc3RpbGwgY2FsbHMgdGhlIHRyYW5zY3JpcHQgYWNjdW11bGF0b3IgYW4gXCJhZ2dyZWdhdGVfZ24gc3VtLXRyZWVcIjsgRi4zJ3Mgbm9kZSBydWxlIGNhcnJpZXMgbm8gc3VtIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMTJUMTU6MzM6MjhaIn0"
+    },
+    {
+      "id": "technocore-main",
+      "state": {
+        "sha": "c3fcf06ac6b47a652a27b62ee72f24592180bcdf"
+      },
+      "fingerprint": "eyJzaGEiOiJjM2ZjZjA2YWM2YjQ3YTY1MmEyN2I2MmVlNzJmMjQ1OTIxODBiY2RmIn0"
+    },
+    {
+      "id": "technocore-pr-851",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "a59919f447bfd64b5661f968dcaf7e3b93f06854",
+        "updated_at": "2026-09-22T01:03:40Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiJhNTk5MTlmNDQ3YmZkNjRiNTY2MWY5NjhkY2FmN2UzYjkzZjA2ODU0IiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjJUMDE6MDM6NDBaIn0"
+    },
+    {
+      "id": "tclk-main",
+      "state": {
+        "sha": "5cc4ab93efbc8999a3a7e1471b639deca25998ea"
+      },
+      "fingerprint": "eyJzaGEiOiI1Y2M0YWI5M2VmYmM4OTk5YTNhN2UxNDcxYjYzOWRlY2EyNTk5OGVhIn0"
+    },
+    {
+      "id": "yellowpaper-issue-5",
+      "state": {
+        "state": "closed",
+        "updated_at": "2026-09-10T16:18:47Z",
+        "title": "erratum: R10.2 timelock formula lacks its comparator; HTLC params link to §13.0"
+      },
+      "fingerprint": "eyJzdGF0ZSI6ImNsb3NlZCIsInRpdGxlIjoiZXJyYXR1bTogUjEwLjIgdGltZWxvY2sgZm9ybXVsYSBsYWNrcyBpdHMgY29tcGFyYXRvcjsgSFRMQyBwYXJhbXMgbGluayB0byDCpzEzLjAiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xMFQxNjoxODo0N1oifQ"
+    },
+    {
+      "id": "tclk-issue-57",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-07T04:19:23Z",
+        "title": "Design tclk/2 as agreements, transfer attempts, and verified rail observations"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6IkRlc2lnbiB0Y2xrLzIgYXMgYWdyZWVtZW50cywgdHJhbnNmZXIgYXR0ZW1wdHMsIGFuZCB2ZXJpZmllZCByYWlsIG9ic2VydmF0aW9ucyIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTA3VDA0OjE5OjIzWiJ9"
+    },
+    {
+      "id": "tclk-pr-58",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "7b299a8bfd6ed70d6a7bd8b7852998d292100a37",
+        "updated_at": "2026-09-06T19:42:28Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI3YjI5OWE4YmZkNmVkNzBkNmE3YmQ4Yjc4NTI5OThkMjkyMTAwYTM3IiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMDZUMTk6NDI6MjhaIn0"
+    },
+    {
+      "id": "yellowpaper-issue-16",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-10T11:04:02Z",
+        "title": "ambiguity: R10.2 depends on current_finality_lag, which the document never defines"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogUjEwLjIgZGVwZW5kcyBvbiBjdXJyZW50X2ZpbmFsaXR5X2xhZywgd2hpY2ggdGhlIGRvY3VtZW50IG5ldmVyIGRlZmluZXMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xMFQxMTowNDowMloifQ"
+    },
+    {
+      "id": "yellowpaper-issue-51",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-11T07:38:30Z",
+        "title": "challenge: E.48's fee-floor deterrence premise (collusion_deterred) doesn't scale with R10.5's variable-settlement lock size"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImNoYWxsZW5nZTogRS40OCdzIGZlZS1mbG9vciBkZXRlcnJlbmNlIHByZW1pc2UgKGNvbGx1c2lvbl9kZXRlcnJlZCkgZG9lc24ndCBzY2FsZSB3aXRoIFIxMC41J3MgdmFyaWFibGUtc2V0dGxlbWVudCBsb2NrIHNpemUiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xMVQwNzozODozMFoifQ"
+    },
+    {
+      "id": "yellowpaper-issue-58-agent-stake-lifecycle",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-22T01:03:28Z",
+        "title": "challenge: §12.3 demand-side Sybil floor is unsized against observed identity rates; Technocore measurements for E.49"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImNoYWxsZW5nZTogwqcxMi4zIGRlbWFuZC1zaWRlIFN5YmlsIGZsb29yIGlzIHVuc2l6ZWQgYWdhaW5zdCBvYnNlcnZlZCBpZGVudGl0eSByYXRlczsgVGVjaG5vY29yZSBtZWFzdXJlbWVudHMgZm9yIEUuNDkiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yMlQwMTowMzoyOFoifQ"
+    },
+    {
+      "id": "tclk-issue-172-settlement-view",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-23T19:58:49Z",
+        "title": "Design: a rail-verified settlement view for tclk/1, before any value rail merges"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6IkRlc2lnbjogYSByYWlsLXZlcmlmaWVkIHNldHRsZW1lbnQgdmlldyBmb3IgdGNsay8xLCBiZWZvcmUgYW55IHZhbHVlIHJhaWwgbWVyZ2VzIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjNUMTk6NTg6NDlaIn0"
+    },
+    {
+      "id": "tclk-pr-173-settlement-view",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "0f94269db7598f28cf645b5d74110ae215446671",
+        "updated_at": "2026-09-21T05:57:57Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwZjk0MjY5ZGI3NTk4ZjI4Y2Y2NDViNWQ3NDExMGFlMjE1NDQ2NjcxIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjFUMDU6NTc6NTdaIn0"
+    },
+    {
+      "id": "yellowpaper-issue-74-validator-performance",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-22T16:09:50Z",
+        "title": "ambiguity: validator performance score components lack normative observation definitions"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogdmFsaWRhdG9yIHBlcmZvcm1hbmNlIHNjb3JlIGNvbXBvbmVudHMgbGFjayBub3JtYXRpdmUgb2JzZXJ2YXRpb24gZGVmaW5pdGlvbnMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yMlQxNjowOTo1MFoifQ"
+    },
+    {
+      "id": "yellowpaper-issue-73-hids",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-23T06:56:34Z",
+        "title": "ambiguity: `h_ids` cannot be independently reconstructed from Appendix F.3 and the published wire-format vectors"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogYGhfaWRzYCBjYW5ub3QgYmUgaW5kZXBlbmRlbnRseSByZWNvbnN0cnVjdGVkIGZyb20gQXBwZW5kaXggRi4zIGFuZCB0aGUgcHVibGlzaGVkIHdpcmUtZm9ybWF0IHZlY3RvcnMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yM1QwNjo1NjozNFoifQ"
+    },
+    {
+      "id": "yellowpaper-issue-55-meter",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-22T00:52:40Z",
+        "title": "R4.2 mandates hp_poui::flop_meter for G_n, but no public implementation or formula exists"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6IlI0LjIgbWFuZGF0ZXMgaHBfcG91aTo6ZmxvcF9tZXRlciBmb3IgR19uLCBidXQgbm8gcHVibGljIGltcGxlbWVudGF0aW9uIG9yIGZvcm11bGEgZXhpc3RzIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjJUMDA6NTI6NDBaIn0"
+    },
+    {
+      "id": "yellowpaper-issue-62-soft",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-22T00:52:42Z",
+        "title": "proposal: executable SOFT verification profile and E.45 adversarial model"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6InByb3Bvc2FsOiBleGVjdXRhYmxlIFNPRlQgdmVyaWZpY2F0aW9uIHByb2ZpbGUgYW5kIEUuNDUgYWR2ZXJzYXJpYWwgbW9kZWwiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yMlQwMDo1Mjo0MloifQ"
+    },
+    {
+      "id": "yellowpaper-issue-71-htlc-residual",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-22T00:52:38Z",
+        "title": "ambiguity: R10.5 settles a variable amount against a fixed lock without specifying the residual's disposition; SETTLED is terminal and no transition returns it"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogUjEwLjUgc2V0dGxlcyBhIHZhcmlhYmxlIGFtb3VudCBhZ2FpbnN0IGEgZml4ZWQgbG9jayB3aXRob3V0IHNwZWNpZnlpbmcgdGhlIHJlc2lkdWFsJ3MgZGlzcG9zaXRpb247IFNFVFRMRUQgaXMgdGVybWluYWwgYW5kIG5vIHRyYW5zaXRpb24gcmV0dXJucyBpdCIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTIyVDAwOjUyOjM4WiJ9"
+    },
+    {
+      "id": "yellowpaper-issue-67-validator-rotation",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-17T16:41:52Z",
+        "title": "ambiguity: R15.5 mandates ejecting validators_to_eject = 50 per rotation with no active-set floor or replacement coupling; an active set ≤ 50 with an empty queue is emptied at its first on_initialize rotation"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImFtYmlndWl0eTogUjE1LjUgbWFuZGF0ZXMgZWplY3RpbmcgdmFsaWRhdG9yc190b19lamVjdCA9IDUwIHBlciByb3RhdGlvbiB3aXRoIG5vIGFjdGl2ZS1zZXQgZmxvb3Igb3IgcmVwbGFjZW1lbnQgY291cGxpbmc7IGFuIGFjdGl2ZSBzZXQg4omkIDUwIHdpdGggYW4gZW1wdHkgcXVldWUgaXMgZW1wdGllZCBhdCBpdHMgZmlyc3Qgb25faW5pdGlhbGl6ZSByb3RhdGlvbiIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTE3VDE2OjQxOjUyWiJ9"
+    },
+    {
+      "id": "technocore-pr-842-export",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "6a4d8ecda573681d34894c022303435c1bd7289c",
+        "updated_at": "2026-09-22T00:55:09Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2YTRkOGVjZGE1NzM2ODFkMzQ4OTRjMDIyMzAzNDM1YzFiZDcyODljIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjJUMDA6NTU6MDlaIn0"
+    },
+    {
+      "id": "technocore-pr-800-retained-floor",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "67c1f72c483dce0e49fb622aaed7147c391ccc1e",
+        "updated_at": "2026-09-24T14:02:26Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2N2MxZjcyYzQ4M2RjZTBlNDlmYjYyMmFhZWQ3MTQ3YzM5MWNjYzFlIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjRUMTQ6MDI6MjZaIn0"
+    },
+    {
+      "id": "tclk-recent-activity",
+      "state": {
+        "count": 30,
+        "latest_updated_at": "2026-09-24T12:26:20Z",
+        "items_json": "[{\"number\":179,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-24T12:26:20Z\",\"title\":\"style(git): enforce LF line endings via .gitattributes\"},{\"number\":12,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T06:07:42Z\",\"title\":\"SPEC question: a payee-opened offer assigns the secret to the party that cannot reveal it\"},{\"number\":180,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T04:12:59Z\",\"title\":\"PaperRail.verifyLock compares 4 of the 9 LockTerms: a lock for the wrong amount or payee verifies\"},{\"number\":177,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-24T02:57:42Z\",\"title\":\"fix(frames): validate adaptor pre-signature values\"},{\"number\":171,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-24T01:03:37Z\",\"title\":\"feat(rail): add FlopHtlcRail, a flop-htlc binding with a mock chain and an unwired RPC stub\"},{\"number\":172,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-23T19:58:49Z\",\"title\":\"Design: a rail-verified settlement view for tclk/1, before any value rail merges\"},{\"number\":176,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-23T18:34:47Z\",\"title\":\"fix(frames): lock.presig accepts off-curve nonces and unusable scalars\"},{\"number\":175,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-23T13:07:48Z\",\"title\":\"fix(transcript): refuse to fold a terminal verdict that rests on unsigned time (#96)\"},{\"number\":68,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-23T12:58:49Z\",\"title\":\"docs(spec): pin the canonical-JSON escape forms the ids depend on\"},{\"number\":154,\"kind\":\"pr\",\"state\":\"closed\",\"updated_at\":\"2026-09-23T08:43:26Z\",\"title\":\"Fix PaperRail canonical record validation\"},{\"number\":144,\"kind\":\"pr\",\"state\":\"closed\",\"updated_at\":\"2026-09-23T08:43:21Z\",\"title\":\"docs: pin canonical JSON number and key ordering\"},{\"number\":167,\"kind\":\"pr\",\"state\":\"closed\",\"updated_at\":\"2026-09-23T08:43:17Z\",\"title\":\"fix(frames): stop echoing rejected secret in validation error\"},{\"number\":41,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-23T07:26:05Z\",\"title\":\"SPEC question: make accepted-but-unlocked abandonment observable\"},{\"number\":178,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-23T05:03:16Z\",\"title\":\"docs(spec): a consumer rule for the R10.2/R10.5 gap, not just the gap itself\"},{\"number\":132,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-23T04:05:44Z\",\"title\":\"Does tclk/1 implement yellow paper §10? R10.5 (settle actual ≤ locked max) has no shape here, and R10.2's timelock margin has no enforcing layer\"},{\"number\":82,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-22T12:49:32Z\",\"title\":\"fix(transcript): preserve exact nonces above 2^53 in export and room parsing (#78)\"},{\"number\":135,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-22T04:45:24Z\",\"title\":\"deps: Bump the npm group with 4 updates\"},{\"number\":161,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:38Z\",\"title\":\"fix(machine): snapshot accepted frame inputs\"},{\"number\":160,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:36Z\",\"title\":\"fix(technocore): reject invalid state-note statuses\"},{\"number\":152,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:32Z\",\"title\":\"DID note mailbox: values are not validated against the venue name grammar — a nine-agent deployment is structurally uncontactable\"},{\"number\":174,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-21T19:54:07Z\",\"title\":\"docs(examples): correct live-deal message count\"},{\"number\":97,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-21T18:50:02Z\",\"title\":\"fix(transcript): surface unsigned ts/seq trust boundary and per-room gaps\"},{\"number\":173,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-21T05:57:57Z\",\"title\":\"feat(settlement): a rail-verified settlement view, so a frame is never read as money\"},{\"number\":34,\"kind\":\"pr\",\"state\":\"closed\",\"updated_at\":\"2026-09-20T09:06:57Z\",\"title\":\"fix(locks): reject malformed deadline inputs\"},{\"number\":138,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-19T09:33:44Z\",\"title\":\"docs(spec): name the yellow paper §9 is deferring to\"},{\"number\":151,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-18T21:46:26Z\",\"title\":\"Field report: live contracts carry `reveal`+`receipt` with no `lock` anywhere (158/158 in one ring); applyFrame rejects both and folds every one to `accepted`\"},{\"number\":80,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-17T18:41:16Z\",\"title\":\"fix(commitments): reject a verdict the venue rewrites before it strands a vote\"},{\"number\":170,\"kind\":\"pr\",\"state\":\"open\",\"updated_at\":\"2026-09-17T15:22:53Z\",\"title\":\"feat(mcp): add tclk_read_verified_transcript, closing the #158 gap\"},{\"number\":93,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T14:39:34Z\",\"title\":\"`foldTranscript` trusts the export's row order and never checks for a gap — deleting one signed row folds a claimed deal to `refunded`, with no `BAD` verdict\"},{\"number\":158,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T08:13:11Z\",\"title\":\"Deal-room content can be forged and weaponized against per-contract auditors (prompt injection via fake lock/receipt/refund frames)\"}]"
+      },
+      "fingerprint": "eyJjb3VudCI6MzAsIml0ZW1zX2pzb24iOiJbe1wibnVtYmVyXCI6MTc5LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTI0VDEyOjI2OjIwWlwiLFwidGl0bGVcIjpcInN0eWxlKGdpdCk6IGVuZm9yY2UgTEYgbGluZSBlbmRpbmdzIHZpYSAuZ2l0YXR0cmlidXRlc1wifSx7XCJudW1iZXJcIjoxMixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yNFQwNjowNzo0MlpcIixcInRpdGxlXCI6XCJTUEVDIHF1ZXN0aW9uOiBhIHBheWVlLW9wZW5lZCBvZmZlciBhc3NpZ25zIHRoZSBzZWNyZXQgdG8gdGhlIHBhcnR5IHRoYXQgY2Fubm90IHJldmVhbCBpdFwifSx7XCJudW1iZXJcIjoxODAsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjRUMDQ6MTI6NTlaXCIsXCJ0aXRsZVwiOlwiUGFwZXJSYWlsLnZlcmlmeUxvY2sgY29tcGFyZXMgNCBvZiB0aGUgOSBMb2NrVGVybXM6IGEgbG9jayBmb3IgdGhlIHdyb25nIGFtb3VudCBvciBwYXllZSB2ZXJpZmllc1wifSx7XCJudW1iZXJcIjoxNzcsXCJraW5kXCI6XCJwclwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjRUMDI6NTc6NDJaXCIsXCJ0aXRsZVwiOlwiZml4KGZyYW1lcyk6IHZhbGlkYXRlIGFkYXB0b3IgcHJlLXNpZ25hdHVyZSB2YWx1ZXNcIn0se1wibnVtYmVyXCI6MTcxLFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTI0VDAxOjAzOjM3WlwiLFwidGl0bGVcIjpcImZlYXQocmFpbCk6IGFkZCBGbG9wSHRsY1JhaWwsIGEgZmxvcC1odGxjIGJpbmRpbmcgd2l0aCBhIG1vY2sgY2hhaW4gYW5kIGFuIHVud2lyZWQgUlBDIHN0dWJcIn0se1wibnVtYmVyXCI6MTcyLFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIzVDE5OjU4OjQ5WlwiLFwidGl0bGVcIjpcIkRlc2lnbjogYSByYWlsLXZlcmlmaWVkIHNldHRsZW1lbnQgdmlldyBmb3IgdGNsay8xLCBiZWZvcmUgYW55IHZhbHVlIHJhaWwgbWVyZ2VzXCJ9LHtcIm51bWJlclwiOjE3NixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yM1QxODozNDo0N1pcIixcInRpdGxlXCI6XCJmaXgoZnJhbWVzKTogbG9jay5wcmVzaWcgYWNjZXB0cyBvZmYtY3VydmUgbm9uY2VzIGFuZCB1bnVzYWJsZSBzY2FsYXJzXCJ9LHtcIm51bWJlclwiOjE3NSxcImtpbmRcIjpcInByXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yM1QxMzowNzo0OFpcIixcInRpdGxlXCI6XCJmaXgodHJhbnNjcmlwdCk6IHJlZnVzZSB0byBmb2xkIGEgdGVybWluYWwgdmVyZGljdCB0aGF0IHJlc3RzIG9uIHVuc2lnbmVkIHRpbWUgKCM5NilcIn0se1wibnVtYmVyXCI6NjgsXCJraW5kXCI6XCJwclwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMTI6NTg6NDlaXCIsXCJ0aXRsZVwiOlwiZG9jcyhzcGVjKTogcGluIHRoZSBjYW5vbmljYWwtSlNPTiBlc2NhcGUgZm9ybXMgdGhlIGlkcyBkZXBlbmQgb25cIn0se1wibnVtYmVyXCI6MTU0LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJjbG9zZWRcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDg6NDM6MjZaXCIsXCJ0aXRsZVwiOlwiRml4IFBhcGVyUmFpbCBjYW5vbmljYWwgcmVjb3JkIHZhbGlkYXRpb25cIn0se1wibnVtYmVyXCI6MTQ0LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJjbG9zZWRcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDg6NDM6MjFaXCIsXCJ0aXRsZVwiOlwiZG9jczogcGluIGNhbm9uaWNhbCBKU09OIG51bWJlciBhbmQga2V5IG9yZGVyaW5nXCJ9LHtcIm51bWJlclwiOjE2NyxcImtpbmRcIjpcInByXCIsXCJzdGF0ZVwiOlwiY2xvc2VkXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIzVDA4OjQzOjE3WlwiLFwidGl0bGVcIjpcImZpeChmcmFtZXMpOiBzdG9wIGVjaG9pbmcgcmVqZWN0ZWQgc2VjcmV0IGluIHZhbGlkYXRpb24gZXJyb3JcIn0se1wibnVtYmVyXCI6NDEsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDc6MjY6MDVaXCIsXCJ0aXRsZVwiOlwiU1BFQyBxdWVzdGlvbjogbWFrZSBhY2NlcHRlZC1idXQtdW5sb2NrZWQgYWJhbmRvbm1lbnQgb2JzZXJ2YWJsZVwifSx7XCJudW1iZXJcIjoxNzgsXCJraW5kXCI6XCJwclwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDU6MDM6MTZaXCIsXCJ0aXRsZVwiOlwiZG9jcyhzcGVjKTogYSBjb25zdW1lciBydWxlIGZvciB0aGUgUjEwLjIvUjEwLjUgZ2FwLCBub3QganVzdCB0aGUgZ2FwIGl0c2VsZlwifSx7XCJudW1iZXJcIjoxMzIsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDQ6MDU6NDRaXCIsXCJ0aXRsZVwiOlwiRG9lcyB0Y2xrLzEgaW1wbGVtZW50IHllbGxvdyBwYXBlciDCpzEwPyBSMTAuNSAoc2V0dGxlIGFjdHVhbCDiiaQgbG9ja2VkIG1heCkgaGFzIG5vIHNoYXBlIGhlcmUsIGFuZCBSMTAuMidzIHRpbWVsb2NrIG1hcmdpbiBoYXMgbm8gZW5mb3JjaW5nIGxheWVyXCJ9LHtcIm51bWJlclwiOjgyLFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDEyOjQ5OjMyWlwiLFwidGl0bGVcIjpcImZpeCh0cmFuc2NyaXB0KTogcHJlc2VydmUgZXhhY3Qgbm9uY2VzIGFib3ZlIDJeNTMgaW4gZXhwb3J0IGFuZCByb29tIHBhcnNpbmcgKCM3OClcIn0se1wibnVtYmVyXCI6MTM1LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDA0OjQ1OjI0WlwiLFwidGl0bGVcIjpcImRlcHM6IEJ1bXAgdGhlIG5wbSBncm91cCB3aXRoIDQgdXBkYXRlc1wifSx7XCJudW1iZXJcIjoxNjEsXCJraW5kXCI6XCJwclwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjJUMDE6MDM6MzhaXCIsXCJ0aXRsZVwiOlwiZml4KG1hY2hpbmUpOiBzbmFwc2hvdCBhY2NlcHRlZCBmcmFtZSBpbnB1dHNcIn0se1wibnVtYmVyXCI6MTYwLFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDAxOjAzOjM2WlwiLFwidGl0bGVcIjpcImZpeCh0ZWNobm9jb3JlKTogcmVqZWN0IGludmFsaWQgc3RhdGUtbm90ZSBzdGF0dXNlc1wifSx7XCJudW1iZXJcIjoxNTIsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjJUMDE6MDM6MzJaXCIsXCJ0aXRsZVwiOlwiRElEIG5vdGUgbWFpbGJveDogdmFsdWVzIGFyZSBub3QgdmFsaWRhdGVkIGFnYWluc3QgdGhlIHZlbnVlIG5hbWUgZ3JhbW1hciDigJQgYSBuaW5lLWFnZW50IGRlcGxveW1lbnQgaXMgc3RydWN0dXJhbGx5IHVuY29udGFjdGFibGVcIn0se1wibnVtYmVyXCI6MTc0LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIxVDE5OjU0OjA3WlwiLFwidGl0bGVcIjpcImRvY3MoZXhhbXBsZXMpOiBjb3JyZWN0IGxpdmUtZGVhbCBtZXNzYWdlIGNvdW50XCJ9LHtcIm51bWJlclwiOjk3LFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIxVDE4OjUwOjAyWlwiLFwidGl0bGVcIjpcImZpeCh0cmFuc2NyaXB0KTogc3VyZmFjZSB1bnNpZ25lZCB0cy9zZXEgdHJ1c3QgYm91bmRhcnkgYW5kIHBlci1yb29tIGdhcHNcIn0se1wibnVtYmVyXCI6MTczLFwia2luZFwiOlwicHJcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIxVDA1OjU3OjU3WlwiLFwidGl0bGVcIjpcImZlYXQoc2V0dGxlbWVudCk6IGEgcmFpbC12ZXJpZmllZCBzZXR0bGVtZW50IHZpZXcsIHNvIGEgZnJhbWUgaXMgbmV2ZXIgcmVhZCBhcyBtb25leVwifSx7XCJudW1iZXJcIjozNCxcImtpbmRcIjpcInByXCIsXCJzdGF0ZVwiOlwiY2xvc2VkXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIwVDA5OjA2OjU3WlwiLFwidGl0bGVcIjpcImZpeChsb2Nrcyk6IHJlamVjdCBtYWxmb3JtZWQgZGVhZGxpbmUgaW5wdXRzXCJ9LHtcIm51bWJlclwiOjEzOCxcImtpbmRcIjpcInByXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xOVQwOTozMzo0NFpcIixcInRpdGxlXCI6XCJkb2NzKHNwZWMpOiBuYW1lIHRoZSB5ZWxsb3cgcGFwZXIgwqc5IGlzIGRlZmVycmluZyB0b1wifSx7XCJudW1iZXJcIjoxNTEsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMThUMjE6NDY6MjZaXCIsXCJ0aXRsZVwiOlwiRmllbGQgcmVwb3J0OiBsaXZlIGNvbnRyYWN0cyBjYXJyeSBgcmV2ZWFsYCtgcmVjZWlwdGAgd2l0aCBubyBgbG9ja2AgYW55d2hlcmUgKDE1OC8xNTggaW4gb25lIHJpbmcpOyBhcHBseUZyYW1lIHJlamVjdHMgYm90aCBhbmQgZm9sZHMgZXZlcnkgb25lIHRvIGBhY2NlcHRlZGBcIn0se1wibnVtYmVyXCI6ODAsXCJraW5kXCI6XCJwclwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMTdUMTg6NDE6MTZaXCIsXCJ0aXRsZVwiOlwiZml4KGNvbW1pdG1lbnRzKTogcmVqZWN0IGEgdmVyZGljdCB0aGUgdmVudWUgcmV3cml0ZXMgYmVmb3JlIGl0IHN0cmFuZHMgYSB2b3RlXCJ9LHtcIm51bWJlclwiOjE3MCxcImtpbmRcIjpcInByXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xN1QxNToyMjo1M1pcIixcInRpdGxlXCI6XCJmZWF0KG1jcCk6IGFkZCB0Y2xrX3JlYWRfdmVyaWZpZWRfdHJhbnNjcmlwdCwgY2xvc2luZyB0aGUgIzE1OCBnYXBcIn0se1wibnVtYmVyXCI6OTMsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMTdUMTQ6Mzk6MzRaXCIsXCJ0aXRsZVwiOlwiYGZvbGRUcmFuc2NyaXB0YCB0cnVzdHMgdGhlIGV4cG9ydCdzIHJvdyBvcmRlciBhbmQgbmV2ZXIgY2hlY2tzIGZvciBhIGdhcCDigJQgZGVsZXRpbmcgb25lIHNpZ25lZCByb3cgZm9sZHMgYSBjbGFpbWVkIGRlYWwgdG8gYHJlZnVuZGVkYCwgd2l0aCBubyBgQkFEYCB2ZXJkaWN0XCJ9LHtcIm51bWJlclwiOjE1OCxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xN1QwODoxMzoxMVpcIixcInRpdGxlXCI6XCJEZWFsLXJvb20gY29udGVudCBjYW4gYmUgZm9yZ2VkIGFuZCB3ZWFwb25pemVkIGFnYWluc3QgcGVyLWNvbnRyYWN0IGF1ZGl0b3JzIChwcm9tcHQgaW5qZWN0aW9uIHZpYSBmYWtlIGxvY2svcmVjZWlwdC9yZWZ1bmQgZnJhbWVzKVwifV0iLCJsYXRlc3RfdXBkYXRlZF9hdCI6IjIwMjYtMDktMjRUMTI6MjY6MjBaIn0"
+    },
+    {
+      "id": "yellowpaper-recent-activity",
+      "state": {
+        "count": 30,
+        "latest_updated_at": "2026-09-24T14:48:36Z",
+        "items_json": "[{\"number\":78,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T14:48:36Z\",\"title\":\"erratum: audit-economics-evidence.md cites a [1,1,1] penalty waterfall row the generator doesn't produce\"},{\"number\":77,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T14:48:35Z\",\"title\":\"erratum: Appendix D labels the transaction fee with the flop-poui work formula, so zero-G_n extrinsics would be free\"},{\"number\":38,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T14:48:29Z\",\"title\":\"erratum: R7.1a's acceptance threshold omits the ppm conversion R7.2 applies, so the burst gate can never pass\"},{\"number\":26,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T13:52:32Z\",\"title\":\"question: canonical quote fields for comparing FLOP sessions with per-token inference prices\"},{\"number\":76,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-24T12:05:33Z\",\"title\":\"ambiguity: E.38's conversion score has no evidence path — the substrate that records testnet activity does not retain it\"},{\"number\":73,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-23T06:56:34Z\",\"title\":\"ambiguity: `h_ids` cannot be independently reconstructed from Appendix F.3 and the published wire-format vectors\"},{\"number\":68,\"kind\":\"issue\",\"state\":\"closed\",\"updated_at\":\"2026-09-23T06:08:56Z\",\"title\":\"question: US-person eligibility for the genesis airdrop, testnet rewards, and operator revenue\"},{\"number\":3,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T18:22:27Z\",\"title\":\"challenge: R3.5d's q^3 bound does not cover a checker whose verdict is constant in the work (40% of accepts measured on flop-kibble)\"},{\"number\":74,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T16:09:50Z\",\"title\":\"ambiguity: validator performance score components lack normative observation definitions\"},{\"number\":75,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T13:42:42Z\",\"title\":\"ambiguity: E.47 — DA availability and anti-grinding model [TBD]\"},{\"number\":54,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:42Z\",\"title\":\"GitHub mirror is stale vs live Yellow Paper D-0440 (3.5B vs 4.4B)\"},{\"number\":17,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:30Z\",\"title\":\"question: Clarify A7 client-crash payout on the R12.1d unilateral close path\"},{\"number\":58,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T01:03:28Z\",\"title\":\"challenge: §12.3 demand-side Sybil floor is unsized against observed identity rates; Technocore measurements for E.49\"},{\"number\":62,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T00:52:42Z\",\"title\":\"proposal: executable SOFT verification profile and E.45 adversarial model\"},{\"number\":55,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T00:52:40Z\",\"title\":\"R4.2 mandates hp_poui::flop_meter for G_n, but no public implementation or formula exists\"},{\"number\":71,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-22T00:52:38Z\",\"title\":\"ambiguity: R10.5 settles a variable amount against a fixed lock without specifying the residual's disposition; SETTLED is terminal and no transition returns it\"},{\"number\":70,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-19T21:01:54Z\",\"title\":\"ambiguity: permissionless free top_up_lease has no precedence rule against publisher withdraw_lease\"},{\"number\":72,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-19T06:51:02Z\",\"title\":\"question: which substrate does the testnet→mainnet conversion measure activity on?\"},{\"number\":31,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-19T01:00:44Z\",\"title\":\"ambiguity: E.38/E.40 count \\\"inference spend\\\" but never name the account unit — per-owner vs per-identity, opposite Sybil consequences\"},{\"number\":47,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-19T00:35:02Z\",\"title\":\"ambiguity: §6.2's daily caps are \\\"epoch-reset\\\" and §1.2 defines the epoch as 1 h, so the 500 FLOP daily cap can read as 12,000 FLOP a day\"},{\"number\":41,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-19T00:35:01Z\",\"title\":\"ambiguity: R14.5's safety envelope floors stake at \\\"1200\\\", a number that appears nowhere else in the repository\"},{\"number\":69,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-18T16:09:59Z\",\"title\":\"question: testnet validator operations: selection basis, multi-seat, Day-0 stake, ejection, E.39/E.41/E.52\"},{\"number\":67,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T16:41:52Z\",\"title\":\"ambiguity: R15.5 mandates ejecting validators_to_eject = 50 per rotation with no active-set floor or replacement coupling; an active set ≤ 50 with an empty queue is emptied at its first on_initialize rotation\"},{\"number\":66,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T16:41:50Z\",\"title\":\"erratum: §2.3 sub-proof (1) and §2.4 price a *committee* identity with miner-only costs (min_miner_self_stake, calibration cap, attested silicon, Ghost-Task exposure) that R2.4 / §15.1 exclude from validator eligibility\"},{\"number\":65,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T14:33:59Z\",\"title\":\"votes room: export retains <4h and only rejections are published, so no participant can compute standings\"},{\"number\":64,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T13:53:38Z\",\"title\":\"ambiguity: D-0420's 180-day equivocation return has no protocol clock, block parameter, or start rule\"},{\"number\":59,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-17T01:11:24Z\",\"title\":\"ambiguity: R8.1's unlock rate R_p² is unbounded above — the spec never says whether R_p is clamped to 1\"},{\"number\":61,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-16T23:26:20Z\",\"title\":\"erratum: §1.1 still gives the pre-v1 task_hash and report_data; F.1 and the wire corpus add the domain tag, genesis_hash and the 64 B pad\"},{\"number\":56,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-16T19:16:09Z\",\"title\":\"ambiguity: the agent receipt signs payable:u128LE, a value the document defines nowhere and settle does not carry\"},{\"number\":44,\"kind\":\"issue\",\"state\":\"open\",\"updated_at\":\"2026-09-16T19:15:45Z\",\"title\":\"erratum: F.3 corpus case `wrong_path_orientation` passes F.3's own Merkle rule, because the flipped sibling is the duplicated odd node\"}]"
+      },
+      "fingerprint": "eyJjb3VudCI6MzAsIml0ZW1zX2pzb24iOiJbe1wibnVtYmVyXCI6NzgsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjRUMTQ6NDg6MzZaXCIsXCJ0aXRsZVwiOlwiZXJyYXR1bTogYXVkaXQtZWNvbm9taWNzLWV2aWRlbmNlLm1kIGNpdGVzIGEgWzEsMSwxXSBwZW5hbHR5IHdhdGVyZmFsbCByb3cgdGhlIGdlbmVyYXRvciBkb2Vzbid0IHByb2R1Y2VcIn0se1wibnVtYmVyXCI6NzcsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjRUMTQ6NDg6MzVaXCIsXCJ0aXRsZVwiOlwiZXJyYXR1bTogQXBwZW5kaXggRCBsYWJlbHMgdGhlIHRyYW5zYWN0aW9uIGZlZSB3aXRoIHRoZSBmbG9wLXBvdWkgd29yayBmb3JtdWxhLCBzbyB6ZXJvLUdfbiBleHRyaW5zaWNzIHdvdWxkIGJlIGZyZWVcIn0se1wibnVtYmVyXCI6MzgsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjRUMTQ6NDg6MjlaXCIsXCJ0aXRsZVwiOlwiZXJyYXR1bTogUjcuMWEncyBhY2NlcHRhbmNlIHRocmVzaG9sZCBvbWl0cyB0aGUgcHBtIGNvbnZlcnNpb24gUjcuMiBhcHBsaWVzLCBzbyB0aGUgYnVyc3QgZ2F0ZSBjYW4gbmV2ZXIgcGFzc1wifSx7XCJudW1iZXJcIjoyNixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yNFQxMzo1MjozMlpcIixcInRpdGxlXCI6XCJxdWVzdGlvbjogY2Fub25pY2FsIHF1b3RlIGZpZWxkcyBmb3IgY29tcGFyaW5nIEZMT1Agc2Vzc2lvbnMgd2l0aCBwZXItdG9rZW4gaW5mZXJlbmNlIHByaWNlc1wifSx7XCJudW1iZXJcIjo3NixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yNFQxMjowNTozM1pcIixcInRpdGxlXCI6XCJhbWJpZ3VpdHk6IEUuMzgncyBjb252ZXJzaW9uIHNjb3JlIGhhcyBubyBldmlkZW5jZSBwYXRoIOKAlCB0aGUgc3Vic3RyYXRlIHRoYXQgcmVjb3JkcyB0ZXN0bmV0IGFjdGl2aXR5IGRvZXMgbm90IHJldGFpbiBpdFwifSx7XCJudW1iZXJcIjo3MyxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yM1QwNjo1NjozNFpcIixcInRpdGxlXCI6XCJhbWJpZ3VpdHk6IGBoX2lkc2AgY2Fubm90IGJlIGluZGVwZW5kZW50bHkgcmVjb25zdHJ1Y3RlZCBmcm9tIEFwcGVuZGl4IEYuMyBhbmQgdGhlIHB1Ymxpc2hlZCB3aXJlLWZvcm1hdCB2ZWN0b3JzXCJ9LHtcIm51bWJlclwiOjY4LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJjbG9zZWRcIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjNUMDY6MDg6NTZaXCIsXCJ0aXRsZVwiOlwicXVlc3Rpb246IFVTLXBlcnNvbiBlbGlnaWJpbGl0eSBmb3IgdGhlIGdlbmVzaXMgYWlyZHJvcCwgdGVzdG5ldCByZXdhcmRzLCBhbmQgb3BlcmF0b3IgcmV2ZW51ZVwifSx7XCJudW1iZXJcIjozLFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDE4OjIyOjI3WlwiLFwidGl0bGVcIjpcImNoYWxsZW5nZTogUjMuNWQncyBxXjMgYm91bmQgZG9lcyBub3QgY292ZXIgYSBjaGVja2VyIHdob3NlIHZlcmRpY3QgaXMgY29uc3RhbnQgaW4gdGhlIHdvcmsgKDQwJSBvZiBhY2NlcHRzIG1lYXN1cmVkIG9uIGZsb3Ata2liYmxlKVwifSx7XCJudW1iZXJcIjo3NCxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yMlQxNjowOTo1MFpcIixcInRpdGxlXCI6XCJhbWJpZ3VpdHk6IHZhbGlkYXRvciBwZXJmb3JtYW5jZSBzY29yZSBjb21wb25lbnRzIGxhY2sgbm9ybWF0aXZlIG9ic2VydmF0aW9uIGRlZmluaXRpb25zXCJ9LHtcIm51bWJlclwiOjc1LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDEzOjQyOjQyWlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogRS40NyDigJQgREEgYXZhaWxhYmlsaXR5IGFuZCBhbnRpLWdyaW5kaW5nIG1vZGVsIFtUQkRdXCJ9LHtcIm51bWJlclwiOjU0LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDAxOjAzOjQyWlwiLFwidGl0bGVcIjpcIkdpdEh1YiBtaXJyb3IgaXMgc3RhbGUgdnMgbGl2ZSBZZWxsb3cgUGFwZXIgRC0wNDQwICgzLjVCIHZzIDQuNEIpXCJ9LHtcIm51bWJlclwiOjE3LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDAxOjAzOjMwWlwiLFwidGl0bGVcIjpcInF1ZXN0aW9uOiBDbGFyaWZ5IEE3IGNsaWVudC1jcmFzaCBwYXlvdXQgb24gdGhlIFIxMi4xZCB1bmlsYXRlcmFsIGNsb3NlIHBhdGhcIn0se1wibnVtYmVyXCI6NTgsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMjJUMDE6MDM6MjhaXCIsXCJ0aXRsZVwiOlwiY2hhbGxlbmdlOiDCpzEyLjMgZGVtYW5kLXNpZGUgU3liaWwgZmxvb3IgaXMgdW5zaXplZCBhZ2FpbnN0IG9ic2VydmVkIGlkZW50aXR5IHJhdGVzOyBUZWNobm9jb3JlIG1lYXN1cmVtZW50cyBmb3IgRS40OVwifSx7XCJudW1iZXJcIjo2MixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0yMlQwMDo1Mjo0MlpcIixcInRpdGxlXCI6XCJwcm9wb3NhbDogZXhlY3V0YWJsZSBTT0ZUIHZlcmlmaWNhdGlvbiBwcm9maWxlIGFuZCBFLjQ1IGFkdmVyc2FyaWFsIG1vZGVsXCJ9LHtcIm51bWJlclwiOjU1LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDAwOjUyOjQwWlwiLFwidGl0bGVcIjpcIlI0LjIgbWFuZGF0ZXMgaHBfcG91aTo6ZmxvcF9tZXRlciBmb3IgR19uLCBidXQgbm8gcHVibGljIGltcGxlbWVudGF0aW9uIG9yIGZvcm11bGEgZXhpc3RzXCJ9LHtcIm51bWJlclwiOjcxLFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTIyVDAwOjUyOjM4WlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogUjEwLjUgc2V0dGxlcyBhIHZhcmlhYmxlIGFtb3VudCBhZ2FpbnN0IGEgZml4ZWQgbG9jayB3aXRob3V0IHNwZWNpZnlpbmcgdGhlIHJlc2lkdWFsJ3MgZGlzcG9zaXRpb247IFNFVFRMRUQgaXMgdGVybWluYWwgYW5kIG5vIHRyYW5zaXRpb24gcmV0dXJucyBpdFwifSx7XCJudW1iZXJcIjo3MCxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xOVQyMTowMTo1NFpcIixcInRpdGxlXCI6XCJhbWJpZ3VpdHk6IHBlcm1pc3Npb25sZXNzIGZyZWUgdG9wX3VwX2xlYXNlIGhhcyBubyBwcmVjZWRlbmNlIHJ1bGUgYWdhaW5zdCBwdWJsaXNoZXIgd2l0aGRyYXdfbGVhc2VcIn0se1wibnVtYmVyXCI6NzIsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMTlUMDY6NTE6MDJaXCIsXCJ0aXRsZVwiOlwicXVlc3Rpb246IHdoaWNoIHN1YnN0cmF0ZSBkb2VzIHRoZSB0ZXN0bmV04oaSbWFpbm5ldCBjb252ZXJzaW9uIG1lYXN1cmUgYWN0aXZpdHkgb24_XCJ9LHtcIm51bWJlclwiOjMxLFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE5VDAxOjAwOjQ0WlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogRS4zOC9FLjQwIGNvdW50IFxcXCJpbmZlcmVuY2Ugc3BlbmRcXFwiIGJ1dCBuZXZlciBuYW1lIHRoZSBhY2NvdW50IHVuaXQg4oCUIHBlci1vd25lciB2cyBwZXItaWRlbnRpdHksIG9wcG9zaXRlIFN5YmlsIGNvbnNlcXVlbmNlc1wifSx7XCJudW1iZXJcIjo0NyxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xOVQwMDozNTowMlpcIixcInRpdGxlXCI6XCJhbWJpZ3VpdHk6IMKnNi4yJ3MgZGFpbHkgY2FwcyBhcmUgXFxcImVwb2NoLXJlc2V0XFxcIiBhbmQgwqcxLjIgZGVmaW5lcyB0aGUgZXBvY2ggYXMgMSBoLCBzbyB0aGUgNTAwIEZMT1AgZGFpbHkgY2FwIGNhbiByZWFkIGFzIDEyLDAwMCBGTE9QIGEgZGF5XCJ9LHtcIm51bWJlclwiOjQxLFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE5VDAwOjM1OjAxWlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogUjE0LjUncyBzYWZldHkgZW52ZWxvcGUgZmxvb3JzIHN0YWtlIGF0IFxcXCIxMjAwXFxcIiwgYSBudW1iZXIgdGhhdCBhcHBlYXJzIG5vd2hlcmUgZWxzZSBpbiB0aGUgcmVwb3NpdG9yeVwifSx7XCJudW1iZXJcIjo2OSxcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xOFQxNjowOTo1OVpcIixcInRpdGxlXCI6XCJxdWVzdGlvbjogdGVzdG5ldCB2YWxpZGF0b3Igb3BlcmF0aW9uczogc2VsZWN0aW9uIGJhc2lzLCBtdWx0aS1zZWF0LCBEYXktMCBzdGFrZSwgZWplY3Rpb24sIEUuMzkvRS40MS9FLjUyXCJ9LHtcIm51bWJlclwiOjY3LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE3VDE2OjQxOjUyWlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogUjE1LjUgbWFuZGF0ZXMgZWplY3RpbmcgdmFsaWRhdG9yc190b19lamVjdCA9IDUwIHBlciByb3RhdGlvbiB3aXRoIG5vIGFjdGl2ZS1zZXQgZmxvb3Igb3IgcmVwbGFjZW1lbnQgY291cGxpbmc7IGFuIGFjdGl2ZSBzZXQg4omkIDUwIHdpdGggYW4gZW1wdHkgcXVldWUgaXMgZW1wdGllZCBhdCBpdHMgZmlyc3Qgb25faW5pdGlhbGl6ZSByb3RhdGlvblwifSx7XCJudW1iZXJcIjo2NixcImtpbmRcIjpcImlzc3VlXCIsXCJzdGF0ZVwiOlwib3BlblwiLFwidXBkYXRlZF9hdFwiOlwiMjAyNi0wOS0xN1QxNjo0MTo1MFpcIixcInRpdGxlXCI6XCJlcnJhdHVtOiDCpzIuMyBzdWItcHJvb2YgKDEpIGFuZCDCpzIuNCBwcmljZSBhICpjb21taXR0ZWUqIGlkZW50aXR5IHdpdGggbWluZXItb25seSBjb3N0cyAobWluX21pbmVyX3NlbGZfc3Rha2UsIGNhbGlicmF0aW9uIGNhcCwgYXR0ZXN0ZWQgc2lsaWNvbiwgR2hvc3QtVGFzayBleHBvc3VyZSkgdGhhdCBSMi40IC8gwqcxNS4xIGV4Y2x1ZGUgZnJvbSB2YWxpZGF0b3IgZWxpZ2liaWxpdHlcIn0se1wibnVtYmVyXCI6NjUsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMTdUMTQ6MzM6NTlaXCIsXCJ0aXRsZVwiOlwidm90ZXMgcm9vbTogZXhwb3J0IHJldGFpbnMgPDRoIGFuZCBvbmx5IHJlamVjdGlvbnMgYXJlIHB1Ymxpc2hlZCwgc28gbm8gcGFydGljaXBhbnQgY2FuIGNvbXB1dGUgc3RhbmRpbmdzXCJ9LHtcIm51bWJlclwiOjY0LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE3VDEzOjUzOjM4WlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogRC0wNDIwJ3MgMTgwLWRheSBlcXVpdm9jYXRpb24gcmV0dXJuIGhhcyBubyBwcm90b2NvbCBjbG9jaywgYmxvY2sgcGFyYW1ldGVyLCBvciBzdGFydCBydWxlXCJ9LHtcIm51bWJlclwiOjU5LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE3VDAxOjExOjI0WlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogUjguMSdzIHVubG9jayByYXRlIFJfcMKyIGlzIHVuYm91bmRlZCBhYm92ZSDigJQgdGhlIHNwZWMgbmV2ZXIgc2F5cyB3aGV0aGVyIFJfcCBpcyBjbGFtcGVkIHRvIDFcIn0se1wibnVtYmVyXCI6NjEsXCJraW5kXCI6XCJpc3N1ZVwiLFwic3RhdGVcIjpcIm9wZW5cIixcInVwZGF0ZWRfYXRcIjpcIjIwMjYtMDktMTZUMjM6MjY6MjBaXCIsXCJ0aXRsZVwiOlwiZXJyYXR1bTogwqcxLjEgc3RpbGwgZ2l2ZXMgdGhlIHByZS12MSB0YXNrX2hhc2ggYW5kIHJlcG9ydF9kYXRhOyBGLjEgYW5kIHRoZSB3aXJlIGNvcnB1cyBhZGQgdGhlIGRvbWFpbiB0YWcsIGdlbmVzaXNfaGFzaCBhbmQgdGhlIDY0IEIgcGFkXCJ9LHtcIm51bWJlclwiOjU2LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE2VDE5OjE2OjA5WlwiLFwidGl0bGVcIjpcImFtYmlndWl0eTogdGhlIGFnZW50IHJlY2VpcHQgc2lnbnMgcGF5YWJsZTp1MTI4TEUsIGEgdmFsdWUgdGhlIGRvY3VtZW50IGRlZmluZXMgbm93aGVyZSBhbmQgc2V0dGxlIGRvZXMgbm90IGNhcnJ5XCJ9LHtcIm51bWJlclwiOjQ0LFwia2luZFwiOlwiaXNzdWVcIixcInN0YXRlXCI6XCJvcGVuXCIsXCJ1cGRhdGVkX2F0XCI6XCIyMDI2LTA5LTE2VDE5OjE1OjQ1WlwiLFwidGl0bGVcIjpcImVycmF0dW06IEYuMyBjb3JwdXMgY2FzZSBgd3JvbmdfcGF0aF9vcmllbnRhdGlvbmAgcGFzc2VzIEYuMydzIG93biBNZXJrbGUgcnVsZSwgYmVjYXVzZSB0aGUgZmxpcHBlZCBzaWJsaW5nIGlzIHRoZSBkdXBsaWNhdGVkIG9kZCBub2RlXCJ9XSIsImxhdGVzdF91cGRhdGVkX2F0IjoiMjAyNi0wOS0yNFQxNDo0ODozNloifQ"
+    },
+    {
+      "id": "tclk-issue-93-stream-completeness",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-17T14:39:34Z",
+        "title": "`foldTranscript` trusts the export's row order and never checks for a gap — deleting one signed row folds a claimed deal to `refunded`, with no `BAD` verdict"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImBmb2xkVHJhbnNjcmlwdGAgdHJ1c3RzIHRoZSBleHBvcnQncyByb3cgb3JkZXIgYW5kIG5ldmVyIGNoZWNrcyBmb3IgYSBnYXAg4oCUIGRlbGV0aW5nIG9uZSBzaWduZWQgcm93IGZvbGRzIGEgY2xhaW1lZCBkZWFsIHRvIGByZWZ1bmRlZGAsIHdpdGggbm8gYEJBRGAgdmVyZGljdCIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTE3VDE0OjM5OjM0WiJ9"
+    },
+    {
+      "id": "tclk-issue-96-venue-time",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-16T19:16:35Z",
+        "title": "foldTranscript uses unsigned venue ts for deadline guards - editing ts flips claimed↔refunded with all signatures valid"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImZvbGRUcmFuc2NyaXB0IHVzZXMgdW5zaWduZWQgdmVudWUgdHMgZm9yIGRlYWRsaW5lIGd1YXJkcyAtIGVkaXRpbmcgdHMgZmxpcHMgY2xhaW1lZOKGlHJlZnVuZGVkIHdpdGggYWxsIHNpZ25hdHVyZXMgdmFsaWQiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0xNlQxOToxNjozNVoifQ"
+    },
+    {
+      "id": "tclk-pr-166-trusted-time",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "0850eb3222fc06d0027854b741f90c18c5bf4724",
+        "updated_at": "2026-09-14T11:52:47Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwODUwZWIzMjIyZmMwNmQwMDI3ODU0Yjc0MWY5MGMxOGM1YmY0NzI0IiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMTRUMTE6NTI6NDdaIn0"
+    },
+    {
+      "id": "tclk-pr-175-strict-deadlines",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "ac2698c25d0c34a6122dd83be42334983ca8b62c",
+        "updated_at": "2026-09-23T13:07:48Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiJhYzI2OThjMjVkMGMzNGE2MTIyZGQ4M2JlNDIzMzQ5ODNjYThiNjJjIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjNUMTM6MDc6NDhaIn0"
+    },
+    {
+      "id": "tclk-issue-176-presig-validation",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-23T18:34:47Z",
+        "title": "fix(frames): lock.presig accepts off-curve nonces and unusable scalars"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImZpeChmcmFtZXMpOiBsb2NrLnByZXNpZyBhY2NlcHRzIG9mZi1jdXJ2ZSBub25jZXMgYW5kIHVudXNhYmxlIHNjYWxhcnMiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yM1QxODozNDo0N1oifQ"
+    },
+    {
+      "id": "tclk-pr-177-presig-validation",
+      "state": {
+        "state": "open",
+        "merged": false,
+        "head_sha": "40e67796f05ef4130f922ee16e0cb6c06685ff1d",
+        "updated_at": "2026-09-24T02:57:42Z",
+        "detail_state": "FULL_PR_METADATA"
+      },
+      "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI0MGU2Nzc5NmYwNWVmNDEzMGY5MjJlZTE2ZTBjYjZjMDY2ODVmZjFkIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjRUMDI6NTc6NDJaIn0"
+    },
+    {
+      "id": "yellowpaper-issue-61-direct-rail",
+      "state": {
+        "state": "open",
+        "updated_at": "2026-09-16T23:26:20Z",
+        "title": "erratum: §1.1 still gives the pre-v1 task_hash and report_data; F.1 and the wire corpus add the domain tag, genesis_hash and the 64 B pad"
+      },
+      "fingerprint": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6ImVycmF0dW06IMKnMS4xIHN0aWxsIGdpdmVzIHRoZSBwcmUtdjEgdGFza19oYXNoIGFuZCByZXBvcnRfZGF0YTsgRi4xIGFuZCB0aGUgd2lyZSBjb3JwdXMgYWRkIHRoZSBkb21haW4gdGFnLCBnZW5lc2lzX2hhc2ggYW5kIHRoZSA2NCBCIHBhZCIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTE2VDIzOjI2OjIwWiJ9"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+name: adoption-smoke
+on: [push, pull_request]
+permissions: { contents: read }
+jobs:
+  downstream-consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run local composite action as a downstream consumer
+        id: conformance
+        uses: ./
+        with:
+          profile: technocore-agent
+          input: examples/technocore-agent-minimal.json
+          out: adoption-smoke-report.json
+      - name: Assert portable result contract
+        shell: bash
+        run: |
+          test "${{ steps.conformance.outputs.result }}" = "PARTIAL"
+          test -f "${{ steps.conformance.outputs.report }}"
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const report = JSON.parse(fs.readFileSync(process.env.REPORT, 'utf8'));
+          if (report.schema !== 'flop-conformance-result/v1') throw new Error('WRONG_SCHEMA');
+          if (report.profile !== 'technocore-agent') throw new Error('WRONG_PROFILE');
+          if (report.result !== 'PARTIAL') throw new Error('WRONG_RESULT');
+          if (!report.checks.some((c) => c.id === 'identity.signed-mailbox-evidence' && c.status === 'WARN')) throw new Error('MISSING_EXPECTED_WARN');
+          NODE
+        env:
+          REPORT: ${{ steps.conformance.outputs.report }}

@@ -1,0 +1,88 @@
+{
+  "id": "flop-htlc-conformance-v0.5.0",
+  "asOf": "2026-09-17",
+  "classifications": {
+    "r10_1": "TARGET_SPEC",
+    "r10_2": "PINNED_UPSTREAM",
+    "r10_3": "TARGET_SPEC",
+    "r10_4": "TARGET_SPEC",
+    "r10_5": "TARGET_SPEC",
+    "e48": "OPEN_ISSUE",
+    "tclk2": "PROVISIONAL_PR",
+    "rail_margin_band": "LOCAL_POLICY_FROM_CREDIBLE_COMMUNITY_SIGNAL"
+  },
+  "yellowpaper": {
+    "source": "https://flop.finance/intro/yellowpaper/",
+    "version": "0.5.0-draft",
+    "section": "10",
+    "localMechanics": "LIVE",
+    "pairConformance": "PENDING_E48"
+  },
+  "tclk": {
+    "repository": "flop-labs/tclk",
+    "release": "0.1.0",
+    "tclk1": "COORDINATION_ONLY_NO_VALUE_RAIL",
+    "tclk2Pr": 58,
+    "tclk2Head": "7b299a8bfd6ed70d6a7bd8b7852998d292100a37",
+    "initialProfile": "direct-conditional-payment@1"
+  },
+  "localAtomicityVector": {
+    "preimageHex": "1111111111111111111111111111111111111111111111111111111111111111",
+    "hashLockHex": "02d449a31fbb267c8f352e9968a79e3e5fc95c1bbeaa502fd6454ebde5a4bedc",
+    "amount": "1000",
+    "asset": "FLOP",
+    "createdAt": 100,
+    "refundAfter": 200,
+    "redeemBefore": 199,
+    "refundAt": 200
+  },
+  "r102Vector": {
+    "tOther": 3600,
+    "marginPercent": 20,
+    "maxFinalityStall": 3600,
+    "currentFinalityLag": 0,
+    "rhs": 7200,
+    "below": 7199,
+    "equal": 7200,
+    "above": 7201,
+    "issue": 5,
+    "comparator": ">=",
+    "equalityAdmissible": true,
+    "source": "flop-labs/yellowpaper#5 resolved by sv; implementation gate flop_timeout >= required_flop_timeout"
+  },
+  "railMarginCanary": {
+    "source": "flop-labs/tclk#57 comment by zkasuran",
+    "status": "NON_NORMATIVE",
+    "paperExample": {
+      "submitMs": 10000,
+      "finalityMs": 0,
+      "minRevealWindowMs": 30000,
+      "maxRevealWindowMs": 300000,
+      "revealSettleMs": 6000,
+      "staggerMs": 110000,
+      "expectedFloorMs": 156000,
+      "expectedCeilingMs": 416000
+    },
+    "failClosedRule": "profile registration rejects an empty admissible expiry band; margins are included in the local preview digest"
+  },
+  "e48EvidenceShape": {
+    "requiredPerLeg": [
+      "chainId",
+      "assetId",
+      "htlcRef",
+      "hashLockHex",
+      "outcome",
+      "timestamp",
+      "finalityId",
+      "rawEvidenceSha256"
+    ],
+    "requiresBothLegs": true,
+    "claimEndToEndConforming": false
+  },
+  "scope": {
+    "networkMutation": false,
+    "realFunds": false,
+    "liveCrossChainClaim": false,
+    "tclk2NormativeClaim": false
+  }
+}

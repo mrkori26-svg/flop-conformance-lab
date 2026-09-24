@@ -1,0 +1,47 @@
+{
+  "schema": "flop.htlc-pair-fixtures.v1",
+  "classification": "LOCAL_EXPERIMENTAL",
+  "e48": "PENDING",
+  "realFunds": false,
+  "networkMutation": false,
+  "pairs": [
+    {
+      "id": "flop-evm-v1",
+      "family": "FLOP_EVM",
+      "status": "EXPERIMENTAL_PENDING_E48",
+      "flopChainId": "flop:testnet",
+      "counterChainId": "eip155:1",
+      "flopAssetId": "FLOP",
+      "counterAssetId": "ETH",
+      "preimageOwner": "COUNTER_PAYEE",
+      "timeoutOrientation": "FLOP_LONGER_THAN_COUNTER",
+      "flopTimeoutSeconds": 7200,
+      "counterTimeoutSeconds": 3600,
+      "minMarginSeconds": 3600,
+      "counterFinalityRule": "execution receipt + finalized/safe policy supplied by adapter",
+      "timelyInclusionAssumption": "claim must be included and finalized before counter expiry",
+      "relayerRecovery": "independent relayer may submit known preimage; duplicate submissions idempotent",
+      "feeInclusionPremise": "OPEN_E48",
+      "currentFinalityLag": "UNRESOLVED_YP_16"
+    },
+    {
+      "id": "flop-btc-v1",
+      "family": "FLOP_BTC",
+      "status": "EXPERIMENTAL_PENDING_E48",
+      "flopChainId": "flop:testnet",
+      "counterChainId": "bip122:000000000019d6689c085ae165831e93",
+      "flopAssetId": "FLOP",
+      "counterAssetId": "BTC",
+      "preimageOwner": "COUNTER_PAYEE",
+      "timeoutOrientation": "FLOP_LONGER_THAN_COUNTER",
+      "flopTimeoutSeconds": 14400,
+      "counterTimeoutSeconds": 7200,
+      "minMarginSeconds": 7200,
+      "counterFinalityRule": "transaction confirmation depth and block hash supplied by adapter; no universal depth asserted",
+      "timelyInclusionAssumption": "claim must confirm before counter expiry with pair-specific fee policy",
+      "relayerRecovery": "watcher extracts preimage from confirmed spend and may redeem FLOP leg",
+      "feeInclusionPremise": "OPEN_E48",
+      "currentFinalityLag": "UNRESOLVED_YP_16"
+    }
+  ]
+}

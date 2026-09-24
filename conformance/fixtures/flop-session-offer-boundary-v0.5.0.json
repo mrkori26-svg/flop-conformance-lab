@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1",
+  "id": "FLOP_SESSION_OFFER_OPENING_BOUNDARY_V0_5_0",
+  "classification": "PINNED_UPSTREAM",
+  "source": {
+    "repository": "flop-labs/flop-core",
+    "commit": "41d0009a6acecbb4e0d9fe8d1c9c1ab82210eb46",
+    "yellowpaperIssue": 26,
+    "yellowpaperOpenItem": "E.55",
+    "correctionCommentId": 5808384402,
+    "maintainerClarification": "2026-09-14"
+  },
+  "quote": {
+    "status": "FAIL_CLOSED",
+    "reason": "CANONICAL_COMPARISON_QUOTE_NOT_YET_DEFINED",
+    "blockers": ["flop-core#1597", "flop-core#1586"]
+  },
+  "openingOffer": {
+    "status": "CANONICAL_OPENING_ENVELOPE",
+    "runtimeName": "StandingOffer",
+    "sdkNames": ["SessionOffer v1 spot", "SessionOffer v2 forward"],
+    "binds": [
+      "miner",
+      "chain_genesis",
+      "model_hash",
+      "precision",
+      "enclave_key",
+      "minimum_escrow",
+      "sla_bounds",
+      "capacity_hint",
+      "expiry",
+      "nonce",
+      "signature"
+    ],
+    "optionalForwardTerms": true,
+    "capacityHintSemantics": "ADVISORY",
+    "minimumEscrowSemantics": "FLOOR_NOT_ACCEPTED_PAYMENT"
+  },
+  "acceptance": {
+    "additionallyBinds": [
+      "agent",
+      "measured_root",
+      "decode_policy_hash",
+      "receipt_key",
+      "actual_escrow",
+      "settlement_class"
+    ]
+  },
+  "notBoundByOpeningOffer": [
+    "meter_profile",
+    "input_context_output_assumptions",
+    "cache_assumptions",
+    "expected_g_n",
+    "expected_payable",
+    "transaction_fee",
+    "external_display_conversion"
+  ],
+  "invariants": {
+    "sessionOfferIsComparisonQuote": false,
+    "aggregateGnIsPriceOracle": false,
+    "payableIsPreSessionQuote": false,
+    "crossProviderRankingWithoutComparableUnits": "FAIL_CLOSED"
+  }
+}

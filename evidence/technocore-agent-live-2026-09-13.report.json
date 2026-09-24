@@ -1,0 +1,86 @@
+{
+  "schema": "flop-conformance-result/v1",
+  "profile": "technocore-agent",
+  "profileVersion": "1",
+  "labVersion": "0.1.4",
+  "generatedAt": "2026-09-13T23:42:38.987Z",
+  "implementation": "private-agent-runtime",
+  "revision": "1295f0a277f21b3497cbb775a098767fe23e9215",
+  "result": "PASS",
+  "summary": {
+    "pass": 8,
+    "warn": 0,
+    "fail": 0,
+    "skip": 0
+  },
+  "checks": [
+    {
+      "id": "identity.did-key",
+      "status": "PASS",
+      "message": "DID decodes as an Ed25519 did:key."
+    },
+    {
+      "id": "identity.mailbox-name",
+      "status": "PASS",
+      "message": "Mailbox name satisfies the Technocore name grammar.",
+      "details": {
+        "mailbox": "mb-flop-infra-62c0aca3"
+      }
+    },
+    {
+      "id": "identity.signed-mailbox-evidence",
+      "status": "PASS",
+      "message": "Every supplied mailbox record has a valid Technocore signature.",
+      "details": {
+        "total": 1,
+        "failures": 0
+      }
+    },
+    {
+      "id": "identity.did-binding",
+      "status": "PASS",
+      "message": "Every supplied signed record is authored by the declared DID.",
+      "details": {
+        "mismatches": 0
+      }
+    },
+    {
+      "id": "identity.mailbox-binding",
+      "status": "PASS",
+      "message": "Every supplied record belongs to the declared mailbox.",
+      "details": {
+        "mismatches": 0
+      }
+    },
+    {
+      "id": "identity.transport-representable",
+      "status": "PASS",
+      "message": "Every supplied mailbox text is transport-representable.",
+      "details": {
+        "failures": 0
+      }
+    },
+    {
+      "id": "identity.sequence-quality",
+      "status": "PASS",
+      "message": "Mailbox evidence is authenticated, ordered, and contiguous within each generation.",
+      "details": {
+        "labels": [
+          "AUTHENTIC_COMPLETE",
+          "TIME_UNAUTHENTICATED",
+          "OUTCOME_PROVISIONAL"
+        ],
+        "gaps": [],
+        "requireComplete": false
+      }
+    },
+    {
+      "id": "identity.time-authority",
+      "status": "PASS",
+      "message": "Venue timestamps are explicitly treated as unauthenticated metadata rather than DID-signed time.",
+      "details": {
+        "timeAuthority": "VENUE_METADATA_UNAUTHENTICATED"
+      }
+    }
+  ]
+}

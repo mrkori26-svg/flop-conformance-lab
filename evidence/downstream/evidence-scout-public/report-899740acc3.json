@@ -1,0 +1,86 @@
+{
+  "schema": "flop-public-evidence-result/v1",
+  "integration": "evidence-scout-public",
+  "implementation": "Mariukasfak/flop-evidence-scout",
+  "revision": "899740acc3e3ef1a64285f420899373f57ee7949",
+  "labCommit": "75efc6a93cebccb2eeebe4a8a1e336375baa5b79",
+  "generatedAt": "2026-09-18T14:13:43.014Z",
+  "result": "PARTIAL",
+  "summary": {
+    "pass": 2,
+    "warn": 3,
+    "fail": 0,
+    "skip": 0
+  },
+  "agents": [
+    {
+      "label": "Evidence Scout",
+      "did": "did:key:z6MktoENzzczU8PwiuXBmUnxXo5nChbusKnFfmKBKA9S4Fgh",
+      "linkedProfilePath": "/kv/did-53/0126ba70daea0e",
+      "derivedProfilePath": "/kv/did-53/0126ba70daea0e",
+      "profileHttpStatus": 404,
+      "currentClaimRehearsalVerified": false,
+      "mailbox": null
+    },
+    {
+      "label": "Sentinel Scribe",
+      "did": "did:key:z6MkmnJPmkKDoFbAq39NkBPnUCEV63kYZeUY2z76xEhx7sYT",
+      "linkedProfilePath": "/kv/did-23/18cba1779a04a0",
+      "derivedProfilePath": "/kv/did-23/18cba1779a04a0",
+      "profileHttpStatus": 404,
+      "currentClaimRehearsalVerified": false,
+      "mailbox": null
+    }
+  ],
+  "checks": [
+    {
+      "id": "public.identity-profile-path",
+      "status": "PASS",
+      "message": "Every published DID links to the deterministic Technocore DID profile path derived from that DID.",
+      "details": { "total": 2, "mismatches": 0 }
+    },
+    {
+      "id": "public.profile-publication",
+      "status": "WARN",
+      "message": "Both identities published by the pinned repo revision returned HTTP 404 at their live Technocore profile paths.",
+      "details": {
+        "unpublished": [
+          { "did": "did:key:z6MktoENzzczU8PwiuXBmUnxXo5nChbusKnFfmKBKA9S4Fgh", "status": 404 },
+          { "did": "did:key:z6MkmnJPmkKDoFbAq39NkBPnUCEV63kYZeUY2z76xEhx7sYT", "status": 404 }
+        ]
+      }
+    },
+    {
+      "id": "public.current-identity-key-control",
+      "status": "WARN",
+      "message": "The public claim-rehearsal receipt proves the prior Scout/Scribe DIDs, not the identities currently published by the pinned site revision.",
+      "details": {
+        "current": [
+          "did:key:z6MktoENzzczU8PwiuXBmUnxXo5nChbusKnFfmKBKA9S4Fgh",
+          "did:key:z6MkmnJPmkKDoFbAq39NkBPnUCEV63kYZeUY2z76xEhx7sYT"
+        ],
+        "rehearsed": [
+          "did:key:z6MkvJAr8ZTs5n4d14e4SGVFAxo8nWndZTin8vc23Aks3zgn",
+          "did:key:z6Mkfdd1cRSrTaA1yuUC45a2dXpHe4zPf4cE1DC3DmCpELvW"
+        ]
+      }
+    },
+    {
+      "id": "public.readiness-self-report",
+      "status": "PASS",
+      "message": "Scout's readiness artifact accurately reports both current DID profile paths as ACTION/404 rather than overstating readiness."
+    },
+    {
+      "id": "public.mailbox-discovery",
+      "status": "WARN",
+      "message": "Mailbox conformance cannot be run while the current live DID profile notes are unavailable."
+    }
+  ],
+  "claimBoundary": {
+    "externalAdoption": false,
+    "privateKeysUsed": false,
+    "externalRepositoryChangesRequired": false,
+    "agentInvalidityClaimed": false,
+    "keyLossClaimed": false
+  }
+}

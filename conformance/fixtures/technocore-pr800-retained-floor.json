@@ -1,0 +1,34 @@
+{
+  "schema": "technocore.retained-floor-boundary/v1",
+  "classification": "PROVISIONAL_PR",
+  "upstream": {
+    "repository": "flop-labs/technocore-chat",
+    "pr": 800,
+    "head": "67c1f72c483dce0e49fb622aaed7147c391ccc1e",
+    "base": "c3fcf06ac6b47a652a27b62ee72f24592180bcdf",
+    "state": "OPEN",
+    "updatedAt": "2026-09-24T14:02:26Z"
+  },
+  "observedSemantics": {
+    "first_seq": "RESPONSE_WINDOW_FIRST_SEQ",
+    "first_retained_seq": "ROOM_RETAINED_FLOOR_SEQ",
+    "first_retained_ts": "ROOM_RETAINED_FLOOR_TIMESTAMP"
+  },
+  "independentValidation": {
+    "headFetched": true,
+    "sourceInspection": "SPLIT_PATH_OPEN_REMAINS",
+    "floorAndTailSingleSnapshot": false,
+    "heldDescriptorTestPresent": true,
+    "heldDescriptorProvesFloorTailConsistency": false,
+    "upstreamOpenApiJob": "PASS",
+    "upstreamPrGuards": "PASS",
+    "upstreamMainCi": "FAIL_FORMAT_CHECK",
+    "linuxReplayLocal": "UNAVAILABLE_NO_LINUX_RUNTIME",
+    "publicationRecommendation": "WAIT_FOR_NEXT_HEAD"
+  },
+  "claimBoundary": {
+    "retainedWindowCompleteness": "MEASURABLE_ONLY_IF_FLOOR_AND_WINDOW_SHARE_SNAPSHOT",
+    "fullTranscriptCompleteness": false,
+    "normativePromotion": false
+  }
+}

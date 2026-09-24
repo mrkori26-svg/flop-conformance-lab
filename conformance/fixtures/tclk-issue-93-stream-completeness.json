@@ -1,0 +1,47 @@
+{
+  "id": "tclk.issue-93-stream-completeness",
+  "normativeStatus": "OPEN_ISSUE",
+  "upstream": {
+    "repository": "https://github.com/flop-labs/tclk",
+    "issue": 93,
+    "commit": "5cc4ab93efbc8999a3a7e1471b639deca25998ea"
+  },
+  "signaturePreimage": {
+    "coveredFields": ["room", "nonce", "text"],
+    "omittedVenueFields": ["seq", "ts"]
+  },
+  "honest": {
+    "records": ["offer", "accept", "lock", "reveal", "refund"],
+    "dealRoomSeq": [1, 2, 3],
+    "expectedTerminalStatus": "claimed",
+    "allSignaturesValid": true
+  },
+  "deletion": {
+    "removedRecord": "reveal",
+    "records": ["offer", "accept", "lock", "refund"],
+    "dealRoomSeq": [1, 3],
+    "expectedTerminalStatus": "refunded",
+    "allRemainingSignaturesValid": true,
+    "allFoldStepsOk": true
+  },
+  "deleteAndRenumber": {
+    "removedRecord": "reveal",
+    "changedVenueField": "seq",
+    "oldSeq": 3,
+    "newSeq": 2,
+    "dealRoomSeq": [1, 2],
+    "expectedTerminalStatus": "refunded",
+    "allRemainingSignaturesValid": true,
+    "gapDetected": false
+  },
+  "limitations": {
+    "seqAuthenticated": false,
+    "endTruncationDetectableByCounting": false,
+    "completenessCryptographicallyAuthenticated": false
+  },
+  "expectedBoundary": {
+    "status": "UNTRUSTED_STREAM_COMPLETENESS",
+    "failClosed": true,
+    "allowTerminalVerdict": false
+  }
+}

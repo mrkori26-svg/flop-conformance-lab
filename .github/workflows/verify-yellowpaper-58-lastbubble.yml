@@ -1,0 +1,71 @@
+name: verify yellowpaper 58 lastbubble snapshot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout lab
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned source
+        run: |
+          git clone https://github.com/lastbubble2035/tca.git /tmp/tca
+          cd /tmp/tca
+          git checkout fc9ea0ce41a2484a1cbbb8cc919e3b9fb6304700
+          test "$(git rev-parse HEAD)" = "fc9ea0ce41a2484a1cbbb8cc919e3b9fb6304700"
+
+      - name: Verify pinned scripts
+        run: |
+          cd /tmp/tca
+          echo "ab7fbb840b54e9530e569781293916247d01af3a5c0c203516af024db65736ba  tca_import_snapshot.py" | sha256sum -c -
+          echo "d3cb2a87a11047dd3813ff0dc64b64be1e12f92eb9c030d1012d5cdcbc0e9099  analysis/tclk_structure.py" | sha256sum -c -
+
+      - name: Download immutable snapshot
+        run: |
+          cd /tmp/tca
+          curl -L --fail --retry 3 -o tclk-offers-snapshot-20260918T151701Z.jsonl.gz             https://github.com/lastbubble2035/tca/releases/download/tclk-snapshot-2026-09-18/tclk-offers-snapshot-20260918T151701Z.jsonl.gz
+          wc -c tclk-offers-snapshot-20260918T151701Z.jsonl.gz
+          echo "df22adf7f5f7ff059737506788800a1090fe554e4c330b22aeab00bdbb2c3ffb  tclk-offers-snapshot-20260918T151701Z.jsonl.gz" | sha256sum -c -
+
+      - name: Import snapshot and verify decompressed hash
+        run: |
+          cd /tmp/tca
+          python3 tca_import_snapshot.py             tclk-offers-snapshot-20260918T151701Z.jsonl.gz             --room tclk-offers             --out tclk-offers-snapshot.sqlite             --expect-sha256 5393e97658364c838f3447cfa83def782dbf66eaac0f4b3d4f724ab3dac0cc77
+
+      - name: Regenerate structural analysis
+        run: |
+          cd /tmp/tca
+          python3 analysis/tclk_structure.py             --db tclk-offers-snapshot.sqlite             > tclk-structure-close.json
+          echo "b5f7b0bd3b608ba65c2343522a3c0f28939595a7ab584703891474ce5a81474d  tclk-structure-close.json" | sha256sum -c -
+
+      - name: Compare semantic JSON with committed output
+        run: |
+          cd /tmp/tca
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path("tclk-structure-close.json").read_text())
+          b=json.loads(Path("analysis/tclk-structure-close.json").read_text())
+          assert a == b, "regenerated JSON differs from committed output"
+          print("semantic-json-equal: true")
+          print(json.dumps({
+              "accepts": a.get("accepts"),
+              "matched_accepts": a.get("matched_accepts"),
+              "self_accepts": a.get("self_accepts"),
+              "cross_did_reused_statements": a.get("cross_did_reused_statements"),
+              "distinct_pairs": a.get("distinct_pairs"),
+              "both_sides_identities": a.get("both_sides_identities"),
+              "top_hub_counterparties": a.get("top_hub_counterparties"),
+          }, sort_keys=True))
+          PY
+
+      - name: Upload reproduction output
+        uses: actions/upload-artifact@v4
+        with:
+          name: yellowpaper-58-lastbubble-reproduction
+          path: /tmp/tca/tclk-structure-close.json
+          retention-days: 14

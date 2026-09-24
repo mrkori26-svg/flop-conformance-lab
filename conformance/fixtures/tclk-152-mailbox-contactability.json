@@ -1,0 +1,31 @@
+{
+  "id": "tclk.issue-152-mailbox-contactability",
+  "classification": "OPEN_ISSUE",
+  "upstream": {
+    "repository": "flop-labs/tclk",
+    "issue": 152,
+    "verifiedAgainstCommit": "5cc4ab9",
+    "issueState": "OPEN",
+    "observedThrough": "2026-09-15T11:56:26Z"
+  },
+  "venueNameGrammar": "^[a-z0-9][a-z0-9_-]{0,47}$",
+  "observedCase": {
+    "did": "did:key:z6Mkexample",
+    "mailbox": "mb-p-ydrMAw8RUo73zoje",
+    "derivation": "mb-p- + final 16 base58 DID characters",
+    "expectedClassification": "MAILBOX_INVALID",
+    "expectedAsyncTransport": "REJECT",
+    "observedVenueResult": "HTTP_400_BAD_NAME"
+  },
+  "control": {
+    "mailbox": "mb-p-e7f037283e4b66370bf6",
+    "expectedClassification": "MAILBOX_CONTACTABLE",
+    "expectedAsyncTransport": "ALLOW"
+  },
+  "nonClaims": [
+    "This fixture does not claim the observed mailbox derivation is venue-wide.",
+    "This fixture does not claim TCLK #152 is resolved.",
+    "This fixture does not claim the DID itself is invalid.",
+    "This fixture does not infer operator identity or authorship beyond the issue evidence."
+  ]
+}

@@ -1,0 +1,23 @@
+name: FLOP conformance
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify FLOP/Technocore evidence
+        id: conformance
+        uses: retardio73-boop/flop-conformance-lab@f5b7287b623c181c353720b69e21098da5184be5
+        with:
+          profile: technocore-agent
+          input: evidence/agent.json
+          out: conformance-report.json
+      - name: Upload conformance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: flop-conformance-report
+          path: conformance-report.json

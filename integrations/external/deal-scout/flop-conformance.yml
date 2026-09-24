@@ -1,0 +1,27 @@
+name: flop-conformance
+on:
+  workflow_dispatch:
+jobs:
+  tclk-transcript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/export-flop-conformance.mjs "$ROOM" "$PAYER_DID" "$PAYEE_DID" "$CONTRACT" evidence/room-export.jsonl
+        env:
+          ROOM: ${{ vars.TCLK_ROOM }}
+          PAYER_DID: ${{ vars.TCLK_PAYER_DID }}
+          PAYEE_DID: ${{ vars.TCLK_PAYEE_DID }}
+          CONTRACT: ${{ vars.TCLK_CONTRACT }}
+      - id: conformance
+        uses: retardio73-boop/flop-conformance-lab@4a06a5cb73a588180c58ecb1868b2c57dc7ab55c
+        with:
+          profile: tclk-transcript
+          input: evidence/flop-tclk-transcript.json
+          out: conformance-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flop-conformance
+          path: conformance-report.json

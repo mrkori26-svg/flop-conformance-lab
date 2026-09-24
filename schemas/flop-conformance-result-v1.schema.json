@@ -1,0 +1,43 @@
+﻿{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/retardio73-boop/flop-conformance-lab/schemas/flop-conformance-result-v1.schema.json",
+  "title": "FLOP Conformance Portable Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "profile", "profileVersion", "labVersion", "generatedAt", "result", "summary", "checks"],
+  "properties": {
+    "schema": { "const": "flop-conformance-result/v1" },
+    "profile": { "enum": ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1"] },
+    "profileVersion": { "const": "1" },
+    "labVersion": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "implementation": { "type": "string", "minLength": 1 },
+    "revision": { "type": "string", "minLength": 1 },
+    "result": { "enum": ["PASS", "PARTIAL", "FAIL"] },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pass", "warn", "fail", "skip"],
+      "properties": {
+        "pass": { "type": "integer", "minimum": 0 },
+        "warn": { "type": "integer", "minimum": 0 },
+        "fail": { "type": "integer", "minimum": 0 },
+        "skip": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "message"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["PASS", "WARN", "FAIL", "SKIP"] },
+          "message": { "type": "string", "minLength": 1 },
+          "details": { "type": "object" }
+        }
+      }
+    }
+  }
+}

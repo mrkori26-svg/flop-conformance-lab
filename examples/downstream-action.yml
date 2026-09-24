@@ -1,0 +1,32 @@
+name: FLOP conformance evidence
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: verify
+        uses: retardio73-boop/flop-conformance-lab@f5b7287b623c181c353720b69e21098da5184be5
+        with:
+          profile: technocore-agent
+          input: evidence/agent.json
+          out: conformance-report.json
+      - name: Upload retained evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: flop-conformance-evidence
+          path: conformance-report.json
+      - name: Show profile result
+        run: echo "${{ steps.verify.outputs.result }}"
+
+# Replace the profile/input when integrating a TCLK transcript.
+# PARTIAL is intentionally non-fatal; FAIL exits non-zero.
+# Pin a reviewed immutable Lab commit or immutable release tag.

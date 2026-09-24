@@ -1,0 +1,33 @@
+{
+  "schema": "flop.upstream-boundary-baseline.v1",
+  "issue": "https://github.com/flop-labs/tclk/issues/93",
+  "classification": "OFFICIAL_BUT_TBD",
+  "observedAt": "2026-09-14T16:00:00Z",
+  "upstreamCommit": "5cc4ab93efbc8999a3a7e1471b639deca25998ea",
+  "upstreamState": "OPEN",
+  "maintainerTriage": {
+    "actor": "sv",
+    "severity": "TOP_TWO_OPEN_SEVERITY",
+    "linkedTrustBoundaryIssue": 96,
+    "noClosingFixInFlight": true,
+    "knownPartialMitigations": [97, 110]
+  },
+  "before": {
+    "signaturePreimage": "room|nonce|text",
+    "seqAuthenticated": false,
+    "streamCompletenessAuthenticated": false,
+    "honestTerminalStatus": "claimed",
+    "revealDeletedTerminalStatus": "refunded",
+    "deletionAllRemainingSignaturesValid": true,
+    "deletionAllFoldStepsOk": true,
+    "deleteAndRenumberCanHideSeqGap": true,
+    "endTruncationDetectableByCounting": false,
+    "reproduction": "conformance/reproductions/tclk-93-upstream.mjs",
+    "labBoundary": "UNTRUSTED_STREAM_COMPLETENESS",
+    "terminalVerdictAllowed": false,
+    "settlementTrust": "SETTLEMENT_UNVERIFIED"
+  },
+  "resolution": null,
+  "after": null,
+  "transitionRule": "Replace resolution/after only from an upstream maintainer decision, merged fix, or released behavior; rerun the same reproduction before changing conformance classification."
+}

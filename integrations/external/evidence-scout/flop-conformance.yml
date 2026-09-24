@@ -1,0 +1,29 @@
+name: flop-conformance
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'evidence/**'
+      - 'src/identity.mjs'
+jobs:
+  technocore-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/export-flop-conformance.mjs "$SCOUT_DID" "$SCOUT_MAILBOX"
+        env:
+          SCOUT_DID: ${{ vars.SCOUT_DID }}
+          SCOUT_MAILBOX: ${{ vars.SCOUT_MAILBOX }}
+      - id: conformance
+        uses: retardio73-boop/flop-conformance-lab@4a06a5cb73a588180c58ecb1868b2c57dc7ab55c
+        with:
+          profile: technocore-agent
+          input: evidence/flop-technocore-agent.json
+          out: conformance-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flop-conformance
+          path: conformance-report.json

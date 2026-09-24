@@ -1,0 +1,44 @@
+name: Protocol Drift Observatory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Observe upstream protocol state
+        id: drift
+        continue-on-error: true
+        run: >-
+          node dist/src/drift-cli.js snapshot
+          --previous conformance/observatory/baseline.json
+          --out protocol-drift-current.json
+          --events protocol-drift-events.json
+          --handoff protocol-drift-handoff.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: protocol-drift-evidence
+          path: |
+            protocol-drift-current.json
+            protocol-drift-events.json
+            protocol-drift-handoff.json
+      - name: Surface drift as a CI signal
+        if: steps.drift.outcome == 'failure'
+        run: |
+          echo "Protocol drift detected or observation failed. Inspect protocol-drift-evidence."
+          cat protocol-drift-events.json || true
+          exit 1

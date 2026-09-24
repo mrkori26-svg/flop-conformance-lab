@@ -1,0 +1,13 @@
+# FLOP Conformance Lab
+
+Purpose: narrow reproducible interoperability evidence for FLOP, TCLK, Technocore and adjacent routing implementations.
+
+Primary agent entrypoint: AGENTS.md
+Quickstart: START_HERE.md
+External CI guide: docs/external-integration.md
+Result schema: schemas/flop-conformance-result-v1.schema.json
+Adoption registry: adoption/registry.json
+
+Preferred use: run one evidence profile (`technocore-agent` or `tclk-transcript`) and retain `flop-conformance-result/v1` output.
+
+Do not treat PASS as settlement proof, universal trust, certification, or FLOP Labs endorsement.

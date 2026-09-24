@@ -1,0 +1,90 @@
+{
+  "schema": "flop.reference-journey.v1",
+  "classification": "LOCAL_POLICY",
+  "status": "PARTIAL",
+  "upstream": {
+    "yellowpaperVersion": "0.5.0-draft",
+    "issues": [26, 56],
+    "publicRuntime": "PUBLIC_RUNTIME_UNAVAILABLE"
+  },
+  "stages": [
+    {
+      "id": "discover-miner",
+      "spec": "NON_NORMATIVE_DISCOVERY",
+      "implementation": "external discovery adapter",
+      "fixture": "discovery observation",
+      "expectedResult": "PRESERVE_SOURCE_UNITS",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "obtain-quote",
+      "spec": "YELLOWPAPER_ISSUE_26",
+      "implementation": "quote boundary",
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "expectedResult": "FAIL_CLOSED_WITHOUT_CANONICAL_QUOTE",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "validate-quote",
+      "spec": "YELLOWPAPER_ISSUE_26",
+      "implementation": "comparison-profile guard",
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "expectedResult": "NO_CROSS_UNIT_RANKING_WITHOUT_REPRODUCIBLE_PROFILE",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "select-route",
+      "spec": "LOCAL_ROUTER_POLICY",
+      "implementation": "Session Router adapter",
+      "fixture": "router conformance lane",
+      "expectedResult": "DETERMINISTIC_ELIGIBLE_SELECTION",
+      "actualResult": "ADAPTER_REQUIRED"
+    },
+    {
+      "id": "open-channel",
+      "spec": "TARGET_SPEC",
+      "implementation": "open_channel structural target",
+      "fixture": "flop-quote-open-channel-receipt-v0.5.0.json",
+      "expectedResult": "BYTE_EXACT_FIELD_BOUNDARY",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "exchange-turn",
+      "spec": "TARGET_SPEC",
+      "implementation": "transcript evidence boundary",
+      "fixture": "adversarial-evidence-suite-v1.json",
+      "expectedResult": "ORDERED_AUTHENTICATED_EVIDENCE_ONLY",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "verify-receipt",
+      "spec": "TARGET_SPEC_WITH_ISSUE_56",
+      "implementation": "receipt v1 byte builder",
+      "fixture": "yellowpaper-56-57-v0.5.0.json",
+      "expectedResult": "STRUCTURAL_PASS_SEMANTIC_FAIL_CLOSED",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "close-session",
+      "spec": "TARGET_SPEC",
+      "implementation": "offline lifecycle representation",
+      "fixture": "reference journey",
+      "expectedResult": "NO_LIVE_RUNTIME_CLAIM",
+      "actualResult": "PASS"
+    },
+    {
+      "id": "settlement-representation",
+      "spec": "TARGET_SPEC",
+      "implementation": "settlement-ref compatibility",
+      "fixture": "ecosystem-interop-v1.json",
+      "expectedResult": "REPRESENTATION_ONLY_NOT_VALUE_SETTLEMENT",
+      "actualResult": "PASS"
+    }
+  ],
+  "nonClaims": [
+    "This is not a live FLOP end-to-end execution.",
+    "No canonical pre-session quote contract is invented.",
+    "Receipt byte validity does not resolve payable semantics.",
+    "Transcript evidence does not prove value settlement."
+  ]
+}

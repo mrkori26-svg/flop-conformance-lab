@@ -9,8 +9,7 @@ import {
 } from "../src/sonnet-planning.js";
 import {
   assertFreshWordProposal, assertMatchingRosterConsents, assertRosterReadyBeforeWord,
-  beginIdempotentRequest, reconcileParticipantRegistration, transitionContestState,
-  verifyRefereeRecord, type ContestState,
+  beginIdempotentRequest, evaluateRosterAuthority, reconcileParticipantRegistration, transitionContestState, verifyRefereeRecord, type ContestState,
 } from "../src/sonnet-state.js";
 import {canonicalSonnetJson, SONNET_CONTEST_ID, SONNET_REFEREE_DID, SONNET_WRITER_DID, validateSonnetAction} from "../src/sonnet.js";
 
@@ -67,20 +66,34 @@ test("roster mismatch and first-word freeze protections fail closed",()=>{const 
 test("stale word proposals and changed refreshed state are rejected",()=>{const ready={...base,state:"ROSTER_READY" as const};const proposal={game_id:"a",room_generation:1,version:0,previous_state_hash:"a".repeat(64)};assert.doesNotThrow(()=>assertFreshWordProposal(ready,proposal,{...ready}));assert.throws(()=>assertFreshWordProposal(ready,proposal,{...ready,version:1}),/STALE_WORD/);});
 test("request retries are identical across restart and referee DID is pinned",()=>{const payload={type:"sonnet.submit.v1",contest_id:SONNET_CONTEST_ID,request_id:"submit-1"};const persisted=beginIdempotentRequest(undefined,payload);assert.equal(beginIdempotentRequest(persisted,{...payload}),persisted);assert.throws(()=>beginIdempotentRequest(persisted,{...payload,extra:true}),/RETRY_CONFLICT/);const receipt={type:"sonnet.receipt.v1",contest_id:SONNET_CONTEST_ID,request_id:"submit-1",status:"accepted"};assert.equal(verifyRefereeRecord({from:SONNET_REFEREE_DID,text:JSON.stringify(receipt)},"submit-1").status,"accepted");assert.throws(()=>verifyRefereeRecord({from:peer,text:JSON.stringify(receipt)}),/WRONG_SONNET_REFEREE/);});
 
-test("authoritative ledger acceptance remains usable when the receipt is not observed",()=>{
+test("visible roster posts cannot mutate state without a matching accepted receipt",()=>{
+  const observation={contest_id:SONNET_CONTEST_ID,signer:peer,request_id:"roster-1",canonical:"{\"members\":[]}"};
+  assert.deepEqual(evaluateRosterAuthority(observation,undefined),{state:"PENDING_OR_REPLAY",shouldMutate:false});
+  const wrong={...observation,request_id:"roster-other",status:"accepted" as const,receipt_seq:100};
+  assert.deepEqual(evaluateRosterAuthority(observation,wrong),{state:"PENDING_OR_REPLAY",shouldMutate:false});
+  const accepted={...observation,status:"accepted" as const,receipt_seq:101};
+  assert.deepEqual(evaluateRosterAuthority(observation,accepted),{state:"AUTHORITATIVE_ACCEPTED",shouldMutate:true,receiptSeq:101});
+});
+
+test("replayed accepted roster cannot trigger a second rebuild or withdrawal",()=>{
+  const observation={contest_id:SONNET_CONTEST_ID,signer:peer,request_id:"roster-2",canonical:"{\"members\":[\"a\"]}"};
+  const accepted={...observation,status:"accepted" as const,receipt_seq:202};
+  assert.deepEqual(evaluateRosterAuthority(observation,accepted,202),{state:"AUTHORITATIVE_REPLAY",shouldMutate:false,receiptSeq:202});
+  assert.deepEqual(evaluateRosterAuthority(observation,accepted,203),{state:"AUTHORITATIVE_REPLAY",shouldMutate:false,receiptSeq:202});
+});
+
+test("authoritative ledger acceptance remains usable when the receipt is not observed",()=> {
   const state=reconcileParticipantRegistration({request_id:"register-1",ledger:{status:"accepted",evidence:"ledger:intake_seq:17035"}});
   assert.deepEqual(state,{disposition:"ACCEPTED",receipt_visibility:"NOT_OBSERVED",authoritative_source:"LEDGER",can_participate:true,evidence:["ledger:intake_seq:17035"]});
 });
-
-test("missing receipt without authoritative disposition remains unknown and cannot participate",()=>{
+test("missing receipt without authoritative disposition remains unknown and cannot participate",()=> {
   const state=reconcileParticipantRegistration({request_id:"register-unknown"});
   assert.equal(state.disposition,"UNKNOWN");
   assert.equal(state.receipt_visibility,"NOT_OBSERVED");
   assert.equal(state.authoritative_source,"NONE");
   assert.equal(state.can_participate,false);
 });
-
-test("an observed accepted receipt is authoritative when no ledger result is available",()=>{
+test("an observed accepted receipt is authoritative when no ledger result is available",()=> {
   const receipt={type:"sonnet.receipt.v1",contest_id:SONNET_CONTEST_ID,request_id:"register-2",status:"accepted"};
   const state=reconcileParticipantRegistration({request_id:"register-2",receipt:{from:SONNET_REFEREE_DID,text:JSON.stringify(receipt)}});
   assert.equal(state.disposition,"ACCEPTED");
@@ -88,8 +101,7 @@ test("an observed accepted receipt is authoritative when no ledger result is ava
   assert.equal(state.authoritative_source,"RECEIPT");
   assert.equal(state.can_participate,true);
 });
-
-test("explicit rejection cannot be treated as pending and ledger/receipt conflicts fail closed",()=>{
+test("explicit rejection cannot be treated as pending and ledger/receipt conflicts fail closed",()=> {
   const rejected=reconcileParticipantRegistration({ledger:{status:"rejected",evidence:"ledger:reject"}});
   assert.equal(rejected.disposition,"REJECTED");
   assert.equal(rejected.can_participate,false);

@@ -1,0 +1,93 @@
+name: Interaction Observatory
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 */6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/cache@v4
+        with:
+          path: .interaction-state
+          key: interaction-state-${{ github.run_id }}
+          restore-keys: |
+            interaction-state-
+
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+
+      - name: Observe watched conversations
+        id: interactions
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .interaction-state reports
+          previous=""
+          if [ -f .interaction-state/state.json ]; then
+            previous="--previous .interaction-state/state.json"
+          fi
+          node dist/src/interaction-cli.js snapshot             $previous             --out reports/interaction-state.json             --events reports/interaction-events.json
+          cp reports/interaction-state.json .interaction-state/state.json
+
+      - name: Re-run conformance when an external interaction affects a watched boundary
+        if: steps.interactions.outcome == 'success'
+        run: |
+          if node -e 'const r=require("./reports/interaction-events.json"); process.exit((r.events||[]).some(e=>e.action==="RUN_CONFORMANCE")?0:1)'; then
+            npm run conformance > reports/conformance-on-interaction.txt
+            set +e
+            node dist/src/drift-cli.js snapshot               --previous conformance/observatory/baseline.json               --out reports/protocol-drift-current.json               --events reports/protocol-drift-events.json               --handoff reports/protocol-drift-handoff.json
+            drift_code=$?
+            set -e
+            if [ "$drift_code" -ne 0 ] && [ "$drift_code" -ne 3 ]; then
+              exit "$drift_code"
+            fi
+          else
+            echo "No conformance-triggering interaction." > reports/conformance-on-interaction.txt
+          fi
+
+      - name: Inspect public adoption signals when requested
+        if: steps.interactions.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if node -e 'const r=require("./reports/interaction-events.json"); process.exit((r.events||[]).some(e=>e.action==="INSPECT_ADOPTION")?0:1)'; then
+            node tools/adoption-watch.mjs > reports/adoption-on-interaction.txt
+            cp reports/adoption-watch.json reports/adoption-watch-on-interaction.json
+          else
+            echo "No adoption-triggering interaction." > reports/adoption-on-interaction.txt
+          fi
+
+      - name: Mark unchecked distinctly
+        if: steps.interactions.outcome == 'failure'
+        run: |
+          echo "Interaction Observatory did not complete. This is UNCHECKED, not QUIET."
+          cat reports/interaction-state.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: interaction-observatory
+          path: |
+            reports/interaction-state.json
+            reports/interaction-events.json
+            reports/conformance-on-interaction.txt
+            reports/protocol-drift-current.json
+            reports/protocol-drift-events.json
+            reports/protocol-drift-handoff.json
+            reports/adoption-on-interaction.txt
+            reports/adoption-watch-on-interaction.json
+          retention-days: 30

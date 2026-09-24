@@ -1,0 +1,69 @@
+{
+  "schema": "flop.spec-source-conflict.v1",
+  "classification": "NORMATIVE_WEB_RESOLVED_GITHUB_MIRROR_STALE",
+  "observedAt": "2026-09-15",
+  "subject": "genesis supply and cohort allocation",
+  "sources": [
+    {
+      "name": "FLOP Yellow Paper public page",
+      "url": "https://flop.finance/intro/yellowpaper/",
+      "role": "normative-spec-publication",
+      "observed": {
+        "genesis_supply": "4400000000",
+        "genesis_miner_airdrop": "1200000000",
+        "genesis_validator_airdrop": "1200000000",
+        "genesis_agent_airdrop": "1200000000",
+        "genesis_reserve": "800000000",
+        "decision": "D-0440"
+      }
+    },
+    {
+      "name": "FLOP Miner Revenue Model",
+      "url": "https://flop.finance/intro/revenue/",
+      "role": "official-project-model",
+      "observed": {
+        "genesis_supply": "4400000000",
+        "genesis_miner_airdrop": "1200000000",
+        "genesis_validator_airdrop": "1200000000",
+        "genesis_agent_airdrop": "1200000000",
+        "genesis_reserve": "800000000",
+        "decision": "D-0440"
+      }
+    },
+    {
+      "name": "FLOP teaser",
+      "url": "https://flop.finance/teaser/",
+      "role": "official-project-summary",
+      "observed": {
+        "genesis_supply": "4400000000",
+        "genesis_miner_airdrop": "1200000000",
+        "genesis_validator_airdrop": "1200000000",
+        "genesis_agent_airdrop": "1200000000",
+        "genesis_reserve": "800000000"
+      }
+    },
+    {
+      "name": "flop-labs/yellowpaper public mirror",
+      "url": "https://github.com/flop-labs/yellowpaper/blob/main/yellowpaper.md",
+      "role": "published-mirror",
+      "observed": {
+        "genesis_supply": "3500000000",
+        "genesis_agent_airdrop": "1200000000"
+      }
+    }
+  ],
+  "policy": {
+    "normativePromotion": "FAIL_CLOSED",
+    "reason": "Normative FLOP web publication now reflects D-0440, while the public GitHub Yellow Paper mirror remains stale; cross-source convergence is therefore incomplete.",
+    "agentAllocationPoolObservedAcrossBoth": "1200000000",
+    "agentAllocationMechanism": "UNRESOLVED",
+    "allocationCreditFromLocalReceipts": "NOT_DERIVED"
+  },
+  "resolutionCanary": [
+    "Yellow Paper normative body and Appendix A publish one consistent genesis_supply value",
+    "public mirror is regenerated from the same authoritative source",
+    "canonical parameter source or equivalent public primary evidence is consistent",
+    "D-0440 provenance is publicly traceable from the normative parameter set",
+    "E.38/E.40 allocation/conversion mechanics remain separately classified until resolved"
+  ]
+}

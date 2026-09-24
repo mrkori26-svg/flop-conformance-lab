@@ -1,0 +1,139 @@
+{
+  "schema": "flop.ecosystem-interop.v1",
+  "observedAt": "2026-09-21",
+  "policy": {
+    "communityProjectsAreNormative": false,
+    "copyImplementationsByDefault": false,
+    "preferredMode": "pin-source-and-adapt-narrow-boundaries",
+    "promotionRule": "No external community behavior becomes RELEASE_NORMATIVE or TARGET_SPEC solely by appearing in this registry."
+  },
+  "projects": [
+    {
+      "repo": "2TheMoom/technocore-archiver",
+      "commit": "d429d77e1717098e67afd5edaa2cc5f9aa88c635",
+      "classification": "COMMUNITY_INTEROP_TARGET",
+      "reuse": [
+        "gap-ledger",
+        "generation-reset",
+        "tclk-watch",
+        "tcr1-export"
+      ],
+      "strategy": "interoperate-not-duplicate"
+    },
+    {
+      "repo": "techbone/technocore-conformance",
+      "commit": "0696525f169c603653f3f51cd2a3cd7fee5c4b54",
+      "classification": "COMMUNITY_VECTOR_SOURCE",
+      "reuse": [
+        "base58btc",
+        "did-key",
+        "message-signing",
+        "normalization",
+        "nonce-precision",
+        "room-names"
+      ],
+      "strategy": "consume-pinned-vectors"
+    },
+    {
+      "repo": "wanshade/tc-receipts",
+      "commit": "37c9a0eddcc56e414fe9c462c14b7f9f424dc596",
+      "classification": "COMMUNITY_RECEIPT_PROFILE",
+      "reuse": [
+        "TCR-1"
+      ],
+      "strategy": "adapter-to-flop.work-evidence.v1"
+    },
+    {
+      "repo": "Vegeta451/technocore-actionlock",
+      "classification": "COMMUNITY_SECURITY_PATTERN",
+      "reuse": [
+        "exact-action-approval",
+        "capability-separation",
+        "execution-receipts",
+        "unknown-outcome-reconciliation"
+      ],
+      "strategy": "adopt-pattern-at-autonomous-agent-boundary",
+      "commit": "bb05597e983fd6009334cefc2dca96f1a29b20a7"
+    },
+    {
+      "repo": "peaceofheaven777/technocore-safe-write",
+      "commit": "385d89596109de9590fea0b883a8d8fe4a60d85b",
+      "classification": "COMMUNITY_TRANSPORT_PATTERN",
+      "reuse": [
+        "fixed-logical-nonce",
+        "read-before-retry",
+        "ambiguous-write-reconciliation"
+      ],
+      "strategy": "reuse-semantics-not-code"
+    },
+    {
+      "repo": "Mabolla/technocore-task-relay",
+      "commit": "6af4ab50368c2a76d028cddfb35a35493a50d187",
+      "classification": "COMMUNITY_DOWNSTREAM_TARGET",
+      "reuse": [
+        "task-lifecycle",
+        "tclk-paperrail",
+        "delivery-receipt"
+      ],
+      "strategy": "candidate-external-conformance-consumer"
+    },
+    {
+      "repo": "osr21/flop-soft-verification-reference",
+      "commit": "8c6f57cb64fa28c2a7e2293642c4f90504c1f64a",
+      "classification": "PROVISIONAL_EXTERNAL_PROPOSAL",
+      "reuse": [
+        "E.33",
+        "E.43",
+        "E.44",
+        "E.45",
+        "executable-vectors"
+      ],
+      "strategy": "differential-fixture-only"
+    },
+    {
+      "repo": "MarcFlopAgent/inference-market",
+      "classification": "COMMUNITY_DISCOVERY_SOURCE",
+      "reuse": [
+        "provider-market-data",
+        "quote-research"
+      ],
+      "strategy": "candidate-router-provider-adapter",
+      "commit": "b42e01bb6b9422e25f5f500379889bf54ac8f73d"
+    },
+    {
+      "repo": "khenzarr/Technocore-Swarm-Observatory",
+      "classification": "COMMUNITY_OBSERVABILITY_REFERENCE",
+      "reuse": [
+        "coverage-ledger",
+        "observation-start",
+        "gap-visibility",
+        "epoch-reset"
+      ],
+      "strategy": "reuse-observability-semantics-not-ui",
+      "commit": "93fd6d839a8a29d05a3c32a5e94a8c6a31170380"
+    },
+    {
+      "repo": "osr21/flop-protocol-reproducibility-audits",
+      "commit": "f701db3a211746b65747d69f1e480d8e4500cfb9",
+      "classification": "INDEPENDENT_CONFORMANCE_REFERENCE",
+      "reuse": [
+        "F.1-task-hash",
+        "F.1-report-data",
+        "legacy-negative-vectors",
+        "public-release-scan"
+      ],
+      "strategy": "pin-independent-cross-language-evidence"
+    },
+    {
+      "repo": "Mariukasfak/flop-evidence-scout",
+      "commit": "e2dab7313781526a79b40e8324f0deda5c78d1a6",
+      "classification": "COMMUNITY_ADOPTION_EVIDENCE",
+      "reuse": [
+        "rail-status-persistence",
+        "paper-rail-boundary",
+        "receipt-withhold-on-rail-disagreement"
+      ],
+      "strategy": "pin-adoption-evidence-without-normative-promotion"
+    }
+  ]
+}
