@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration } from "./runtime-target-registry.js";
 import { readEvidenceBundle, runRuntimeTarget, writeEvidenceBundle } from "./runtime-observatory.js";
 import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState } from "./continuous-runtime.js";
-import type { DirectRailF1Input } from "./direct-rail-f1.js";
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | undefined => {
@@ -28,8 +27,8 @@ if (!["run", "cycle"].includes(command ?? "") || !targetName || !runtimeTargetRe
   process.exit(2);
 }
 
-const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: DirectRailF1Input; id?: string };
-const input = raw.input ?? raw as unknown as DirectRailF1Input;
+const raw = JSON.parse(readFileSync(inputPath, "utf8")) as { input?: unknown; id?: string } & Record<string, unknown>;
+const input = raw.input ?? raw;
 const testCase = { id: raw.id ?? "direct-rail-f1-reference", input };
 const registration = runtimeTargetRegistration(targetName)!;
 const target = createRuntimeTarget(targetName);
