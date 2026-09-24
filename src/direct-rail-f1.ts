@@ -116,6 +116,9 @@ export function validateDirectRailF1CrossLanguageEvidence() {
   if (!fixture.implementations.some((item: any) => item.language === "Python" && item.repo === "osr21/flop-protocol-reproducibility-audits")) {
     throw new Error("DIRECT_RAIL_F1_EXTERNAL_EVIDENCE_MISSING");
   }
+  if (!fixture.implementations.some((item: any) => item.repo === "kberkan/flop-proof-api" && item.path === "app/crypto.py")) {
+    throw new Error("DIRECT_RAIL_F1_SECOND_EXTERNAL_EVIDENCE_MISSING");
+  }
   if (fixture.yellowpaper.resolution?.commit !== DIRECT_RAIL_F1_RESOLUTION_COMMIT || fixture.yellowpaper.resolution?.state !== "RESOLVED_TARGET_SPEC") {
     throw new Error("DIRECT_RAIL_F1_RESOLUTION_PIN");
   }

@@ -32,7 +32,8 @@ test("direct-rail-f1 fails when a legacy form is accepted", () => {
 
 test("cross-language evidence keeps external Python reproduction independent and bounded", () => {
   const evidence = validateDirectRailF1CrossLanguageEvidence() as any;
-  assert.equal(evidence.implementations.length, 2);
+  assert.equal(evidence.implementations.length, 3);
+  assert.ok(evidence.implementations.some((item: any) => item.repo === "kberkan/flop-proof-api" && item.commit === "1672ec5f5536f8ea06934ff2823bf36ad47dd1b6"));
   assert.equal(evidence.agreement.canonicalTaskHashExact, true);
   assert.equal(evidence.agreement.canonicalReportDataExact, true);
   assert.equal(evidence.claimBoundary.runtimeCompatibility, "NOT_CLAIMED");

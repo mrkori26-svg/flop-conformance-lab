@@ -346,6 +346,8 @@ export * from "./evidence-scout-public.js";
 export * from "./interaction-observatory.js";
 export * from "./runtime-observatory.js";
 export * from "./runtime-target-f1.js";
+export * from "./runtime-target-external-f1.js";
+export * from "./runtime-target-flop-proof-api-f1.js";
 export * from "./continuous-runtime.js";
 export * from "./evidence-envelope.js";
 export * from "./transcript-checkpoint-proposal.js";
