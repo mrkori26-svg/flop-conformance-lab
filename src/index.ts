@@ -28,6 +28,7 @@ import { validateF3HidsKat } from "./f3-hids-kat.js";
 import { emptyPublicMeterKatBundle, validateMeterKatBundle } from "./meter-kat.js";
 import { htlcResidualWitness } from "./htlc-residual.js";
 import { validatorRotationWitness } from "./validator-rotation-safety.js";
+import { runCrossSystemJourney, sha256, type RouterRuntimeReceipt } from "./cross-system-conformance.js";
 import type { LabReport } from "./types.js";
 
 export * from "./types.js";
@@ -124,6 +125,21 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const meterKat = validateMeterKatBundle(emptyPublicMeterKatBundle);
   const htlcResidual = htlcResidualWitness({ locked: 10000n, actual: 6200n });
   const validatorRotation = validatorRotationWitness({ active: 30, promotable: 0, ejectTarget: 50, promoteTarget: 50, minimumActive: 30 });
+  const crossSystemSemantic = {
+    router: { decisionId: "lab-cross-system-decision", requestId: "lab-cross-system-request", selectedMinerId: "reference-runtime", snapshotHash: "a".repeat(64), configHash: "b".repeat(64) },
+    runtime: { targetId: "reference-runtime", fingerprint: { profile: "lab-reference" }, capabilities: ["execute", "receipt"] },
+    testCaseId: "lab-cross-system-reference",
+    execution: { startedAt: "2026-09-24T20:00:00.000Z", finishedAt: "2026-09-24T20:00:01.000Z", status: "completed" as const, outputDigest: "c".repeat(64) },
+    evidenceRefs: ["lab:cross-system-reference"],
+  };
+  const crossSystemInput: RouterRuntimeReceipt = {
+    schema: "flop.router-runtime-execution/v1",
+    receiptId: "runtime_receipt_lab_reference",
+    observedAt: "2026-09-24T20:00:02.000Z",
+    ...crossSystemSemantic,
+    semanticDigest: sha256({ ...crossSystemSemantic, runtime: { ...crossSystemSemantic.runtime, capabilities: [...crossSystemSemantic.runtime.capabilities].sort() }, evidenceRefs: [...crossSystemSemantic.evidenceRefs].sort() }),
+  };
+  const crossSystemJourney = runCrossSystemJourney(crossSystemInput);
   const d0440Conflict = JSON.parse(
     readFileSync(
       new URL("../conformance/fixtures/flop-d0440-source-conflict.json", import.meta.url),
@@ -137,6 +153,7 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     ),
   ) as Record<string, unknown>;
   const cases = [
+    { id: "flop.cross-system-router-runtime-receipt-verifier", suite: "evidence", status: crossSystemJourney.verdict === "PASS" ? "PASS" as const : "FAIL" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: { ...crossSystemJourney } },
     { id: "flop.reference-journey", suite: "flop", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: referenceJourney },
     { id: "flop.agent-identity-stake-lifecycle", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: agentIdentityStakeLifecycle },
     { id: "flop.htlc-conformance-v1", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: htlcConformance },
@@ -369,4 +386,9 @@ export * from "./htlc-residual.js";
 export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
+<<<<<<< HEAD
 export * from "./longitudinal-observatory.js";
+=======
+export * from './cross-system-conformance.js';
+export * from './cross-protocol-conformance.js';
+>>>>>>> origin/main
