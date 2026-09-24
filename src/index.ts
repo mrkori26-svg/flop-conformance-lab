@@ -19,6 +19,8 @@ import { htlcReplayReadiness } from "./htlc-replay.js";
 import { validateAgentIdentityStakeLifecycleFixture } from "./agent-identity-stake-lifecycle.js";
 import { validateExternalTclkRailAdoptionFixture } from "./tclk-rail-adoption.js";
 import { validateTclkSettlementViewCanary } from "./tclk-settlement-view-canary.js";
+import { validateTclkIssue180LockTermsBinding } from "./tclk-lockterms-binding.js";
+import { validateTclkSettlementTruthComposition } from "./tclk-settlement-truth.js";
 import { validateValidatorPerformanceAmbiguity } from "./validator-performance-ambiguity.js";
 import { validateF3HidsKat } from "./f3-hids-kat.js";
 import { emptyPublicMeterKatBundle, validateMeterKatBundle } from "./meter-kat.js";
@@ -66,6 +68,8 @@ export * from "./technocore-contribution-vectors.js";
 export * from "./htlc-conformance.js";
 export * from "./tclk-rail-adoption.js";
 export * from "./tclk-settlement-view-canary.js";
+export * from "./tclk-lockterms-binding.js";
+export * from "./tclk-settlement-truth.js";
 export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
@@ -103,6 +107,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const agentIdentityStakeLifecycle = validateAgentIdentityStakeLifecycleFixture();
   const externalTclkRailAdoption = validateExternalTclkRailAdoptionFixture();
   const tclkSettlementView = validateTclkSettlementViewCanary();
+  const tclkIssue180 = await validateTclkIssue180LockTermsBinding();
+  const tclkSettlementTruth = await validateTclkSettlementTruthComposition();
   const validatorPerformanceAmbiguity = validateValidatorPerformanceAmbiguity();
   const f3HidsKat = validateF3HidsKat();
   const meterKat = validateMeterKatBundle(emptyPublicMeterKatBundle);
@@ -131,6 +137,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "ecosystem.interop-registry-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: ecosystemInterop },
     { id: "evidence.external-tclk-rail-adoption", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: externalTclkRailAdoption },
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
+    { id: "tclk.issue-180-lockterms-binding", suite: "tclk", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: tclkIssue180 },
+    { id: "tclk.settlement-truth-composition", suite: "tclk", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: tclkSettlementTruth },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
     { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },
     { id: "flop.conversion-evidence-boundary", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: { schema: "flop.conversion-evidence-bundle/v1", yellowpaperIssue: 76, senderAuthorship: "room|nonce|text", serverAssignedUnsigned: ["seq","ts"], conversionEligibility: "NOT_DERIVED", allocationCredit: "NOT_DERIVED" } },
