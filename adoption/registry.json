@@ -1,65 +1,79 @@
 {
-    "schema":  "flop-conformance-adoption-registry/v1",
-    "updatedAt":  "2026-09-24T21:15:00Z",
-    "entries":  [
-                    {
-                        "implementation":  "Mariukasfak/flop-evidence-scout",
-                        "profile":  "evidence-envelope",
-                        "status":  "PROPOSED",
-                        "evidence":  {
-                                         "issue":  "https://github.com/Mariukasfak/flop-evidence-scout/issues/9",
-                                         "labCommit":  "3ddcad34cec2edfdc10f5f230156c4c1f0ea0b70"
-                                     },
-                        "claim":  "Existing proposal remains non-adoption; current preferred integration is a portable evidence-envelope export from the signed archive."
-                    },
-                    {
-                        "implementation":  "Noobna/flop-sentinel",
-                        "profile":  "tclk-transcript",
-                        "status":  "CANDIDATE",
-                        "evidence":  {
-                                         "reason":  "Existing independent downstream reproduction; external issue creation blocked by GitHub integration permissions."
-                                     },
-                        "claim":  "Candidate only; no integration or adoption claim."
-                    },
-                    {
-                        "implementation":  "congge918/technocore-tclk-deal-scout",
-                        "profile":  "tclk-transcript",
-                        "status":  "CANDIDATE",
-                        "evidence":  {
-                                         "reason":  "Strong structural fit for positive TCLK evidence; external issue creation blocked by GitHub integration permissions."
-                                     },
-                        "claim":  "Candidate only; no integration or adoption claim."
-                    },
-                    {
-                        "implementation":  "UfukNode/technocore-did-tool",
-                        "profile":  "technocore-agent",
-                        "status":  "CANDIDATE",
-                        "evidence":  {
-                                         "reason":  "Repository has a live Technocore identity workflow and is structurally suitable for independent DID/mailbox/signature evidence. Attempted issue creation returned GitHub 403 for this integration."
-                                     },
-                        "claim":  "Candidate only; no proposal delivery or adoption claim."
-                    },
-                    {
-                        "implementation":  "zunmax/technocore-did-starter",
-                        "profile":  "technocore-signed-message",
-                        "status":  "CANDIDATE",
-                        "evidence":  {
-                                         "reason":  "Project signs canonical Technocore room messages but does not expose mailbox semantics; use the narrower signed-message profile."
-                                     },
-                        "claim":  "Candidate only; no proposal delivery or adoption claim."
-                    },
-                    {
-                        "implementation":  "doboongkun/flop-agent-lab-tclk",
-                        "profile":  "tclk-transcript",
-                        "status":  "PROPOSED",
-                        "evidence":  {
-                                         "technocoreRoom":  "flop-agent-lab",
-                                         "generation":  0,
-                                         "seq":  251,
-                                         "did":  "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-                                         "reason":  "Signed public proposal delivered in the project-declared Technocore contribution room after GitHub issue creation was blocked by integration permissions."
-                                     },
-                        "claim":  "Proposal publicly delivered and read back; no downstream integration or adoption claim yet."
-                    }
-                ]
+  "schema": "flop-conformance-adoption-registry/v1",
+  "updatedAt": "2026-09-24T21:20:00Z",
+  "entries": [
+    {
+      "implementation": "Mariukasfak/flop-evidence-scout",
+      "profile": "evidence-envelope",
+      "status": "PROPOSED",
+      "evidence": {
+        "issue": "https://github.com/Mariukasfak/flop-evidence-scout/issues/9",
+        "pullRequest": "https://github.com/Mariukasfak/flop-evidence-scout/pull/10",
+        "labCommit": "703428591d876c4eb1a87c5002dab0593740f117"
+      },
+      "claim": "Upstream PR opened and mergeable; no downstream integration or external CI adoption claimed until upstream consumes and runs it."
+    },
+    {
+      "implementation": "Noobna/flop-sentinel",
+      "profile": "tclk-transcript",
+      "status": "CANDIDATE",
+      "evidence": {
+        "reason": "Existing independent downstream reproduction; no current upstream integration proposal is recorded here."
+      },
+      "claim": "Candidate only; no integration or adoption claim."
+    },
+    {
+      "implementation": "congge918/technocore-tclk-deal-scout",
+      "profile": "tclk-transcript",
+      "status": "PROPOSED",
+      "evidence": {
+        "pullRequest": "https://github.com/congge918/technocore-tclk-deal-scout/pull/2",
+        "testedRevision": "f8972ef29f5abc6fd0ea58033f166de216860343"
+      },
+      "claim": "Upstream PR opened and mergeable; no downstream integration or external CI adoption claimed until upstream consumes and runs it."
+    },
+    {
+      "implementation": "UfukNode/technocore-did-tool",
+      "profile": "technocore-agent",
+      "status": "PROPOSED",
+      "evidence": {
+        "pullRequest": "https://github.com/UfukNode/technocore-did-tool/pull/3",
+        "testedRevision": "0abaf2b77e2efd761efada6ea23e0edfe53656ae"
+      },
+      "claim": "Upstream PR opened and mergeable; no downstream integration or external CI adoption claimed until upstream consumes and runs it."
+    },
+    {
+      "implementation": "zunmax/technocore-did-starter",
+      "profile": "technocore-signed-message",
+      "status": "PROPOSED",
+      "evidence": {
+        "pullRequest": "https://github.com/zunmax/technocore-did-starter/pull/23",
+        "testedRevision": "3cc03a6e908e8776de9fdd465c53d23d31db2e9f"
+      },
+      "claim": "Upstream PR opened and mergeable; no downstream integration or external CI adoption claimed until upstream consumes and runs it."
+    },
+    {
+      "implementation": "doboongkun/flop-agent-lab-tclk",
+      "profile": "tclk-transcript",
+      "status": "PROPOSED",
+      "evidence": {
+        "technocoreRoom": "flop-agent-lab",
+        "generation": 0,
+        "seq": 251,
+        "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+        "reason": "Signed public proposal delivered in the project-declared Technocore contribution room."
+      },
+      "claim": "Proposal publicly delivered and read back; no downstream integration or adoption claim yet."
+    },
+    {
+      "implementation": "osr21/flop-protocol-reproducibility-audits",
+      "profile": "direct-rail-f1",
+      "status": "PROPOSED",
+      "evidence": {
+        "pullRequest": "https://github.com/osr21/flop-protocol-reproducibility-audits/pull/3",
+        "testedRevision": "f701db3a211746b65747d69f1e480d8e4500cfb9"
+      },
+      "claim": "Upstream PR opened and mergeable; no downstream integration or external CI adoption claimed until upstream consumes and runs it."
+    }
+  ]
 }
