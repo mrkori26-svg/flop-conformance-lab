@@ -74,6 +74,8 @@ export * from "./tclk-rail-adoption.js";
 export * from "./tclk-settlement-view-canary.js";
 export * from "./tclk-lockterms-binding.js";
 export * from "./tclk-settlement-truth.js";
+export * from "./tclk-handshake-retention.js";
+export * from "./tclk-payment-key-boundary.js";
 export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
