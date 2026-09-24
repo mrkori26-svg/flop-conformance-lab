@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 
 export type BoundaryVerdict = "PASS" | "FAIL" | "INVALID" | "NOT_VERIFIABLE" | "UNSUPPORTED";
-export type BoundaryName = "router-runtime" | "runtime-receipt" | "receipt-verifier";
+export type BoundaryName = "flop-tclk" | "tclk-technocore" | "router-runtime" | "runtime-receipt" | "receipt-verifier";
 
 export interface RouterRuntimeReceipt {
   schema: "flop.router-runtime-execution/v1";

@@ -383,3 +383,4 @@ export * from "./validator-rotation-safety.js";
 
 export * from './runtime-status.js';
 export * from './cross-system-conformance.js';
+export * from './cross-protocol-conformance.js';
