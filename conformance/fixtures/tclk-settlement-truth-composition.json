@@ -1,0 +1,26 @@
+{
+  "schema": "flop.tclk-settlement-truth-composition/v1",
+  "classification": "COMMUNITY_EVIDENCE",
+  "upstream": {
+    "repository": "flop-labs/tclk",
+    "issues": [93,96,172,180],
+    "prs": [173,175]
+  },
+  "invariant": "verified money state requires authenticated transcript preconditions plus exact rail, ref, LockTerms and observation",
+  "cases": [
+    {"id":"exact_claimed","rail":true,"ref":true,"terms":true,"observation":true,"time":true,"complete":true,"expected":"VERIFIED_MONEY_STATE"},
+    {"id":"wrong_rail","rail":false,"ref":true,"terms":true,"observation":true,"time":true,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"wrong_ref","rail":true,"ref":false,"terms":true,"observation":true,"time":true,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"wrong_payee","rail":true,"ref":true,"terms":false,"observation":true,"time":true,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"wrong_amount","rail":true,"ref":true,"terms":false,"observation":true,"time":true,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"missing_observation","rail":true,"ref":true,"terms":true,"observation":false,"time":true,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"unsigned_time_terminal","rail":true,"ref":true,"terms":true,"observation":true,"time":false,"complete":true,"expected":"UNVERIFIED"},
+    {"id":"deleted_transcript_row","rail":true,"ref":true,"terms":true,"observation":true,"time":true,"complete":false,"expected":"UNVERIFIED"}
+  ],
+  "claimBoundary": {
+    "roomTerminalStateIsMoneyState": false,
+    "railObjectValidityAloneIsSufficient": false,
+    "paper1CanSatisfyExactTermsGate": false,
+    "normativeCompositionClaimed": false
+  }
+}
