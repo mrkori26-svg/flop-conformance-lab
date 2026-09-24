@@ -80,7 +80,6 @@ export * from "./validator-performance-ambiguity.js";
 export * from "./conversion-evidence.js";
 export * from "./upstream-participation-policy.js";
 export * from "./evidence-envelope.js";
-export * from "./peer-telemetry-adapter.js";
 
 function packageVersion(): string {
   const metadata = JSON.parse(
