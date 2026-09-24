@@ -14,8 +14,10 @@ if ($buildExit -ne 0 -or -not (Test-Path "dist\src\longitudinal-cli.js")) {
 }
 node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --state ".runtime\reference-f1-state.json" --retry-budget 2 --history-limit 744 *>> $log
 $runtimeExit = $LASTEXITCODE
-node dist/src/interaction-cli.js snapshot --previous (Join-Path $state "interaction-current.json") --out (Join-Path $state "interaction-current.json") --events (Join-Path $state "interaction-events.json") *>> $log
+$interactionOutput = & node dist/src/interaction-cli.js snapshot --previous (Join-Path $state "interaction-current.json") --out (Join-Path $state "interaction-current.json") --events (Join-Path $state "interaction-events.json") 2>&1
 $interactionExit = $LASTEXITCODE
+$interactionOutput | Add-Content $log
+$interactionHealth = if ($interactionExit -eq 0) { "OBSERVED" } elseif ($interactionExit -eq 4) { "UNCHECKED" } else { "COLLECTOR_ERROR" }
 $driftOutput = & node dist/src/drift-cli.js snapshot --previous (Join-Path $state "drift-current.json") --out (Join-Path $state "drift-current.json") --events (Join-Path $state "drift-events.json") 2>&1
 $driftExit = $LASTEXITCODE
 $driftOutput | Add-Content $log
@@ -31,7 +33,7 @@ if ($tclkExit -eq 0) {
 }
 node dist/src/longitudinal-cli.js sync *>> $log
 $syncExit = $LASTEXITCODE
-"[$(Get-Date -Format o)] longitudinal:end runtime=$runtimeExit interaction=$interactionExit drift=$driftHealth($driftExit) tclk=$tclkExit sync=$syncExit" | Add-Content $log
+"[$(Get-Date -Format o)] longitudinal:end runtime=$runtimeExit interaction=$interactionHealth($interactionExit) drift=$driftHealth($driftExit) tclk=$tclkExit sync=$syncExit" | Add-Content $log
 if ($syncExit -ne 0) { exit $syncExit }
 if ($driftExit -ne 0 -and $driftExit -ne 3) { exit $driftExit }
 exit 0
