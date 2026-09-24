@@ -27,12 +27,15 @@ test("3c97bbc records replayed resolutions for #17 #44 #54 #56 #57 and #61", () 
     assert.notEqual(ledger.issues[issue].upstreamDecision, null);
   }
 });
-test("#26 is replayed but remains partial until the signed quote contract lands", () => {
+
+test("#26 replays E.55 required fields while the signed quote contract remains planned", () => {
   const issue = ledger.issues["26"];
-  assert.equal(issue.resolutionCommit, "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e");
-  assert.equal(issue.publicationState, "REPLAYED");
   assert.match(issue.current, /E55_REQUIRED_FIELDS_PINNED/);
   assert.match(issue.current, /VERSIONED_SIGNED_QUOTE_CONTRACT_STILL_PLANNED/);
+  assert.match(issue.current, /CROSS_PROVIDER_RANKING_FAIL_CLOSED/);
+  assert.equal(issue.resolutionCommit, "3c97bbc8d6ba68cf2ea003ab88bc154aafdf105e");
+  assert.equal(issue.publicationState, "REPLAYED");
+  assert.equal(issue.fixture, "flop-quote-open-channel-receipt-v0.5.0.json");
   assert.match(issue.next, /WAIT_FOR_1597_1586/);
 });
 
