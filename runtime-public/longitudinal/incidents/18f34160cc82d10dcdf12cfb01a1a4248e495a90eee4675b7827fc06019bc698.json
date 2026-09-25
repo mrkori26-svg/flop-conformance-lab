@@ -1,0 +1,15 @@
+{
+  "schema": "flop.longitudinal-incident/v1",
+  "bucket": "18f34160cc82d10dcdf12cfb01a1a4248e495a90eee4675b7827fc06019bc698",
+  "observationId": "18f34160cc82d10dcdf12cfb01a1a4248e495a90eee4675b7827fc06019bc698",
+  "observedAt": "2026-09-25T18:30:52.632Z",
+  "source": "interaction",
+  "metric": "interaction_success",
+  "failure": {
+    "scope": "OBSERVER_FAILURE",
+    "class": "COVERAGE_LOST",
+    "detail": "OWN_REPOSITORY_DISCOVERY:GITHUB_404_/repos/retardio73-boop/flop-conformance-lab/issues?state=all&sort=updated&direction=desc&per_page=100; THREAD_tclk-pr-166:GITHUB_404_/repos/flop-labs/tclk/issues/166; THREAD_evidence-scout-9:GITHUB_404_/r"
+  },
+  "observerRevision": "ab1a4b684ff3b755a842444acd116008bf8816a3",
+  "sourceRevision": null
+}
