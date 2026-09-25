@@ -1,0 +1,10 @@
+{
+  "schema": "flop.external-evidence-reuse-ledger/v1",
+  "policy": {
+    "evidenceRequired": true,
+    "selfReportedByUsDoesNotCount": true,
+    "openPrDoesNotCountAsDependency": true,
+    "forkDoesNotCountAsToolReuse": true
+  },
+  "records": []
+}

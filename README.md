@@ -1,5 +1,21 @@
 # FLOP Conformance Lab
 
+## Verify first
+
+For a concrete answer before learning the full Lab surface:
+
+```bash
+git clone https://github.com/retardio73-boop/flop-conformance-lab.git
+cd flop-conformance-lab
+npm ci
+npm run build
+node dist/src/flop-verify-cli.js --check settlement-binding
+```
+
+Available standalone checks: `settlement-binding`, `transcript-completeness`, and `venue-time`. A reproduced boundary exits 1 so CI can retain it as evidence; invalid CLI usage exits 2. See `docs/FLOP_VERIFY.md`.
+
+The package name is reserved as `@flop-tools/conformance-lab`, but npm installation must not be documented as available until the package is actually published. The Lab remains independent community evidence, not FLOP/TCLK normative authority.
+
 > **FLOP Tools / PROVE** · [ROUTE: Session Router](https://github.com/retardio73-boop/flop-session-router) · [OBSERVE: Control Center](https://github.com/retardio73-boop/flop-control-center)
 >
 > `discover -> route -> execute -> receipt -> verify -> observe`

@@ -11,7 +11,8 @@
     "runtime-observatory": "dist/src/runtime-cli.js",
     "runtime-status": "dist/src/runtime-status-cli.js",
     "runtime-replay": "dist/src/runtime-replay-cli.js",
-    "longitudinal-observatory": "dist/src/longitudinal-cli.js"
+    "longitudinal-observatory": "dist/src/longitudinal-cli.js",
+    "flop-verify": "dist/src/flop-verify-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -45,13 +46,18 @@
     "docs/UPSTREAM_VALIDATION_PROGRAM.md",
     "docs/UPSTREAM_PARTICIPATION_POLICY.md",
     "docs/YELLOWPAPER_3C97BBC_RESOLUTION_SWEEP.md",
-    "docs/CROSS_SYSTEM_CONFORMANCE.md"
+    "docs/CROSS_SYSTEM_CONFORMANCE.md",
+    "docs/FLOP_VERIFY.md",
+    "docs/EXTERNAL_EVIDENCE_REUSE.md",
+    "examples/minimal-verify.mjs",
+    "adoption/external-evidence-reuse.json"
   ],
   "engines": {
     "node": ">=22.13"
   },
   "scripts": {
-    "build": "tsc -b --clean && tsc -p tsconfig.json && node tools/copy-assets.js",
+    "build": "tsc -p tsconfig.json && node tools/copy-assets.js",
+    "clean": "node tools/clean-build.js",
     "test": "npm run build && node --test dist/test/*.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "conformance": "node dist/src/cli.js run --suite all",

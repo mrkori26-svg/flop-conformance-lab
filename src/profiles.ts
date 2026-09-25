@@ -13,7 +13,7 @@ import type { TransportRecord } from "./types.js";
 import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -498,11 +498,66 @@ function verifyEmpiresJourney(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function verifyFlopAgent(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "FLOP_AGENT_BUNDLE");
+    if (input.schema !== "flop.evidence-bundle/v1") throw new Error("INVALID_FLOP_AGENT_SCHEMA");
+    const receipt = asObject(input.receipt, "FLOP_AGENT_RECEIPT");
+    const portable = asObject(input.portableReceipt, "PORTABLE_RECEIPT");
+    const verification = asObject(input.verification, "VERIFICATION");
+    const route = asObject(receipt.route, "ROUTE");
+    const result = asObject(receipt.result, "RESULT");
+    const sessionRouter = asObject(route.sessionRouter, "SESSION_ROUTER");
+
+    const checks: PortableCheck[] = [];
+    checks.push(check(
+      "flop-agent.receipt-schema",
+      receipt.schema === "flop.work-execution-receipt/v1" ? "PASS" : "FAIL",
+      "RUN receipt uses the expected schema.",
+    ));
+    checks.push(check(
+      "flop-agent.session-router-binding",
+      typeof sessionRouter.decisionId === "string" &&
+      typeof sessionRouter.snapshotHash === "string" &&
+      typeof sessionRouter.configHash === "string" &&
+      route.rationale === "session_router" ? "PASS" : "FAIL",
+      "RUN routing is bound to a Session Router decision.",
+    ));
+    checks.push(check(
+      "flop-agent.execution",
+      result.status === "completed" && typeof receipt.outputDigest === "string" &&
+      receipt.outputDigest.startsWith("sha256:") ? "PASS" : "FAIL",
+      "Completed work carries a content digest.",
+    ));
+    checks.push(check(
+      "flop-agent.portable-receipt",
+      portable.receipt_version === "work-execution-receipt/0.1" &&
+      portable.work_id === receipt.workId ? "PASS" : "FAIL",
+      "RUN evidence includes the portable Work Execution Receipt.",
+    ));
+    checks.push(check(
+      "flop-agent.self-verification",
+      verification.status === "PASS" ? "PASS" : "FAIL",
+      "RUN self-checks passed before independent verification.",
+    ));
+    const coverage = asObject(portable.coverage, "PORTABLE_COVERAGE");
+    checks.push(check(
+      "flop-agent.no-settlement-overclaim",
+      portable.settlement === undefined && coverage.state !== "COMPLETE" ? "PASS" : "FAIL",
+      "RUN does not infer settlement or complete independent coverage.",
+    ));
+    return finalize("flop-agent", input, checks);
+  } catch (error) {
+    return failureResult("flop-agent", rawInput, error);
+  }
+}
+
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
   if (profile === "empires-journey") return verifyEmpiresJourney(input);
+  if (profile === "flop-agent") return verifyFlopAgent(input);
   throw new Error(`UNKNOWN_EXTERNAL_PROFILE:${profile}`);
 }
