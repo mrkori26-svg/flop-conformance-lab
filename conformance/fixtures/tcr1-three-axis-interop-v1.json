@@ -1,0 +1,27 @@
+{
+  "schema": "flop.tcr1-three-axis-interop.v1",
+  "purpose": "Prevent partial receipt evidence from being promoted to completed-work claims.",
+  "axes": ["transport", "deliverable", "acceptance"],
+  "cases": [
+    {
+      "id": "terminal-transport-deliverable-unknown-acceptance-absent",
+      "input": {"transport":"VERIFIED_TERMINAL","deliverable":"UNKNOWN","acceptance":"ABSENT","rawBytesDigest":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      "expected": {"workCompleted":false,"state":"OBSERVED"}
+    },
+    {
+      "id": "terminal-refund-is-not-delivery",
+      "input": {"transport":"VERIFIED_TERMINAL","terminal":"refunded","deliverable":"UNKNOWN","acceptance":"ABSENT","rawBytesDigest":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      "expected": {"workCompleted":false,"state":"OBSERVED"}
+    },
+    {
+      "id": "issued-write-without-valid-echo",
+      "input": {"transport":"UNCONFIRMED","deliverable":"UNKNOWN","acceptance":"ABSENT","rawBytesDigest":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+      "expected": {"workCompleted":false,"state":"OBSERVED"}
+    },
+    {
+      "id": "artifact-digest-mismatch-fails-closed",
+      "input": {"transport":"VERIFIED_TERMINAL","deliverable":"MISMATCH","acceptance":"ABSENT","rawBytesDigest":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"},
+      "expected": {"error":"TCR1_DELIVERABLE_MISMATCH"}
+    }
+  ]
+}

@@ -21,6 +21,8 @@ export interface Tcr1Receipt {
 export interface Tcr1Verification {
   cryptographic: "verified" | "unverified" | "error";
   artifacts: "verified" | "not_checked" | "unverified" | "error";
+  transport?: "VERIFIED_TERMINAL" | "UNCONFIRMED" | "UNKNOWN";
+  deliverable?: "VERIFIED" | "UNKNOWN" | "MISMATCH";
   issuerAcceptance?: "verified" | "absent" | "unverified";
 }
 function requireHex64(value: string, code: string): void {
@@ -43,15 +45,28 @@ export function tcr1ToWorkEvidence(
   if (verification.cryptographic !== "verified") throw new Error("TCR1_CRYPTOGRAPHICALLY_UNVERIFIED");
   if (verification.artifacts !== "verified") throw new Error("TCR1_ARTIFACTS_UNVERIFIED");
 
+  if (verification.deliverable === "MISMATCH") throw new Error("TCR1_DELIVERABLE_MISMATCH");
+
+  const deliverableVerified = verification.deliverable === "VERIFIED";
   return portableWorkEvidence({
     agentDid: receipt.claimant,
     sessionId: receipt.task.id,
     requestBytes: `requirements_sha256:${receipt.task.requirements_sha256}`,
-    responseBytes: receipt.artifacts.map((artifact) => `${artifact.type}:${artifact.uri}`).join("\n"),
-    workProofBytes: receipt.artifacts.map((artifact) => artifact.sha256).join("\n"),
+    ...(deliverableVerified
+      ? {
+          responseBytes: receipt.artifacts.map((artifact) => `${artifact.type}:${artifact.uri}`).join("\n"),
+          workProofBytes: receipt.artifacts.map((artifact) => artifact.sha256).join("\n"),
+        }
+      : {}),
     source: {
       system: "tcr-1",
-      ref: `issuer:${receipt.task.issuer};task:${receipt.task.id}`,
+      ref: [
+        `issuer:${receipt.task.issuer}`,
+        `task:${receipt.task.id}`,
+        `transport:${verification.transport ?? "UNKNOWN"}`,
+        `deliverable:${verification.deliverable ?? "UNKNOWN"}`,
+        `acceptance:${verification.issuerAcceptance ?? "unverified"}`,
+      ].join(";"),
       observedAt: receipt.created_at,
     },
   });

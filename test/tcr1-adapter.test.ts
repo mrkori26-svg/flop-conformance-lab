@@ -14,14 +14,31 @@ const receipt: Tcr1Receipt = {
   signature: { algorithm: "Ed25519", domain: "technocore-task-receipt:v1", value: "sig" },
 };
 
-test("verified TCR-1 completion becomes execution evidence without allocation inference", () => {
-  const evidence = tcr1ToWorkEvidence(receipt, { cryptographic: "verified", artifacts: "verified" });
+test("verified TCR-1 transport/artifact evidence does not imply completed work", () => {
+  const evidence = tcr1ToWorkEvidence(receipt, {
+    cryptographic: "verified",
+    artifacts: "verified",
+    transport: "VERIFIED_TERMINAL",
+    deliverable: "UNKNOWN",
+    issuerAcceptance: "absent",
+  });
   assert.equal(evidence.schema, "flop.work-evidence.v1");
-  assert.equal(evidence.state, "EXECUTION_VERIFIED");
-  assert.equal(evidence.input.agentDid, receipt.claimant);
-  assert.equal(evidence.input.sessionId, "task-1");
-  assert.equal(evidence.input.source.system, "tcr-1");
+  assert.equal(evidence.state, "OBSERVED");
+  assert.match(evidence.input.source.ref, /transport:VERIFIED_TERMINAL/);
+  assert.match(evidence.input.source.ref, /deliverable:UNKNOWN/);
+  assert.match(evidence.input.source.ref, /acceptance:absent/);
   assert.equal(evidence.allocationCredit, "NOT_DERIVED");
+});
+
+test("deliverable verification is required before execution promotion", () => {
+  const evidence = tcr1ToWorkEvidence(receipt, {
+    cryptographic: "verified",
+    artifacts: "verified",
+    transport: "VERIFIED_TERMINAL",
+    deliverable: "VERIFIED",
+    issuerAcceptance: "absent",
+  });
+  assert.equal(evidence.state, "EXECUTION_VERIFIED");
 });
 
 test("unverified TCR-1 claims fail closed", () => {
