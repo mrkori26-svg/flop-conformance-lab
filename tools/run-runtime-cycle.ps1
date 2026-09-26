@@ -18,27 +18,73 @@ if (Test-Path $dealScout) { $env:FLOP_DEAL_SCOUT_REPO = $dealScout }
 $runtimeDir = Join-Path $repo ".runtime"
 New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
 $log = Join-Path $runtimeDir "runtime-cycle.log"
+$healthPath = Join-Path $runtimeDir "runtime-health.json"
 $started = (Get-Date).ToUniversalTime().ToString("o")
 
-$refOut = npm.cmd run runtime:cycle 2>&1
+function Write-Health($value) {
+  $json = $value | ConvertTo-Json -Depth 5
+  [System.IO.File]::WriteAllText($healthPath, $json, (New-Object System.Text.UTF8Encoding($false)))
+}
+
+$node = "$env:ProgramFiles\nodejs\node.exe"
+$npm = "$env:ProgramFiles\nodejs\npm.cmd"
+if (-not (Test-Path $node)) { $node = (Get-Command node.exe -ErrorAction SilentlyContinue).Source }
+if (-not (Test-Path $npm)) { $npm = (Get-Command npm.cmd -ErrorAction SilentlyContinue).Source }
+
+if (-not $node -or -not $npm) {
+  Write-Health ([ordered]@{schema='flop.runtime-observatory-health/v1';checkedAt=$started;status='DEGRADED';reason='NODE_OR_NPM_NOT_FOUND'})
+  exit 127
+}
+
+Write-Health ([ordered]@{schema='flop.runtime-observatory-health/v1';checkedAt=$started;status='RUNNING'})
+Add-Content $log "[$started] cycle_start"
+
+$buildOut = & $npm run build 2>&1
+$buildCode = $LASTEXITCODE
+if ($buildCode -ne 0) {
+  Add-Content $log ($buildOut | Out-String)
+  Write-Health ([ordered]@{schema='flop.runtime-observatory-health/v1';checkedAt=$started;buildExit=$buildCode;status='DEGRADED'})
+  exit $buildCode
+}
+
+$refOut = & $node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/reference-f1-state.json --retry-budget 2 --history-limit 744 2>&1
 $refCode = $LASTEXITCODE
-$extOut = node.exe dist/src/runtime-cli.js cycle --target external-osr21-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/external-osr21-f1-state.json --retry-budget 2 --history-limit 744 2>&1
+
+$extOut = & $node dist/src/runtime-cli.js cycle --target external-osr21-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/external-osr21-f1-state.json --retry-budget 2 --history-limit 744 2>&1
 $extCode = $LASTEXITCODE
-$taskRelayOut = node.exe dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744 2>&1
+
+$taskRelayOut = & $node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744 2>&1
 $taskRelayCode = $LASTEXITCODE
-$dealScoutOut = node.exe dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744 2>&1
+
+$dealScoutOut = & $node dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744 2>&1
 $dealScoutCode = $LASTEXITCODE
-$statusOut = npm.cmd run runtime:status 2>&1
+
+$statusOut = & $node dist/src/runtime-status-cli.js --root .runtime --json runtime-public/runtime-index.json --markdown runtime-public/STATUS.md 2>&1
 $statusCode = $LASTEXITCODE
 
-Add-Content $log "[$started] reference_exit=$refCode external_verifier_exit=$extCode task_relay_exit=$taskRelayCode deal_scout_exit=$dealScoutCode status_exit=$statusCode"
+Add-Content $log "[$started] build_exit=$buildCode reference_exit=$refCode external_verifier_exit=$extCode task_relay_exit=$taskRelayCode deal_scout_exit=$dealScoutCode status_exit=$statusCode"
+Add-Content $log ($buildOut | Out-String)
 Add-Content $log ($refOut | Out-String)
 Add-Content $log ($extOut | Out-String)
 Add-Content $log ($taskRelayOut | Out-String)
 Add-Content $log ($dealScoutOut | Out-String)
 Add-Content $log ($statusOut | Out-String)
-$health = [ordered]@{schema='flop.runtime-observatory-health/v1';checkedAt=$started;referenceExit=$refCode;externalVerifierExit=$extCode;taskRelayExit=$taskRelayCode;dealScoutExit=$dealScoutCode;statusExit=$statusCode;status=$(if($refCode -eq 0 -and $extCode -eq 0 -and $taskRelayCode -eq 0 -and $dealScoutCode -eq 0 -and $statusCode -eq 0){'HEALTHY'}else{'DEGRADED'})}
-$health | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $runtimeDir 'runtime-health.json') -Encoding UTF8
+
+$healthy = $buildCode -eq 0 -and $refCode -eq 0 -and $extCode -eq 0 -and $taskRelayCode -eq 0 -and $dealScoutCode -eq 0 -and $statusCode -eq 0
+$health = [ordered]@{
+  schema='flop.runtime-observatory-health/v1'
+  checkedAt=$started
+  buildExit=$buildCode
+  referenceExit=$refCode
+  externalVerifierExit=$extCode
+  taskRelayExit=$taskRelayCode
+  dealScoutExit=$dealScoutCode
+  statusExit=$statusCode
+  status=$(if($healthy){'HEALTHY'}else{'DEGRADED'})
+}
+Write-Health $health
+
+if($buildCode -ne 0){exit $buildCode}
 if($refCode -ne 0){exit $refCode}
 if($extCode -ne 0){exit $extCode}
 if($taskRelayCode -ne 0){exit $taskRelayCode}
