@@ -27,6 +27,14 @@ jobs:
           repository: kberkan/flop-proof-api
           ref: 1672ec5f5536f8ea06934ff2823bf36ad47dd1b6
           path: external-flop-proof-api
+      - uses: actions/checkout@v4
+        with:
+          repository: Mabolla/technocore-task-relay
+          path: external-task-relay
+      - uses: actions/checkout@v4
+        with:
+          repository: retardio73-boop/flop-session-router
+          path: external-session-router
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -51,7 +59,15 @@ jobs:
           if [ ! -f .runtime/external-flop-proof-api-f1-state.json ]; then
             git show origin/runtime-evidence:.runtime/external-flop-proof-api-f1-state.json > .runtime/external-flop-proof-api-f1-state.json 2>/dev/null || rm -f .runtime/external-flop-proof-api-f1-state.json
           fi
+          if [ ! -f .runtime/external-task-relay-paper-state.json ]; then
+            git show origin/runtime-evidence:.runtime/external-task-relay-paper-state.json > .runtime/external-task-relay-paper-state.json 2>/dev/null || rm -f .runtime/external-task-relay-paper-state.json
+          fi
       - run: npm ci
+      - name: Build Session Router for external runtime integration
+        working-directory: external-session-router
+        run: |
+          npm ci
+          npm run build
       - name: Install external verifier crypto dependencies
         run: python -m pip install "cryptography>=43,<48" "base58>=2.1,<3" "py-sr25519-bindings==0.2.4"
       - run: npm run runtime:cycle
@@ -65,6 +81,11 @@ jobs:
           FLOP_PROOF_API_F1_REPO: ${{ github.workspace }}/external-flop-proof-api
           FLOP_PROOF_API_F1_PYTHON: python
         run: node dist/src/external-f1-corpus-cli.js --input examples/external-consumer/direct-rail-f1.json --out .runtime/external-flop-proof-api-f1-corpus.json
+      - name: Run continuous external task-relay runtime cycle
+        env:
+          FLOP_TASK_RELAY_REPO: ${{ github.workspace }}/external-task-relay
+          FLOP_SESSION_ROUTER_REPO: ${{ github.workspace }}/external-session-router
+        run: node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744
       - run: npm run runtime:status
       - uses: actions/upload-artifact@v4
         if: always()
@@ -75,6 +96,7 @@ jobs:
             .runtime/reference-f1-state.json
             .runtime/external-flop-proof-api-f1-state.json
             .runtime/external-flop-proof-api-f1-corpus.json
+            .runtime/external-task-relay-paper-state.json
             runtime-public/runtime-index.json
             runtime-public/STATUS.md
       - name: Publish durable public evidence branch
@@ -94,10 +116,11 @@ jobs:
           cp .runtime/reference-f1-state.json /tmp/runtime-evidence-worktree/.runtime/reference-f1-state.json
           cp .runtime/external-flop-proof-api-f1-state.json /tmp/runtime-evidence-worktree/.runtime/external-flop-proof-api-f1-state.json
           cp .runtime/external-flop-proof-api-f1-corpus.json /tmp/runtime-evidence-worktree/.runtime/external-flop-proof-api-f1-corpus.json
+          cp .runtime/external-task-relay-paper-state.json /tmp/runtime-evidence-worktree/.runtime/external-task-relay-paper-state.json
           cp runtime-public/runtime-index.json /tmp/runtime-evidence-worktree/runtime-public/runtime-index.json
           cp runtime-public/STATUS.md /tmp/runtime-evidence-worktree/runtime-public/STATUS.md
           cd /tmp/runtime-evidence-worktree
-          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json runtime-public/runtime-index.json runtime-public/STATUS.md
+          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json .runtime/external-task-relay-paper-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
           if ! git diff --cached --quiet; then
             git commit -m "evidence: runtime snapshot ${GITHUB_RUN_ID}"
             git push origin HEAD:runtime-evidence
