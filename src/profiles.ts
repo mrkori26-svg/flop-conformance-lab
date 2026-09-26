@@ -160,6 +160,32 @@ function parseSettlement(value: unknown): SettlementInput & { requireVerified: b
   };
 }
 
+const TCLK_SOURCE_COMPAT_COMMIT = "5cc4ab93efbc8999a3a7e1471b639deca25998ea";
+
+function tryDecodeTclkFrameCompat(text: string, sourceRevision?: string): { frame: JsonObject; sourceCompat: boolean } | null {
+  const released = tryDecodeFrame(text);
+  if (released !== null) return { frame: released as unknown as JsonObject, sourceCompat: false };
+  if (sourceRevision !== TCLK_SOURCE_COMPAT_COMMIT || !text.startsWith("tclk1 ")) return null;
+  try {
+    const frame = JSON.parse(text.slice(6)) as unknown;
+    if (frame === null || typeof frame !== "object" || Array.isArray(frame)) return null;
+    const value = frame as JsonObject;
+    if (value.type !== "reveal") return null;
+    const allowed = new Set(["type", "from", "contract", "secret", "ref"]);
+    if (Object.keys(value).some((key) => !allowed.has(key))) return null;
+    for (const key of ["from", "contract", "secret"]) {
+      if (typeof value[key] !== "string" || (value[key] as string).length === 0) return null;
+    }
+    didKeyBytes(value.from as string);
+    if (!/^0x[0-9a-f]{64}$/.test(value.contract as string)) return null;
+    if (!/^0x[0-9a-f]{64}$/.test(value.secret as string)) return null;
+    if (value.ref !== undefined && (typeof value.ref !== "string" || value.ref.length === 0)) return null;
+    return { frame: value, sourceCompat: true };
+  } catch {
+    return null;
+  }
+}
+
 function verifyTclkTranscript(rawInput: unknown): PortableConformanceResult {
   try {
     const input = asObject(rawInput, "PROFILE_INPUT");
@@ -170,6 +196,7 @@ function verifyTclkTranscript(rawInput: unknown): PortableConformanceResult {
       contract: requiredString(bindingObject, "contract"),
     };
     const requireComplete = optionalBoolean(input, "requireComplete", false);
+    const tclkSourceRevision = optionalString(input, "tclkSourceRevision");
     if (!Array.isArray(input.records) || input.records.length === 0) throw new Error("EMPTY_RECORDS");
     const records = input.records.map(normalizeTransportRecord);
     const checks: PortableCheck[] = [];
@@ -192,19 +219,29 @@ function verifyTclkTranscript(rawInput: unknown): PortableConformanceResult {
 
     const decoded: Array<{ record: TransportRecord; frame: JsonObject }> = [];
     let inertText = 0;
+    let sourceCompatFrames = 0;
     for (const record of records) {
-      const frame = tryDecodeFrame(record.text);
-      if (frame === null) {
+      const decodedFrame = tryDecodeTclkFrameCompat(record.text, tclkSourceRevision);
+      if (decodedFrame === null) {
         inertText += 1;
         continue;
       }
-      decoded.push({ record, frame: frame as unknown as JsonObject });
+      if (decodedFrame.sourceCompat) sourceCompatFrames += 1;
+      decoded.push({ record, frame: decodedFrame.frame });
     }
     checks.push(check(
       "tclk.frame-presence",
       decoded.length > 0 ? "PASS" : "FAIL",
       decoded.length > 0 ? "At least one canonical TCLK frame is present; non-protocol room text remains inert." : "No decodable TCLK frame was supplied.",
       { frames: decoded.length, inertText },
+    ));
+    checks.push(check(
+      "tclk.source-compatibility",
+      "PASS",
+      sourceCompatFrames === 0
+        ? "All supplied TCLK frames are accepted by the published npm release grammar."
+        : "A bounded source-compatibility rule was required for reveal.ref present in upstream source after the npm release.",
+      { sourceCompatFrames, sourceCommit: TCLK_SOURCE_COMPAT_COMMIT, npmRelease: "@flop-labs/tclk@0.1.0" },
     ));
 
     const senderMismatches = decoded.filter(({ record, frame }) => frame.from !== record.from);
