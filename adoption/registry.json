@@ -1,6 +1,6 @@
 {
     "schema":  "flop-conformance-adoption-registry/v1",
-    "updatedAt":  "2026-09-26T12:55:00Z",
+    "updatedAt":  "2026-09-26T19:43:00Z",
     "entries":  [
                     {
                         "implementation":  "Mariukasfak/flop-evidence-scout",
@@ -18,7 +18,7 @@
                         "status":  "PROPOSED",
                         "evidence":  {
                                          "pullRequest":  "https://github.com/osr21/flop-protocol-reproducibility-audits/pull/4",
-                                         "headCommit":  "0713a2f",
+                                         "headCommit":  "da39b86b009c55cc140781915451b0150fc97782",
                                          "localVerification":  "PASS: upstream Python tests 3/3; direct-rail-f1 6 pass, 0 warn, 0 fail."
                                      },
                         "claim":  "External CI proposal opened; no downstream integration or adoption claim until upstream merges and runs it."
@@ -38,7 +38,7 @@
                         "status":  "PROPOSED",
                         "evidence":  {
                                          "pullRequest":  "https://github.com/congge918/technocore-tclk-deal-scout/pull/3",
-                                         "headCommit":  "cad9fb55c9dbf9b3fd652ebc1960d51afdc4e01a",
+                                         "headCommit":  "04e3593c442dd84c8a1c0f01b002ccf7af468da8",
                                          "localVerification":  "PASS: 8 pass, 0 warn, 0 fail, 1 skip; settlement intentionally unclaimed."
                                      },
                         "claim":  "External CI proposal opened; no downstream integration or adoption claim until upstream merges and runs it."
@@ -76,3 +76,4 @@
                     }
                 ]
 }
+
