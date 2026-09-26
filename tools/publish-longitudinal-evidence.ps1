@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
-$sourceRepo = "C:\Users\acost\flop stack\flop-conformance-lab"
-$worktree = "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1"
+$sourceRepo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$worktree = if ($env:FLOP_LONGITUDINAL_PUBLISH_WORKTREE) { $env:FLOP_LONGITUDINAL_PUBLISH_WORKTREE } else { "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1" }
 $source = Join-Path $sourceRepo "runtime-public\longitudinal"
 $destination = Join-Path $worktree "runtime-public\longitudinal"
 
