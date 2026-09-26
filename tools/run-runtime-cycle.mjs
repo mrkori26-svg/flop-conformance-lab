@@ -17,6 +17,7 @@ const siblingEnv = [
   ["FLOP_TASK_RELAY_REPO", "external-task-relay"],
   ["FLOP_SESSION_ROUTER_REPO", "flop-session-router"],
   ["FLOP_DEAL_SCOUT_REPO", "external-deal-scout"],
+  ["FLOP_ECONOMIC_RUNTIME_REPO", "flop-economic-runtime"],
 ];
 for (const [name, dir] of siblingEnv) {
   const candidate = join(workspace, dir);
@@ -66,6 +67,7 @@ const cycles = [
   ["externalVerifier", ["dist/src/runtime-cli.js", "cycle", "--target", "external-osr21-f1", "--input", "examples/external-consumer/direct-rail-f1.json", "--state", ".runtime/external-osr21-f1-state.json", "--retry-budget", "2", "--history-limit", "744"]],
   ["taskRelay", ["dist/src/runtime-cli.js", "cycle", "--target", "external-task-relay-paper", "--input", "examples/external-consumer/task-relay-paper.json", "--state", ".runtime/external-task-relay-paper-state.json", "--retry-budget", "1", "--history-limit", "744"]],
   ["dealScout", ["dist/src/runtime-cli.js", "cycle", "--target", "external-deal-scout", "--input", "examples/external-consumer/deal-scout-readonly.json", "--state", ".runtime/external-deal-scout-state.json", "--retry-budget", "1", "--history-limit", "744"]],
+  ["economicRuntime", ["dist/src/runtime-cli.js", "cycle", "--target", "external-economic-runtime", "--input", "examples/external-consumer/economic-runtime.json", "--state", ".runtime/external-economic-runtime-state.json", "--retry-budget", "1", "--history-limit", "744"]],
 ];
 
 const codes = {};
@@ -90,10 +92,11 @@ writeHealth({
   externalVerifierExit: codes.externalVerifier,
   taskRelayExit: codes.taskRelay,
   dealScoutExit: codes.dealScout,
+  economicRuntimeExit: codes.economicRuntime,
   statusExit: codes.status,
   status: healthy ? "HEALTHY" : "DEGRADED",
 });
-append(`[${started}] build_exit=${build.code} reference_exit=${codes.reference} external_verifier_exit=${codes.externalVerifier} task_relay_exit=${codes.taskRelay} deal_scout_exit=${codes.dealScout} status_exit=${codes.status}`);
+append(`[${started}] build_exit=${build.code} reference_exit=${codes.reference} external_verifier_exit=${codes.externalVerifier} task_relay_exit=${codes.taskRelay} deal_scout_exit=${codes.dealScout} economic_runtime_exit=${codes.economicRuntime} status_exit=${codes.status}`);
 
 if (!healthy) {
   const failure = [build.code, ...Object.values(codes)].find((code) => code !== 0) ?? 1;

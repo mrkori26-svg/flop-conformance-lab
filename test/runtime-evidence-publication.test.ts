@@ -7,6 +7,7 @@ import { readFile } from "node:fs/promises";
 import { ReferenceF1RuntimeTarget } from "../src/runtime-target-f1.js";
 import { TaskRelayPaperRuntimeTarget } from "../src/runtime-target-task-relay-paper.js";
 import { DealScoutRuntimeTarget } from "../src/runtime-target-deal-scout.js";
+import { EconomicRuntimeTarget } from "../src/runtime-target-economic.js";
 import { runRuntimeTarget, verifyEvidenceBundleIntegrity, verifyRouterRuntimeExecutionReceipt } from "../src/runtime-observatory.js";
 import { publishRuntimeBundle, runtimeTrustLevel } from "../src/runtime-publication.js";
 
@@ -102,4 +103,20 @@ test("external deal scout archive preserves the stricter target claim boundary",
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+
+test("external economic runtime executes price guard and settlement policy when local source is available", async (t) => {
+  const target = new EconomicRuntimeTarget();
+  if (!await target.discover()) {
+    t.skip("external economic runtime checkout is not built");
+    return;
+  }
+  const input = { expectedPriceStatus: "FRESH" as const, expectedGross: "6200", expectedResidual: "3800" };
+  const result = await runRuntimeTarget("external-economic-runtime", target, { id: "economic-runtime", input });
+  assert.equal(result.status, "PASS");
+  assert.equal(runtimeTrustLevel(result.bundle), "EXTERNAL_RUNTIME");
+  assert.equal(verifyEvidenceBundleIntegrity(result.bundle), true);
+  assert.ok(result.bundle.verification.checks.some((check) => check.id === "economic.price-fresh" && check.ok));
+  assert.ok(result.bundle.verification.checks.some((check) => check.id === "economic.residual" && check.ok));
 });

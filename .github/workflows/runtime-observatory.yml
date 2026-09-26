@@ -37,6 +37,11 @@ jobs:
           path: external-deal-scout
       - uses: actions/checkout@v4
         with:
+          repository: retardio73-boop/flop-economic-runtime
+          ref: v0.1.0
+          path: external-economic-runtime
+      - uses: actions/checkout@v4
+        with:
           repository: retardio73-boop/flop-session-router
           path: external-session-router
       - uses: actions/setup-node@v4
@@ -69,10 +74,16 @@ jobs:
           if [ ! -f .runtime/external-deal-scout-state.json ]; then
             git show origin/runtime-evidence:.runtime/external-deal-scout-state.json > .runtime/external-deal-scout-state.json 2>/dev/null || rm -f .runtime/external-deal-scout-state.json
           fi
+          if [ ! -f .runtime/external-economic-runtime-state.json ]; then
+            git show origin/runtime-evidence:.runtime/external-economic-runtime-state.json > .runtime/external-economic-runtime-state.json 2>/dev/null || rm -f .runtime/external-economic-runtime-state.json
+          fi
       - run: npm ci
       - name: Install external deal-scout dependencies
         working-directory: external-deal-scout
         run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Build external Economic Runtime
+        working-directory: external-economic-runtime
+        run: npm ci && npm run build
       - name: Build Session Router for external runtime integration
         working-directory: external-session-router
         run: |
@@ -100,6 +111,10 @@ jobs:
         env:
           FLOP_DEAL_SCOUT_REPO: ${{ github.workspace }}/external-deal-scout
         run: node dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744
+      - name: Run continuous Economic Runtime cycle
+        env:
+          FLOP_ECONOMIC_RUNTIME_REPO: ${{ github.workspace }}/external-economic-runtime
+        run: node dist/src/runtime-cli.js cycle --target external-economic-runtime --input examples/external-consumer/economic-runtime.json --state .runtime/external-economic-runtime-state.json --retry-budget 1 --history-limit 744
       - run: npm run runtime:status
       - uses: actions/upload-artifact@v4
         if: always()
@@ -112,6 +127,7 @@ jobs:
             .runtime/external-flop-proof-api-f1-corpus.json
             .runtime/external-task-relay-paper-state.json
             .runtime/external-deal-scout-state.json
+            .runtime/external-economic-runtime-state.json
             runtime-public/runtime-index.json
             runtime-public/STATUS.md
       - name: Publish durable public evidence branch
@@ -133,10 +149,11 @@ jobs:
           cp .runtime/external-flop-proof-api-f1-corpus.json /tmp/runtime-evidence-worktree/.runtime/external-flop-proof-api-f1-corpus.json
           cp .runtime/external-task-relay-paper-state.json /tmp/runtime-evidence-worktree/.runtime/external-task-relay-paper-state.json
           cp .runtime/external-deal-scout-state.json /tmp/runtime-evidence-worktree/.runtime/external-deal-scout-state.json
+          cp .runtime/external-economic-runtime-state.json /tmp/runtime-evidence-worktree/.runtime/external-economic-runtime-state.json
           cp runtime-public/runtime-index.json /tmp/runtime-evidence-worktree/runtime-public/runtime-index.json
           cp runtime-public/STATUS.md /tmp/runtime-evidence-worktree/runtime-public/STATUS.md
           cd /tmp/runtime-evidence-worktree
-          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json .runtime/external-task-relay-paper-state.json .runtime/external-deal-scout-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
+          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json .runtime/external-task-relay-paper-state.json .runtime/external-deal-scout-state.json .runtime/external-economic-runtime-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
           if ! git diff --cached --quiet; then
             git commit -m "evidence: runtime snapshot ${GITHUB_RUN_ID}"
             git push origin HEAD:runtime-evidence

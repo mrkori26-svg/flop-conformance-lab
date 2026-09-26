@@ -4,10 +4,11 @@ import { Osr21F1VerifierTarget } from "./runtime-target-external-f1.js";
 import { FlopProofApiF1VerifierTarget } from "./runtime-target-flop-proof-api-f1.js";
 import { TaskRelayPaperRuntimeTarget } from "./runtime-target-task-relay-paper.js";
 import { DealScoutRuntimeTarget } from "./runtime-target-deal-scout.js";
+import { EconomicRuntimeTarget } from "./runtime-target-economic.js";
 import { EmpiresRuntimeTarget } from "./runtime-target-empires.js";
 
 export type RuntimeTargetKind = "REFERENCE_RUNTIME" | "EXTERNAL_VERIFIER" | "EXTERNAL_RUNTIME";
-export type RuntimeInputProfile = "direct-rail-f1" | "task-relay-paper" | "deal-scout-readonly" | "empires-replay";
+export type RuntimeInputProfile = "direct-rail-f1" | "task-relay-paper" | "deal-scout-readonly" | "economic-runtime" | "empires-replay";
 export type RuntimeTargetRegistration = {
   id: string;
   kind: RuntimeTargetKind;
@@ -23,6 +24,7 @@ const REGISTRY: RuntimeTargetRegistration[] = [
   { id:"external-flop-proof-api-f1", kind:"EXTERNAL_VERIFIER", inputProfile:"direct-rail-f1", claimBoundary:"EXTERNAL_VERIFIER_NOT_PUBLIC_FLOP_RUNTIME", defaultCaseId:"direct-rail-f1-reference", create:()=>new FlopProofApiF1VerifierTarget() },
   { id:"external-task-relay-paper", kind:"EXTERNAL_RUNTIME", inputProfile:"task-relay-paper", claimBoundary:"EXTERNAL_EXECUTABLE_RUNTIME_NOT_LIVE_NETWORK_SETTLEMENT", defaultCaseId:"task-relay-paper-reference", create:()=>new TaskRelayPaperRuntimeTarget() },
   { id:"external-deal-scout", kind:"EXTERNAL_RUNTIME", inputProfile:"deal-scout-readonly", claimBoundary:"EXTERNAL_EXECUTABLE_READ_ONLY_NOT_LIVE_NETWORK_OR_VALUE_SETTLEMENT", defaultCaseId:"deal-scout-readonly-reference", create:()=>new DealScoutRuntimeTarget() },
+  { id:"external-economic-runtime", kind:"EXTERNAL_RUNTIME", inputProfile:"economic-runtime", claimBoundary:"ECONOMIC_POLICY_EXECUTION_ONLY_NO_LIVE_VALUE_MOVEMENT_OR_SETTLEMENT", defaultCaseId:"economic-runtime-reference", create:()=>new EconomicRuntimeTarget() },
   { id:"empires-runtime", kind:"EXTERNAL_RUNTIME", inputProfile:"empires-replay", claimBoundary:"REAL_RUNTIME_STATE_EVIDENCE_NOT_VALUE_SETTLEMENT", defaultCaseId:"empires-runtime-replay-v1", create:()=>new EmpiresRuntimeTarget() },
 ];
 
