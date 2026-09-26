@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Continue"
-$repo = "C:\Users\acost\flop stack\flop-conformance-lab"
-$frozen = "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1"
-$tclk = "C:\Users\acost\flop stack\_scratch\tclk-pr175-replay"
+$repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$frozen = if ($env:FLOP_LONGITUDINAL_FROZEN_WORKTREE) { $env:FLOP_LONGITUDINAL_FROZEN_WORKTREE } else { "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1" }
+$tclk = if ($env:FLOP_TCLK_REPLAY_REPO) { $env:FLOP_TCLK_REPLAY_REPO } else { "C:\Users\acost\flop stack\_scratch\tclk-pr175-replay" }
 $log = Join-Path $repo ".runtime\longitudinal\runner.log"
 $state = Join-Path $repo ".runtime\longitudinal-sources"
 New-Item -ItemType Directory -Force -Path (Split-Path $log), $state | Out-Null
