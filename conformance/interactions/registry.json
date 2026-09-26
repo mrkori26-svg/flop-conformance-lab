@@ -148,6 +148,42 @@
         "external.direct-rail-f1-adoption"
       ],
       "required": false
+    },
+    {
+      "id": "yellowpaper-71",
+      "repository": "flop-labs/yellowpaper",
+      "number": 71,
+      "kind": "issue",
+      "priority": "high",
+      "affects": ["economic.variable-settlement-residual"],
+      "required": false
+    },
+    {
+      "id": "yellowpaper-79",
+      "repository": "flop-labs/yellowpaper",
+      "number": 79,
+      "kind": "issue",
+      "priority": "high",
+      "affects": ["economic.settlement-fee-accounting"],
+      "required": false
+    },
+    {
+      "id": "tclk-172",
+      "repository": "flop-labs/tclk",
+      "number": 172,
+      "kind": "issue",
+      "priority": "high",
+      "affects": ["economic.rail-verified-settlement-view"],
+      "required": false
+    },
+    {
+      "id": "close-call-9",
+      "repository": "flop-labs/technocore-close-call-challenge",
+      "number": 9,
+      "kind": "issue",
+      "priority": "high",
+      "affects": ["economic.price-reference-freshness"],
+      "required": false
     }
   ],
   "publicEventDiscovery": true,

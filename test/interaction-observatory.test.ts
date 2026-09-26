@@ -5,7 +5,7 @@ import { loadInteractionRegistry, resolveInteractionGithubToken } from "../src/i
 test("interaction registry pins the high-priority upstream threads", () => {
   const r = loadInteractionRegistry();
   const ids = new Set(r.threads.map(x=>x.id));
-  for (const id of ["tclk-93","tclk-96","tclk-pr-166","yellowpaper-58","yellowpaper-61","close-call-5","close-call-6","technocore-pr-851","tclk-152","congge-adoption-pr-3","osr21-adoption-pr-4"]) assert.ok(ids.has(id));
+  for (const id of ["tclk-93","tclk-96","tclk-pr-166","yellowpaper-58","yellowpaper-61","close-call-5","close-call-6","technocore-pr-851","tclk-152","congge-adoption-pr-3","osr21-adoption-pr-4","yellowpaper-71","yellowpaper-79","tclk-172","close-call-9"]) assert.ok(ids.has(id));
   assert.equal(r.account,"retardio73-boop");
   assert.ok(r.threads.every(x=>x.affects.length>0));
 });
