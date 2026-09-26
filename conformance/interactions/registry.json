@@ -82,6 +82,50 @@
         "external.openagentsearch-router-adoption"
       ],
       "required": false
+    },
+    {
+      "id": "close-call-5",
+      "repository": "flop-labs/technocore-close-call-challenge",
+      "number": 5,
+      "kind": "issue",
+      "priority": "high",
+      "affects": [
+        "close-call.final-terminal-boundary"
+      ],
+      "required": false
+    },
+    {
+      "id": "close-call-6",
+      "repository": "flop-labs/technocore-close-call-challenge",
+      "number": 6,
+      "kind": "issue",
+      "priority": "high",
+      "affects": [
+        "close-call.evidence-retrievability"
+      ],
+      "required": false
+    },
+    {
+      "id": "technocore-pr-851",
+      "repository": "flop-labs/technocore-chat",
+      "number": 851,
+      "kind": "pr",
+      "priority": "high",
+      "affects": [
+        "technocore.contribution-proof-compatibility"
+      ],
+      "required": false
+    },
+    {
+      "id": "tclk-152",
+      "repository": "flop-labs/tclk",
+      "number": 152,
+      "kind": "issue",
+      "priority": "high",
+      "affects": [
+        "tclk.mailbox-contactability"
+      ],
+      "required": false
     }
   ],
   "publicEventDiscovery": true,
@@ -91,6 +135,7 @@
     "flop-labs/yellowpaper",
     "flop-labs/technocore-chat",
     "flop-labs/technocore-sonnet-challenge",
+    "flop-labs/technocore-close-call-challenge",
     "Mariukasfak/flop-evidence-scout",
     "djd39448/openagentsearch",
     "osr21/flop-protocol-reproducibility-audits",
