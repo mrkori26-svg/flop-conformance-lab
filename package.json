@@ -16,7 +16,8 @@
     "flop-tools": "dist/src/cli.js",
     "flop-runtime": "dist/src/runtime-cli.js",
     "flop-runtime-init": "dist/src/runtime-target-init-cli.js",
-    "flop-evidence": "dist/src/evidence-import-cli.js"
+    "flop-evidence": "dist/src/evidence-import-cli.js",
+    "flop-proposal-transport": "dist/src/proposal-transport-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -54,6 +55,7 @@
     "docs/EXTERNAL_EVIDENCE_REUSE.md",
     "docs/EXTERNAL_EVIDENCE_IMPORT.md",
     "docs/EXTERNAL_RUNTIME_SDK.md",
+    "docs/TECHNOCORE_PROPOSAL_TRANSPORT.md",
     "examples/minimal-verify.mjs",
     "adoption/external-evidence-reuse.json"
   ],
