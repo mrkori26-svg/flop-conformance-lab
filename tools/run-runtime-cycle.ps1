@@ -1,6 +1,20 @@
 $ErrorActionPreference = "Continue"
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
+$workspace = Split-Path -Parent $repo
+
+$externalF1 = Join-Path $workspace "external-osr21"
+if (Test-Path $externalF1) { $env:FLOP_EXTERNAL_F1_REPO = $externalF1 }
+
+$taskRelay = Join-Path $workspace "external-task-relay"
+if (Test-Path $taskRelay) { $env:FLOP_TASK_RELAY_REPO = $taskRelay }
+
+$sessionRouter = Join-Path $workspace "flop-session-router"
+if (Test-Path $sessionRouter) { $env:FLOP_SESSION_ROUTER_REPO = $sessionRouter }
+
+$dealScout = Join-Path $workspace "external-deal-scout"
+if (Test-Path $dealScout) { $env:FLOP_DEAL_SCOUT_REPO = $dealScout }
+
 $runtimeDir = Join-Path $repo ".runtime"
 New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
 $log = Join-Path $runtimeDir "runtime-cycle.log"
