@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration } from "../src/runtime-target-registry.js";
+import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration, validateRuntimeTargetRegistry } from "../src/runtime-target-registry.js";
 
 test("runtime targets have one stable registry surface", async () => {
   const entries=listRuntimeTargets();
@@ -11,4 +11,25 @@ test("runtime targets have one stable registry surface", async () => {
   assert.equal(runtimeTargetRegistration("empires-runtime")?.inputProfile,"empires-replay");
   assert.equal(runtimeTargetRegistration("missing"),null);
   assert.throws(()=>createRuntimeTarget("missing"),/UNKNOWN_RUNTIME_TARGET_missing/);
+});
+
+test("runtime registry validator fails closed on malformed registrations", () => {
+  const target = createRuntimeTarget("reference-f1");
+  const good = {
+    id: "valid-target",
+    kind: "REFERENCE_RUNTIME" as const,
+    inputProfile: "direct-rail-f1" as const,
+    claimBoundary: "REFERENCE_RUNTIME_ONLY",
+    defaultCaseId: "case",
+    create: () => target,
+  };
+  assert.doesNotThrow(() => validateRuntimeTargetRegistry([good]));
+  assert.throws(
+    () => validateRuntimeTargetRegistry([good, { ...good }]),
+    /INVALID_RUNTIME_TARGET_ID_valid-target/
+  );
+  assert.throws(
+    () => validateRuntimeTargetRegistry([{ ...good, id: "bad-boundary", claimBoundary: "not normalized" }]),
+    /INVALID_RUNTIME_TARGET_BOUNDARY_bad-boundary/
+  );
 });

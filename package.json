@@ -85,6 +85,7 @@
     "runtime:replay": "npm run build && node dist/src/runtime-replay-cli.js",
     "adoption:render": "node tools/render-adoption-matrix.mjs",
     "adoption:check": "node tools/render-adoption-matrix.mjs --check",
+    "adoption:watch": "node tools/adoption-watch.mjs",
     "prepare": "npm run build"
   },
   "keywords": [
