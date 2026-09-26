@@ -37,6 +37,8 @@ export class EconomicRuntimeTarget implements RuntimeTarget<EconomicRuntimeInput
       version: pkg.version ?? "unknown",
       priceGuardSha256: createHash("sha256").update(readFileSync(resolve(this.root(),"src","price-guard.ts"))).digest("hex"),
       settlementSha256: createHash("sha256").update(readFileSync(resolve(this.root(),"src","settlement.ts"))).digest("hex"),
+      engineSha256: createHash("sha256").update(readFileSync(resolve(this.root(),"src","engine.ts"))).digest("hex"),
+      journalSha256: createHash("sha256").update(readFileSync(resolve(this.root(),"src","journal.ts"))).digest("hex"),
       externalRuntime: true,
       networkLive: false,
       valueMoving: false,
@@ -45,7 +47,7 @@ export class EconomicRuntimeTarget implements RuntimeTarget<EconomicRuntimeInput
   }
 
   async capabilities(): Promise<string[]> {
-    return ["price-guard","quote-routing","treasury-policy","metered-settlement","spot-matching","reconciliation"];
+    return ["price-guard","quote-routing","treasury-policy","metered-settlement","spot-matching","reconciliation","durable-economic-journal","uncertain-settlement-recovery"];
   }
 
   async reproduction(): Promise<Partial<RuntimeReproduction>> {
@@ -56,6 +58,8 @@ export class EconomicRuntimeTarget implements RuntimeTarget<EconomicRuntimeInput
       sourceFiles: {
         "src/price-guard.ts": String(fp.priceGuardSha256 ?? ""),
         "src/settlement.ts": String(fp.settlementSha256 ?? ""),
+        "src/engine.ts": String(fp.engineSha256 ?? ""),
+        "src/journal.ts": String(fp.journalSha256 ?? ""),
       },
       dependencies: { "flop-economic-runtime": "git-revision" },
       notes: [
@@ -94,7 +98,7 @@ export class EconomicRuntimeTarget implements RuntimeTarget<EconomicRuntimeInput
     return {
       sourceRepo: "retardio73-boop/flop-economic-runtime",
       sourceRevision: this.revision(),
-      sourceHashes: { priceGuard: fp.priceGuardSha256, settlement: fp.settlementSha256 },
+      sourceHashes: { priceGuard: fp.priceGuardSha256, settlement: fp.settlementSha256, engine: fp.engineSha256, journal: fp.journalSha256 },
       priceStatus: output.price.status,
       settlementPolicy: output.settlement.policy,
       claimBoundary: "ECONOMIC_POLICY_EXECUTION_ONLY_NO_LIVE_VALUE_MOVEMENT_OR_SETTLEMENT",
