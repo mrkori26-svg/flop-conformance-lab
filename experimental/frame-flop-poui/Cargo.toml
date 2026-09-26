@@ -1,0 +1,22 @@
+[package]
+name = "pallet-flop-poui-experimental"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+publish = false
+
+[dependencies]
+frame-support = { git = "https://github.com/paritytech/polkadot-sdk", rev = "c46fa16033309fc9262f6866fa1a5b5e49acf198", default-features = false }
+frame-system = { git = "https://github.com/paritytech/polkadot-sdk", rev = "c46fa16033309fc9262f6866fa1a5b5e49acf198", default-features = false }
+sp-io = { git = "https://github.com/paritytech/polkadot-sdk", rev = "c46fa16033309fc9262f6866fa1a5b5e49acf198", default-features = false }
+
+[dev-dependencies]
+hex-literal = "0.4"
+
+[features]
+default = ["std"]
+std = [
+  "frame-support/std",
+  "frame-system/std",
+  "sp-io/std",
+]

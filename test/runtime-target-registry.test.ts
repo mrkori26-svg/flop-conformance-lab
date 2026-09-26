@@ -4,9 +4,9 @@ import { createRuntimeTarget, listRuntimeTargets, runtimeTargetRegistration, val
 
 test("runtime targets have one stable registry surface", async () => {
   const entries=listRuntimeTargets();
-  assert.deepEqual(entries.map(x=>x.id),["reference-f1","external-osr21-f1","external-flop-proof-api-f1","external-task-relay-paper","external-deal-scout","external-economic-runtime","empires-runtime"]);
+  assert.deepEqual(entries.map(x=>x.id),["reference-f1","external-osr21-f1","external-flop-proof-api-f1","external-task-relay-paper","external-deal-scout","external-economic-runtime","empires-runtime","experimental-local-devnet-f1"]);
   assert.equal(new Set(entries.map(x=>x.id)).size,entries.length);
-  for(const entry of entries){ assert.ok(["direct-rail-f1","task-relay-paper","deal-scout-readonly","economic-runtime","empires-replay"].includes(entry.inputProfile)); assert.ok(entry.claimBoundary.length>0); assert.ok(createRuntimeTarget(entry.id)); }
+  for(const entry of entries){ assert.ok(["direct-rail-f1","task-relay-paper","deal-scout-readonly","economic-runtime","empires-replay","experimental-devnet-f1"].includes(entry.inputProfile)); assert.ok(entry.claimBoundary.length>0); assert.ok(createRuntimeTarget(entry.id)); }
   assert.equal(runtimeTargetRegistration("empires-runtime")?.kind,"EXTERNAL_RUNTIME");
   assert.equal(runtimeTargetRegistration("empires-runtime")?.inputProfile,"empires-replay");
   assert.equal(runtimeTargetRegistration("missing"),null);

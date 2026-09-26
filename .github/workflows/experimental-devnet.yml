@@ -1,0 +1,33 @@
+name: Experimental F1 Devnet
+
+on:
+  pull_request:
+    paths:
+      - "src/flop-devnet-server.ts"
+      - "src/runtime-target-flop-devnet.ts"
+      - "src/devnet-harness.ts"
+      - "experimental/**"
+      - "test/runtime-target-flop-devnet.test.ts"
+      - ".github/workflows/experimental-devnet.yml"
+  workflow_dispatch:
+
+jobs:
+  node-devnet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run devnet:experimental
+
+  frame-pallet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test extracted FRAME reference pallet
+        run: cargo test --manifest-path experimental/frame-flop-poui/Cargo.toml
