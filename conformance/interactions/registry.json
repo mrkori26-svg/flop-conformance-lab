@@ -126,6 +126,28 @@
         "tclk.mailbox-contactability"
       ],
       "required": false
+    },
+    {
+      "id": "congge-adoption-pr-3",
+      "repository": "congge918/technocore-tclk-deal-scout",
+      "number": 3,
+      "kind": "pr",
+      "priority": "high",
+      "affects": [
+        "external.tclk-transcript-adoption"
+      ],
+      "required": false
+    },
+    {
+      "id": "osr21-adoption-pr-4",
+      "repository": "osr21/flop-protocol-reproducibility-audits",
+      "number": 4,
+      "kind": "pr",
+      "priority": "high",
+      "affects": [
+        "external.direct-rail-f1-adoption"
+      ],
+      "required": false
     }
   ],
   "publicEventDiscovery": true,

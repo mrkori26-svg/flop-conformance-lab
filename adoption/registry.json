@@ -1,6 +1,6 @@
 {
     "schema":  "flop-conformance-adoption-registry/v1",
-    "updatedAt":  "2026-09-13T23:55:11Z",
+    "updatedAt":  "2026-09-26T12:55:00Z",
     "entries":  [
                     {
                         "implementation":  "Mariukasfak/flop-evidence-scout",
@@ -11,6 +11,17 @@
                                          "labCommit":  "3ddcad34cec2edfdc10f5f230156c4c1f0ea0b70"
                                      },
                         "claim":  "Proposal opened; no external CI consumption is claimed yet."
+                    },
+                    {
+                        "implementation":  "osr21/flop-protocol-reproducibility-audits",
+                        "profile":  "direct-rail-f1",
+                        "status":  "PROPOSED",
+                        "evidence":  {
+                                         "pullRequest":  "https://github.com/osr21/flop-protocol-reproducibility-audits/pull/4",
+                                         "headCommit":  "0713a2f",
+                                         "localVerification":  "PASS: upstream Python tests 3/3; direct-rail-f1 6 pass, 0 warn, 0 fail."
+                                     },
+                        "claim":  "External CI proposal opened; no downstream integration or adoption claim until upstream merges and runs it."
                     },
                     {
                         "implementation":  "Noobna/flop-sentinel",
@@ -24,11 +35,13 @@
                     {
                         "implementation":  "congge918/technocore-tclk-deal-scout",
                         "profile":  "tclk-transcript",
-                        "status":  "CANDIDATE",
+                        "status":  "PROPOSED",
                         "evidence":  {
-                                         "reason":  "Strong structural fit for positive TCLK evidence; external issue creation blocked by GitHub integration permissions."
+                                         "pullRequest":  "https://github.com/congge918/technocore-tclk-deal-scout/pull/3",
+                                         "headCommit":  "cad9fb55c9dbf9b3fd652ebc1960d51afdc4e01a",
+                                         "localVerification":  "PASS: 8 pass, 0 warn, 0 fail, 1 skip; settlement intentionally unclaimed."
                                      },
-                        "claim":  "Candidate only; no integration or adoption claim."
+                        "claim":  "External CI proposal opened; no downstream integration or adoption claim until upstream merges and runs it."
                     },
                     {
                         "implementation":  "UfukNode/technocore-did-tool",
