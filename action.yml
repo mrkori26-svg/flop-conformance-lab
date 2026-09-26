@@ -4,7 +4,7 @@ description: Run a portable FLOP Conformance Lab profile against repository-supp
 
 inputs:
   profile:
-    description: External profile name (tclk-transcript, technocore-agent, flop-market-adapter, or direct-rail-f1)
+    description: External profile name (tclk-transcript, technocore-agent, technocore-contribution-proof, flop-market-adapter, direct-rail-f1, empires-journey, or flop-agent)
     required: true
   input:
     description: JSON input path relative to the caller repository

@@ -12,8 +12,10 @@ import { didKeyBytes, transportRepresentable, verifyTechnocoreRecord } from "./t
 import type { TransportRecord } from "./types.js";
 import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
+import { assertDeployedContributionProofShape } from "./technocore-contribution-proof.js";
+import { verifyContributionJsonV1 } from "./technocore-contribution-vectors.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "technocore-contribution-proof", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -379,6 +381,48 @@ function verifyTechnocoreAgent(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function verifyTechnocoreContributionProof(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "PROFILE_INPUT");
+    if (!Array.isArray(input.proofs) || input.proofs.length === 0) throw new Error("EMPTY_CONTRIBUTION_PROOFS");
+    const checks: PortableCheck[] = [];
+    let shapeFailures = 0;
+    let signatureFailures = 0;
+    for (const proof of input.proofs) {
+      try {
+        assertDeployedContributionProofShape(proof);
+      } catch {
+        shapeFailures += 1;
+        continue;
+      }
+      if (!verifyContributionJsonV1(proof)) signatureFailures += 1;
+    }
+    checks.push(check(
+      "contribution-proof.wrapper",
+      shapeFailures === 0 ? "PASS" : "FAIL",
+      shapeFailures === 0 ? "Every contribution proof has the deployed v1 wrapper shape." : "One or more contribution proofs violate the deployed v1 wrapper shape.",
+      { total: input.proofs.length, failures: shapeFailures },
+    ));
+    checks.push(check(
+      "contribution-proof.signature",
+      shapeFailures === 0 && signatureFailures === 0 ? "PASS" : "FAIL",
+      shapeFailures === 0 && signatureFailures === 0
+        ? "Every contribution proof verifies under the deployed did-starter JSON canonicalization."
+        : "One or more contribution proofs failed independent Ed25519 verification.",
+      { total: input.proofs.length, failures: signatureFailures, canonicalization: "did-starter-json-v1" },
+    ));
+    checks.push(check(
+      "contribution-proof.claim-boundary",
+      "PASS",
+      "Cryptographic proof verification does not imply contribution acceptance, usefulness, allocation credit, or protocol adoption.",
+      { verifiedClaim: "SIGNED_ARTIFACT_REFERENCE_ONLY" },
+    ));
+    return finalize("technocore-contribution-proof", input, checks);
+  } catch (error) {
+    return failureResult("technocore-contribution-proof", rawInput, error);
+  }
+}
+
 function verifyDirectRailF1(rawInput: unknown): PortableConformanceResult {
   try {
     const input = asObject(rawInput, "PROFILE_INPUT");
@@ -555,6 +599,7 @@ function verifyFlopAgent(rawInput: unknown): PortableConformanceResult {
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
+  if (profile === "technocore-contribution-proof") return verifyTechnocoreContributionProof(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
   if (profile === "empires-journey") return verifyEmpiresJourney(input);
