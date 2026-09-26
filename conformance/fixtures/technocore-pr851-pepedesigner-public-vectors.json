@@ -1,0 +1,29 @@
+{
+  "schema": "flop.technocore-pr851-external-vectors.v1",
+  "classification": "EXTERNAL_VALIDATION",
+  "source": {
+    "repository": "flop-labs/technocore-chat",
+    "issue": 828,
+    "comment": 5841904165,
+    "author": "pepedesigner"
+  },
+  "outer_schema": "technocore-contribution-proof-v1",
+  "signed_schema": "technocore-contribution-v1",
+  "unknown_fields_policy": "IGNORE_FOR_V1_VERIFICATION",
+  "vectors": [
+    {
+      "artifact_url": "https://github.com/pepedesigner/technocore-node-guide",
+      "commit": "017e96ec1d3780fb5bc1fb6b89229dee95d04b5a",
+      "did": "did:key:z6Mkoi2tJ5JdcURNKQx8tKrU2HZ8Ad15CDcseknaXKbbhwZX",
+      "signature": "OqOEIBjP9MrNYIL4AiAVJrvEagK5ZjOWoURpX_zchry7PFTThqqAio8h9LSDgsvLPKLFxLDHpaIm3S3jD305Cg",
+      "schema": "technocore-contribution-proof-v1"
+    },
+    {
+      "artifact_url": "https://github.com/pepedesigner/sonnet-viewer",
+      "commit": "c4d7f71f73740f764fe1e201747864020c89e620",
+      "did": "did:key:z6Mkoi2tJ5JdcURNKQx8tKrU2HZ8Ad15CDcseknaXKbbhwZX",
+      "signature": "BTEzG78dw8Yg1BY3bXNtUJaFkmWms9rWeg2jMarbw7KmsZg56QMPe4WZKW7mwiZUFjxK1okjI2M1sirJOESjAg",
+      "schema": "technocore-contribution-proof-v1"
+    }
+  ]
+}

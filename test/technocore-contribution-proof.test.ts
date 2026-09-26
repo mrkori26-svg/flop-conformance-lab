@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { verifyContributionJsonV1 } from "../src/technocore-contribution-vectors.js";
 
 import {
   assertContributionCommit,
@@ -73,4 +75,30 @@ test("PR #851 canary preserves both deployed canonicalization populations", () =
     { rule: "technocore-sdk-pipe-v1", count: 2 },
   ]);
   assert.equal(result.promotionTarget, "RELEASE_CONFORMANCE");
+});
+
+test("PR #851 accepts real five-key external proofs and ignores unknown wrapper fields", async () => {
+  const mod = await import("../src/technocore-contribution-proof.js");
+  const fixture = JSON.parse(
+    readFileSync(new URL("../conformance/fixtures/technocore-pr851-pepedesigner-public-vectors.json", import.meta.url), "utf8"),
+  ) as { vectors: Array<Record<string, string>> };
+
+  for (const vector of fixture.vectors) {
+    assert.doesNotThrow(() => mod.assertDeployedContributionProofShape(vector));
+    assert.equal(verifyContributionJsonV1(vector as any), true);
+    assert.doesNotThrow(() => mod.assertDeployedContributionProofShape({ ...vector, future_extension: "v2-hint" }));
+  }
+});
+
+test("PR #851 rejects a wrong outer schema without affecting signed-payload verification", async () => {
+  const mod = await import("../src/technocore-contribution-proof.js");
+  const fixture = JSON.parse(
+    readFileSync(new URL("../conformance/fixtures/technocore-pr851-pepedesigner-public-vectors.json", import.meta.url), "utf8"),
+  ) as { vectors: Array<Record<string, string>> };
+  const vector = fixture.vectors[0]!;
+  assert.equal(verifyContributionJsonV1(vector as any), true);
+  assert.throws(
+    () => mod.assertDeployedContributionProofShape({ ...vector, schema: "technocore-contribution-proof-v999" }),
+    /OUTER_SCHEMA_OUT_OF_CONTRACT/,
+  );
 });

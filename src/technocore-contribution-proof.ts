@@ -27,6 +27,8 @@ export function contributionProof851Boundary() {
     upstreamPr: TECHNOCoreContributionProofPr,
     upstreamState: "OPEN",
     acceptedCommitGrammar: "lowercase hexadecimal Git object id, exactly 40 or 64 characters",
+    requiredOuterFields: ["artifact_url", "commit", "did", "schema", "signature"],
+    unknownOuterFieldsPolicy: "IGNORE_FOR_V1_VERIFICATION",
     invalidSignedStringPolicy: "FAIL_CLOSED_BEFORE_SIGNATURE_ACCEPTANCE",
     nonClaims: [
       "PR #851 is not merged or released.",
@@ -51,9 +53,8 @@ export function assertDeployedContributionProofShape(
     throw new Error("TECHNOCORE_CONTRIBUTION_PROOF_SHAPE_OUT_OF_CONTRACT");
   }
   const value = proof as Record<string, unknown>;
-  const keys = Object.keys(value).sort();
-  const expected = ["artifact_url", "commit", "did", "schema", "signature"];
-  if (JSON.stringify(keys) !== JSON.stringify(expected)) {
+  const required = ["artifact_url", "commit", "did", "schema", "signature"];
+  if (required.some((field) => typeof value[field] !== "string")) {
     throw new Error("TECHNOCORE_CONTRIBUTION_PROOF_SHAPE_OUT_OF_CONTRACT");
   }
   if (value.schema !== TECHNOCoreContributionOuterSchema) {
