@@ -13,6 +13,14 @@ inputs:
     description: Result JSON path relative to the caller repository
     required: false
     default: conformance-report.json
+  upload-artifact:
+    description: Upload the generated report as a GitHub Actions artifact
+    required: false
+    default: "true"
+  artifact-name:
+    description: Artifact name used when upload-artifact is true
+    required: false
+    default: flop-conformance
 
 outputs:
   result:
@@ -50,3 +58,16 @@ runs:
         RESULT="$(node -e 'const fs=require("node:fs");const p=process.argv[1];const j=JSON.parse(fs.readFileSync(p,"utf8"));if(!["PASS","PARTIAL","FAIL"].includes(j.result))process.exit(2);process.stdout.write(j.result)' "$REPORT")"
         echo "result=$RESULT" >> "$GITHUB_OUTPUT"
         echo "report=$REPORT" >> "$GITHUB_OUTPUT"
+        {
+          echo "## FLOP Conformance"
+          echo ""
+          echo "- Profile: \`${{ inputs.profile }}\`"
+          echo "- Result: **$RESULT**"
+          echo "- Report: \`${{ inputs.out }}\`"
+        } >> "$GITHUB_STEP_SUMMARY"
+    - name: Upload conformance report
+      if: ${{ inputs.upload-artifact == 'true' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ github.workspace }}/${{ inputs.out }}

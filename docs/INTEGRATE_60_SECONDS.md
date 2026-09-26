@@ -41,13 +41,10 @@ Use `verify-live-room` when you want the Lab to capture the canonical Technocore
 
 Yellow Paper #61 was resolved by `3c97bbc`, so exact Appendix F.1 byte/vector agreement can return `PASS`. That result is still not runtime-compatibility proof.
 
-## Keep the artifact
+## Artifact and job summary
 
-```yaml
-- uses: actions/upload-artifact@v4
-  with:
-    name: flop-conformance
-    path: conformance-report.json
-```
+The Action now uploads `conformance-report.json` automatically as the `flop-conformance` artifact and writes the profile/result to the GitHub job summary. Set `upload-artifact: "false"` only when the caller already has its own retention policy.
+
+For external runtimes, generate an adapter with `flop-runtime-init --id <runtime>`. For third-party evidence, snapshot it first with `flop-evidence import` so provenance and SHA-256 are retained before interpretation.
 
 The stable result schema is `flop-conformance-result/v1`. See `docs/API_STABILITY.md` for the temporary v1 compatibility window.

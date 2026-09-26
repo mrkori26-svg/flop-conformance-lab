@@ -12,7 +12,11 @@
     "runtime-status": "dist/src/runtime-status-cli.js",
     "runtime-replay": "dist/src/runtime-replay-cli.js",
     "longitudinal-observatory": "dist/src/longitudinal-cli.js",
-    "flop-verify": "dist/src/flop-verify-cli.js"
+    "flop-verify": "dist/src/flop-verify-cli.js",
+    "flop-tools": "dist/src/cli.js",
+    "flop-runtime": "dist/src/runtime-cli.js",
+    "flop-runtime-init": "dist/src/runtime-target-init-cli.js",
+    "flop-evidence": "dist/src/evidence-import-cli.js"
   },
   "exports": {
     ".": "./dist/src/index.js"
@@ -49,6 +53,8 @@
     "docs/CROSS_SYSTEM_CONFORMANCE.md",
     "docs/FLOP_VERIFY.md",
     "docs/EXTERNAL_EVIDENCE_REUSE.md",
+    "docs/EXTERNAL_EVIDENCE_IMPORT.md",
+    "docs/EXTERNAL_RUNTIME_SDK.md",
     "examples/minimal-verify.mjs",
     "adoption/external-evidence-reuse.json"
   ],
