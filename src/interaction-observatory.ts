@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { fetchWithTransientRetry, type RetryTelemetry } from "./transient-retry.js";
 
 export type InteractionKind =
@@ -93,6 +94,30 @@ type GhEvent = {
 };
 
 const REGISTRY_URL = new URL("../conformance/interactions/registry.json", import.meta.url);
+
+export function resolveInteractionGithubToken(
+  env: NodeJS.ProcessEnv = process.env,
+  readCliToken: () => string | undefined = () => {
+    try {
+      const token = execFileSync("gh", ["auth", "token"], {
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      }).trim();
+      return token || undefined;
+    } catch {
+      return undefined;
+    }
+  },
+): string | undefined {
+  const explicit = env.INTERACTION_GITHUB_TOKEN?.trim();
+  if (explicit) return explicit;
+
+  const cliToken = readCliToken()?.trim();
+  if (cliToken) return cliToken;
+
+  const generic = env.GITHUB_TOKEN?.trim();
+  return generic || undefined;
+}
 
 export function loadInteractionRegistry(): InteractionRegistry {
   return JSON.parse(readFileSync(REGISTRY_URL, "utf8")) as InteractionRegistry;
@@ -243,7 +268,7 @@ async function discoverThreads(
 export async function observeInteractions(
   previous: InteractionState | null,
   registry = loadInteractionRegistry(),
-  token = process.env.INTERACTION_GITHUB_TOKEN ?? process.env.GITHUB_TOKEN,
+  token = resolveInteractionGithubToken(),
 ): Promise<{ state: InteractionState; events: InteractionEvent[] }> {
   const events: InteractionEvent[] = [];
   const entries: InteractionStateEntry[] = [];
