@@ -12,9 +12,15 @@ test("flop-runtime-init scaffolds an external RuntimeTarget consumer", () => {
   const result = spawnSync(process.execPath, [fileURLToPath(cli), "--id", "demo-runtime", "--dir", root], { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
   const targetRoot = join(root, "demo-runtime");
-  for (const name of ["runtime-target.ts", "fixture.json", "runtime-target.test.ts", "README.md"]) {
+  for (const name of ["runtime-target.ts", "fixture.json", "runtime-target.test.ts", "run-runtime.ts", "runtime-manifest.json", "package.json", "tsconfig.json", "README.md"]) {
     assert.equal(existsSync(join(targetRoot, name)), true);
   }
+  assert.equal(existsSync(join(targetRoot, ".github", "workflows", "flop-runtime-evidence.yml")), true);
+  const manifest = JSON.parse(readFileSync(join(targetRoot, "runtime-manifest.json"), "utf8"));
+  assert.equal(manifest.schema, "flop.external-runtime-manifest/v1");
+  assert.equal(manifest.classification, "EXTERNAL_RUNTIME_CANDIDATE");
+  assert.equal(manifest.promotion.requiresIndependentExecution, true);
+  assert.equal(manifest.promotion.selfReportedPassDoesNotCountAsAdoption, true);
 });
 
 test("flop-evidence import snapshots local evidence with provenance and fail-closed expectation", () => {
