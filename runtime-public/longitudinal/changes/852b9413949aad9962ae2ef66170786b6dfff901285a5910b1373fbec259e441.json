@@ -1,0 +1,17 @@
+{
+  "schema": "flop.before-after-journey/v1",
+  "metric": "conformance_drift",
+  "source": "runtime",
+  "before": "0bcca3b048acb37b04480380cc3048b77add047b8f4174b5820f81d19f5a0a5f",
+  "failure": "18a921633470f3f3754dfcacc845ba3ebbce6943129e7e7bed94696213b80c45",
+  "after": "0e8cf23d9f27faceae14e7cca4c378eba5b97b76edfe4b80bf8ec002429a4246",
+  "intervention": {
+    "kind": "REVISION_CHANGE",
+    "observerBefore": "5a0d6a5308ff56223fd5661db1ba5472458bd07e",
+    "observerAfter": "9e8e9409d93669e62bf5ad2d102f435d699210a7",
+    "sourceBefore": "0.1.0",
+    "sourceAfter": "0.3.0"
+  },
+  "id": "852b9413949aad9962ae2ef66170786b6dfff901285a5910b1373fbec259e441",
+  "bucket": "852b9413949aad9962ae2ef66170786b6dfff901285a5910b1373fbec259e441"
+}
