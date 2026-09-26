@@ -1,0 +1,129 @@
+{
+  "schema": "flop.longitudinal-hour/v1",
+  "methodologyVersion": "1.0.0",
+  "bucket": "2026-09-26-16",
+  "start": "2026-09-26T16:00:00.000Z",
+  "end": "2026-09-26T17:00:00.000Z",
+  "recordCount": 846,
+  "recordsHash": "a80ecbf77768196ea93208b758399187ab2af2ec89fc02e1dca7c240107a42ec",
+  "metrics": {
+    "runtime_availability": {
+      "metric": "runtime_availability",
+      "samples": 8,
+      "numerator": 8,
+      "denominator": 8,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 8,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "interaction_success": {
+      "metric": "interaction_success",
+      "samples": 2,
+      "numerator": 54,
+      "denominator": 54,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 2,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "signature_verification": {
+      "metric": "signature_verification",
+      "samples": 237,
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 237
+      },
+      "failures": {}
+    },
+    "room_retention": {
+      "metric": "room_retention",
+      "samples": 237,
+      "numerator": 474,
+      "denominator": 474,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 237,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "mailbox_validity": {
+      "metric": "mailbox_validity",
+      "samples": 237,
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 237
+      },
+      "failures": {}
+    },
+    "tclk_parse_rate": {
+      "metric": "tclk_parse_rate",
+      "samples": 2,
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 2,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "failures": {}
+    },
+    "conformance_drift": {
+      "metric": "conformance_drift",
+      "samples": 104,
+      "numerator": 85,
+      "denominator": 92,
+      "rate": 0.9239130434782609,
+      "outcomes": {
+        "PASS": 85,
+        "FAIL": 0,
+        "DRIFT": 7,
+        "UNKNOWN": 12
+      },
+      "failures": {
+        "OBSERVER_UNAVAILABLE": 12,
+        "CONFORMANCE_DRIFT": 7
+      }
+    },
+    "failure_classifications": {
+      "metric": "failure_classifications",
+      "samples": 19,
+      "numerator": 19,
+      "denominator": 19,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 7,
+        "UNKNOWN": 12
+      },
+      "failures": {
+        "OBSERVER_UNAVAILABLE": 12,
+        "CONFORMANCE_DRIFT": 7
+      }
+    }
+  }
+}
