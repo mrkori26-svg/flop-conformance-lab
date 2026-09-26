@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { readFile } from "node:fs/promises";
 import { ReferenceF1RuntimeTarget } from "../src/runtime-target-f1.js";
 import { TaskRelayPaperRuntimeTarget } from "../src/runtime-target-task-relay-paper.js";
+import { DealScoutRuntimeTarget } from "../src/runtime-target-deal-scout.js";
 import { runRuntimeTarget, verifyEvidenceBundleIntegrity, verifyRouterRuntimeExecutionReceipt } from "../src/runtime-observatory.js";
 import { publishRuntimeBundle, runtimeTrustLevel } from "../src/runtime-publication.js";
 
@@ -66,4 +67,39 @@ test("external task relay runtime executes through Router receipt when local sou
   assert.equal(verifyRouterRuntimeExecutionReceipt(second.bundle.execution.executionReceipt), true);
   assert.ok(second.bundle.verification.checks.some((check) =>
     check.id === "router_runtime_execution_receipt_integrity" && check.ok));
+});
+
+
+test("external deal scout runtime preserves read-only PaperRail boundary when local source is available", async (t) => {
+  const target = new DealScoutRuntimeTarget();
+  if (!await target.discover()) {
+    t.skip("external deal-scout checkout is not available");
+    return;
+  }
+  const input = { expectedStatus: "claimed" as const, expectedRailStatus: "NO_VALUE" as const };
+  const result = await runRuntimeTarget("external-deal-scout", target, { id: "deal-scout", input });
+  assert.equal(result.status, "PASS");
+  assert.equal(runtimeTrustLevel(result.bundle), "EXTERNAL_RUNTIME");
+  assert.equal(verifyEvidenceBundleIntegrity(result.bundle), true);
+  assert.ok(result.bundle.verification.checks.some((check) => check.id === "external.paper-no-value" && check.ok));
+});
+
+
+test("external deal scout archive preserves the stricter target claim boundary", async (t) => {
+  const target = new DealScoutRuntimeTarget();
+  if (!await target.discover()) {
+    t.skip("external deal-scout checkout is not available");
+    return;
+  }
+  const result = await runRuntimeTarget("external-deal-scout", target, {
+    id: "deal-scout-boundary",
+    input: { expectedStatus: "claimed", expectedRailStatus: "NO_VALUE" },
+  });
+  const root = mkdtempSync(join(tmpdir(), "flop-runtime-deal-scout-"));
+  try {
+    const record = publishRuntimeBundle(root, result.status, result.bundle);
+    assert.equal(record.claimBoundary, "EXTERNAL_EXECUTABLE_READ_ONLY_NOT_LIVE_NETWORK_OR_VALUE_SETTLEMENT");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

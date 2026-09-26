@@ -33,6 +33,10 @@ jobs:
           path: external-task-relay
       - uses: actions/checkout@v4
         with:
+          repository: congge918/technocore-tclk-deal-scout
+          path: external-deal-scout
+      - uses: actions/checkout@v4
+        with:
           repository: retardio73-boop/flop-session-router
           path: external-session-router
       - uses: actions/setup-node@v4
@@ -62,7 +66,13 @@ jobs:
           if [ ! -f .runtime/external-task-relay-paper-state.json ]; then
             git show origin/runtime-evidence:.runtime/external-task-relay-paper-state.json > .runtime/external-task-relay-paper-state.json 2>/dev/null || rm -f .runtime/external-task-relay-paper-state.json
           fi
+          if [ ! -f .runtime/external-deal-scout-state.json ]; then
+            git show origin/runtime-evidence:.runtime/external-deal-scout-state.json > .runtime/external-deal-scout-state.json 2>/dev/null || rm -f .runtime/external-deal-scout-state.json
+          fi
       - run: npm ci
+      - name: Install external deal-scout dependencies
+        working-directory: external-deal-scout
+        run: npm install --ignore-scripts --no-audit --no-fund
       - name: Build Session Router for external runtime integration
         working-directory: external-session-router
         run: |
@@ -86,6 +96,10 @@ jobs:
           FLOP_TASK_RELAY_REPO: ${{ github.workspace }}/external-task-relay
           FLOP_SESSION_ROUTER_REPO: ${{ github.workspace }}/external-session-router
         run: node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744
+      - name: Run continuous external deal-scout runtime cycle
+        env:
+          FLOP_DEAL_SCOUT_REPO: ${{ github.workspace }}/external-deal-scout
+        run: node dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744
       - run: npm run runtime:status
       - uses: actions/upload-artifact@v4
         if: always()
@@ -97,6 +111,7 @@ jobs:
             .runtime/external-flop-proof-api-f1-state.json
             .runtime/external-flop-proof-api-f1-corpus.json
             .runtime/external-task-relay-paper-state.json
+            .runtime/external-deal-scout-state.json
             runtime-public/runtime-index.json
             runtime-public/STATUS.md
       - name: Publish durable public evidence branch
@@ -117,10 +132,11 @@ jobs:
           cp .runtime/external-flop-proof-api-f1-state.json /tmp/runtime-evidence-worktree/.runtime/external-flop-proof-api-f1-state.json
           cp .runtime/external-flop-proof-api-f1-corpus.json /tmp/runtime-evidence-worktree/.runtime/external-flop-proof-api-f1-corpus.json
           cp .runtime/external-task-relay-paper-state.json /tmp/runtime-evidence-worktree/.runtime/external-task-relay-paper-state.json
+          cp .runtime/external-deal-scout-state.json /tmp/runtime-evidence-worktree/.runtime/external-deal-scout-state.json
           cp runtime-public/runtime-index.json /tmp/runtime-evidence-worktree/runtime-public/runtime-index.json
           cp runtime-public/STATUS.md /tmp/runtime-evidence-worktree/runtime-public/STATUS.md
           cd /tmp/runtime-evidence-worktree
-          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json .runtime/external-task-relay-paper-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
+          git add -f .runtime/reference-f1-state.json .runtime/external-flop-proof-api-f1-state.json .runtime/external-flop-proof-api-f1-corpus.json .runtime/external-task-relay-paper-state.json .runtime/external-deal-scout-state.json runtime-public/runtime-index.json runtime-public/STATUS.md
           if ! git diff --cached --quiet; then
             git commit -m "evidence: runtime snapshot ${GITHUB_RUN_ID}"
             git push origin HEAD:runtime-evidence

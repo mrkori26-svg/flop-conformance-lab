@@ -81,6 +81,7 @@
     "runtime:proof-api:corpus": "npm run build && node dist/src/external-f1-corpus-cli.js --input examples/external-consumer/direct-rail-f1.json --out .runtime/external-flop-proof-api-f1-corpus.json",
     "runtime:task-relay:paper": "npm run build && node dist/src/runtime-cli.js run --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --out .runtime/external-task-relay-paper-latest.json",
     "runtime:task-relay:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744",
+    "runtime:deal-scout:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744",
     "runtime:replay": "npm run build && node dist/src/runtime-replay-cli.js",
     "adoption:render": "node tools/render-adoption-matrix.mjs",
     "adoption:check": "node tools/render-adoption-matrix.mjs --check",

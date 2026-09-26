@@ -28,6 +28,10 @@ export function runtimeTrustLevel(bundle: EvidenceBundle): RuntimeTrustLevel {
 }
 
 export function runtimeClaimBoundary(bundle: EvidenceBundle): string {
+  if (bundle.evidence && typeof bundle.evidence === "object") {
+    const explicit = (bundle.evidence as Record<string, unknown>).claimBoundary;
+    if (typeof explicit === "string" && explicit.length > 0) return explicit;
+  }
   const trust = runtimeTrustLevel(bundle);
   if (trust === "EXTERNAL_RUNTIME") {
     return bundle.target.fingerprint.networkLive === true
