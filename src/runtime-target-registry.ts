@@ -29,6 +29,24 @@ const REGISTRY: RuntimeTargetRegistration[] = [
 ];
 
 export const RUNTIME_TARGET_NAMES = REGISTRY.map((entry)=>entry.id) as string[];
+
+export function validateRuntimeTargetRegistry(entries: RuntimeTargetRegistration[] = REGISTRY): void {
+  const ids = new Set<string>();
+  for (const entry of entries) {
+    if (!entry.id || ids.has(entry.id)) throw new Error(`INVALID_RUNTIME_TARGET_ID_${entry.id || "EMPTY"}`);
+    ids.add(entry.id);
+    if (!["REFERENCE_RUNTIME", "EXTERNAL_VERIFIER", "EXTERNAL_RUNTIME"].includes(entry.kind)) throw new Error(`INVALID_RUNTIME_TARGET_KIND_${entry.id}`);
+    if (!entry.inputProfile || !entry.defaultCaseId || !entry.claimBoundary) throw new Error(`INCOMPLETE_RUNTIME_TARGET_REGISTRATION_${entry.id}`);
+    if (!/^[A-Z0-9_]+$/.test(entry.claimBoundary)) throw new Error(`INVALID_RUNTIME_TARGET_BOUNDARY_${entry.id}`);
+    const target = entry.create();
+    for (const method of ["discover", "fingerprint", "capabilities", "execute", "collectEvidence", "verify"] as const) {
+      if (typeof target[method] !== "function") throw new Error(`INVALID_RUNTIME_TARGET_CONTRACT_${entry.id}_${method}`);
+    }
+  }
+}
+
+validateRuntimeTargetRegistry();
+
 export function listRuntimeTargets(): RuntimeTargetRegistration[] { return [...REGISTRY]; }
 export function runtimeTargetRegistration(id: string): RuntimeTargetRegistration | null { return REGISTRY.find((entry)=>entry.id===id) ?? null; }
 export function isRuntimeTargetName(value: string | undefined): value is string { return Boolean(value && runtimeTargetRegistration(value)); }
