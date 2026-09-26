@@ -72,7 +72,7 @@
     "quickstart": "npm run build && node dist/src/cli.js verify --profile technocore-agent --input examples/external-consumer/technocore-agent.json --out conformance-report.json",
     "drift:snapshot": "npm run build && node dist/src/drift-cli.js snapshot --previous conformance/observatory/baseline.json --out conformance/observatory/current.json --events conformance/observatory/events.json",
     "evolution:update": "npm run build && node dist/src/protocol-evolution-cli.js --handoff conformance/observatory/handoff.json --out conformance/observatory/evolution-history.json",
-    "check": "npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
+    "check": "npm run adoption:check && npm run typecheck && npm test && npm run conformance && npm run pack:check && npm run package:smoke",
     "interactions:snapshot": "npm run build && node dist/src/interaction-cli.js snapshot --previous conformance/interactions/state.json --out conformance/interactions/current.json --events conformance/interactions/events.json",
     "runtime:f1": "npm run build && node dist/src/runtime-cli.js run --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --previous .runtime/reference-f1-latest.json --out .runtime/reference-f1-latest.json",
     "runtime:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target reference-f1 --input examples/external-consumer/direct-rail-f1.json --state .runtime/reference-f1-state.json --retry-budget 2 --history-limit 744",
@@ -83,6 +83,8 @@
     "runtime:task-relay:paper": "npm run build && node dist/src/runtime-cli.js run --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --out .runtime/external-task-relay-paper-latest.json",
     "runtime:task-relay:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744",
     "runtime:replay": "npm run build && node dist/src/runtime-replay-cli.js",
+    "adoption:render": "node tools/render-adoption-matrix.mjs",
+    "adoption:check": "node tools/render-adoption-matrix.mjs --check",
     "prepare": "npm run build"
   },
   "keywords": [
