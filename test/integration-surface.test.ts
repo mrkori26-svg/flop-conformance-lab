@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync, existsSync, truncateSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -35,7 +35,8 @@ test("flop-evidence import snapshots local evidence with provenance and fail-clo
   writeFileSync(source, JSON.stringify({ hello: "external" }) + "\n");
   const outDir = join(root, "evidence");
   const cli = new URL("../src/evidence-import-cli.js", import.meta.url);
-  const result = spawnSync(process.execPath, [fileURLToPath(cli), "import", "--file", source, "--id", "external-demo", "--out-dir", outDir], { encoding: "utf8" });
+  const args = [fileURLToPath(cli), "import", "--file", source, "--id", "external-demo", "--out-dir", outDir];
+  const result = spawnSync(process.execPath, args, { encoding: "utf8" });
   assert.equal(result.status, 0, result.stderr);
   const provenance = JSON.parse(readFileSync(join(outDir, "external-demo", "provenance.json"), "utf8"));
   const expected = JSON.parse(readFileSync(join(outDir, "external-demo", "expected.json"), "utf8"));
@@ -43,4 +44,41 @@ test("flop-evidence import snapshots local evidence with provenance and fail-clo
   assert.equal(provenance.claimBoundary, "SNAPSHOT_ONLY_NOT_VERIFIED");
   assert.match(provenance.sha256, /^[0-9a-f]{64}$/);
   assert.equal(expected.verification, "UNASSESSED");
+
+  const repeat = spawnSync(process.execPath, args, { encoding: "utf8" });
+  assert.equal(repeat.status, 0, repeat.stderr);
+  assert.equal(JSON.parse(repeat.stdout).sha256, provenance.sha256);
+});
+
+test("flop-evidence import rejects ID collision with different bytes", () => {
+  const root = mkdtempSync(join(tmpdir(), "flop-evidence-collision-"));
+  const first = join(root, "first.json");
+  const second = join(root, "second.json");
+  const outDir = join(root, "evidence");
+  writeFileSync(first, "{\"v\":1}\n");
+  writeFileSync(second, "{\"v\":2}\n");
+  const cli = fileURLToPath(new URL("../src/evidence-import-cli.js", import.meta.url));
+  const a = spawnSync(process.execPath, [cli, "import", "--file", first, "--id", "same-id", "--out-dir", outDir], { encoding: "utf8" });
+  assert.equal(a.status, 0, a.stderr);
+  const b = spawnSync(process.execPath, [cli, "import", "--file", second, "--id", "same-id", "--out-dir", outDir], { encoding: "utf8" });
+  assert.notEqual(b.status, 0);
+  assert.match(b.stderr, /EVIDENCE_ID_COLLISION/);
+});
+
+test("flop-evidence import rejects oversized local evidence before reading it", () => {
+  const root = mkdtempSync(join(tmpdir(), "flop-evidence-large-"));
+  const source = join(root, "large.bin");
+  writeFileSync(source, "");
+  truncateSync(source, 10_000_001);
+  const cli = fileURLToPath(new URL("../src/evidence-import-cli.js", import.meta.url));
+  const result = spawnSync(process.execPath, [cli, "import", "--file", source, "--out-dir", join(root, "out")], { encoding: "utf8" });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /EVIDENCE_TOO_LARGE/);
+});
+
+test("flop-evidence import rejects literal private HTTPS hosts", () => {
+  const cli = fileURLToPath(new URL("../src/evidence-import-cli.js", import.meta.url));
+  const result = spawnSync(process.execPath, [cli, "import", "--url", "https://127.0.0.1/evidence.json"], { encoding: "utf8" });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /EVIDENCE_URL_PRIVATE_HOST_DENIED/);
 });

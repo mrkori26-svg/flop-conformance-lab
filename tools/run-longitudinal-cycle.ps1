@@ -2,8 +2,17 @@ $ErrorActionPreference = "Continue"
 $runner = Join-Path $PSScriptRoot "..\scripts\run-longitudinal-observatory.ps1"
 $publisher = Join-Path $PSScriptRoot "publish-longitudinal-evidence.ps1"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$latest = Join-Path $repo "runtime-public\longitudinal\latest.json"
+$publicRoot = Join-Path $repo "runtime-public\longitudinal"
+$latest = Join-Path $publicRoot "latest.json"
+$publishWorktree = if ($env:FLOP_LONGITUDINAL_PUBLISH_WORKTREE) { $env:FLOP_LONGITUDINAL_PUBLISH_WORKTREE } else { "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1" }
+$publishedRoot = Join-Path $publishWorktree "runtime-public\longitudinal"
+$hydrator = Join-Path $repo "tools\hydrate-longitudinal-publication.mjs"
 $cycleStarted = (Get-Date).ToUniversalTime()
+
+if (Test-Path $publishedRoot) {
+  & node $hydrator $publishedRoot $publicRoot
+  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $runner
 $runExit = $LASTEXITCODE

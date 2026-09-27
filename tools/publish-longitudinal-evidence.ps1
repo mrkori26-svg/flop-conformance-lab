@@ -6,6 +6,11 @@ $destination = Join-Path $worktree "runtime-public\longitudinal"
 
 if (-not (Test-Path $source)) { throw "LONGITUDINAL_PUBLIC_SOURCE_MISSING" }
 if (-not (Test-Path (Join-Path $worktree ".git"))) { throw "LONGITUDINAL_PUBLIC_WORKTREE_MISSING" }
+
+$validator = Join-Path $sourceRepo "tools\validate-longitudinal-publication.mjs"
+& node $validator $source $destination
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 New-Item -ItemType Directory -Force -Path $destination | Out-Null
 Copy-Item -Path (Join-Path $source "*") -Destination $destination -Recurse -Force
 
