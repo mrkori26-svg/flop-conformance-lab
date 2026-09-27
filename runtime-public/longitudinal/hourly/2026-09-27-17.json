@@ -4,17 +4,17 @@
   "bucket": "2026-09-27-17",
   "start": "2026-09-27T17:00:00.000Z",
   "end": "2026-09-27T18:00:00.000Z",
-  "recordCount": 67,
-  "recordsHash": "2b8b6da1867cf08d586397cdb05c2d8e8f5faee52844912da6f3977f884f7684",
+  "recordCount": 97,
+  "recordsHash": "4f891d3893c9ba472dc53f885ca1cab148cfd9daf8dc194d81c6239af31d933e",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 1,
-      "numerator": 1,
-      "denominator": 1,
+      "samples": 14,
+      "numerator": 14,
+      "denominator": 14,
       "rate": 1,
       "outcomes": {
-        "PASS": 1,
+        "PASS": 14,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -24,18 +24,16 @@
     "interaction_success": {
       "metric": "interaction_success",
       "samples": 1,
-      "numerator": 0,
-      "denominator": 0,
-      "rate": null,
+      "numerator": 29,
+      "denominator": 29,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 1,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 1
+        "UNKNOWN": 0
       },
-      "failures": {
-        "COVERAGE_LOST": 1
-      }
+      "failures": {}
     },
     "signature_verification": {
       "metric": "signature_verification",
@@ -95,35 +93,36 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 32,
-      "numerator": 1,
-      "denominator": 1,
-      "rate": 1,
+      "samples": 78,
+      "numerator": 75,
+      "denominator": 77,
+      "rate": 0.974025974025974,
       "outcomes": {
-        "PASS": 1,
+        "PASS": 75,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 31
+        "DRIFT": 2,
+        "UNKNOWN": 1
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 31
+        "CONFORMANCE_DRIFT": 2,
+        "OBSERVER_UNAVAILABLE": 1
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 32,
-      "numerator": 32,
-      "denominator": 32,
+      "samples": 3,
+      "numerator": 3,
+      "denominator": 3,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 32
+        "DRIFT": 2,
+        "UNKNOWN": 1
       },
       "failures": {
-        "COVERAGE_LOST": 1,
-        "OBSERVER_UNAVAILABLE": 31
+        "CONFORMANCE_DRIFT": 2,
+        "OBSERVER_UNAVAILABLE": 1
       }
     }
   }
