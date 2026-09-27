@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { generateKeyPairSync, sign } from "node:crypto";
-import { encodeTechnocoreProposal, verifyTechnocoreProposalReadback } from "../src/proposal-transport-technocore.js";
+import { deliverTechnocoreProposal, encodeTechnocoreProposal, verifyTechnocoreProposalReadback } from "../src/proposal-transport-technocore.js";
 import type { TransportRecord } from "../src/types.js";
 
 const A="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
@@ -37,4 +37,48 @@ test("Technocore fallback fails closed on room or text mutation",()=>{
   const wrongText={...x.record,text:x.record.text+"!"};
   const mutated=verifyTechnocoreProposalReadback({envelope:x.envelope,expectedRoom:"flop-agent-lab",record:wrongText});
   assert.equal(mutated.status,"UNVERIFIED");
+});
+
+test("Technocore deliver posts a pre-signed proposal and verifies exact readback", async () => {
+  const x=signedProposal("flop-agent-lab");
+  const calls:string[]=[];
+  const fetchImpl:typeof fetch = async (url, init) => {
+    calls.push(String(url));
+    if((init?.method ?? "GET")==="POST") {
+      const body=JSON.parse(String(init?.body ?? "{}"));
+      assert.equal(body.did,x.did);
+      assert.equal(body.sig,x.record.sig);
+      assert.equal(body.nonce,x.record.nonce);
+      assert.equal(body.text,x.record.text);
+      return new Response("ok",{status:200});
+    }
+    return new Response(JSON.stringify({
+      generation:2,
+      messages:[{from:x.did,nonce:x.record.nonce,sig:x.record.sig,text:x.record.text,seq:9,ts:x.record.ts}]
+    }),{status:200,headers:{"content-type":"application/json"}});
+  };  const receipt=await deliverTechnocoreProposal({
+    envelope:x.envelope,
+    signed:{
+      did:x.did,
+      room:"flop-agent-lab",
+      nonce:String(x.record.nonce),
+      signature:String(x.record.sig),
+      text:x.record.text,
+    },
+    expectedRoom:"flop-agent-lab",
+    fetchImpl,
+  });
+  assert.equal(receipt.status,"VERIFIED_DELIVERY");
+  assert.equal(receipt.position,"flop-agent-lab/2/9");
+  assert.equal(calls.length,2);
+});
+
+test("Technocore deliver refuses untrusted origins before network access", async () => {
+  const x=signedProposal("flop-agent-lab");
+  await assert.rejects(()=>deliverTechnocoreProposal({
+    envelope:x.envelope,
+    signed:{did:x.did,room:"flop-agent-lab",nonce:String(x.record.nonce),signature:String(x.record.sig),text:x.record.text},
+    expectedRoom:"flop-agent-lab",
+    baseUrl:"https://example.com",
+  }),/UNTRUSTED_TECHNOCORE_ORIGIN/);
 });
