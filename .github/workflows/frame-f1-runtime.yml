@@ -1,0 +1,31 @@
+name: FRAME F1 Runtime
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "frame/flop-poui/**"
+      - "src/devnet-harness.ts"
+      - "src/flop-devnet-server.ts"
+      - "src/runtime-target-flop-devnet.ts"
+      - "test/runtime-target-flop-devnet.test.ts"
+      - ".github/workflows/frame-f1-runtime.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  frame-f1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang libclang-dev cmake pkg-config libssl-dev protobuf-compiler
+      - name: Test experimental FLOP PoUI pallet
+        run: cargo test --manifest-path frame/flop-poui/Cargo.toml
