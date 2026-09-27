@@ -31,7 +31,8 @@ export function createFlopDevnetServer(state = createFlopDevnetState()) {
       implementation: "flop-tools/experimental-devnet",
       specVersion: 1,
       implVersion: 1,
-      classification: "LOCAL_POLICY",
+      classification: "EXPERIMENTAL_LOCAL_POLICY",
+      officialRuntime: false,
     });
     if (method === "flop_getCapabilities") return reply(res, id, [
       "direct-rail-f1",

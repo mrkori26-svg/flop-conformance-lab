@@ -4,13 +4,11 @@ pub use pallet::*;
 
 #[frame_support::pallet]
 pub mod pallet {
-    use frame_support::{pallet_prelude::*, traits::Get};
+    use frame_support::pallet_prelude::*;
     use frame_system::pallet_prelude::*;
 
     #[pallet::config]
-    pub trait Config: frame_system::Config {
-        type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
-    }
+    pub trait Config: frame_system::Config<RuntimeEvent: From<Event<Self>>> {}
 
     #[pallet::pallet]
     pub struct Pallet<T>(_);
@@ -103,9 +101,7 @@ mod tests {
         type Block = Block;
     }
 
-    impl Config for Test {
-        type RuntimeEvent = RuntimeEvent;
-    }
+    impl Config for Test {}
 
     fn ext() -> sp_io::TestExternalities {
         sp_io::TestExternalities::default()

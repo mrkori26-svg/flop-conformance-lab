@@ -11,14 +11,17 @@ The TypeScript harness starts a local JSON-RPC server, submits one F.1 input, an
 - emitted F1Executed event;
 - deterministic runtime evidence bundle.
 
-The FRAME pallet provides a concrete Rust implementation surface that can be compiled and tested independently.## What it does not prove
+The FRAME pallet provides a concrete Rust implementation surface that can be compiled and tested independently. Its FRAME dependencies are pinned to published crates with a committed lockfile, so reproduction does not require cloning the full Polkadot SDK.
+
+## What it does not prove
 
 It does **not** establish that an official FLOP runtime exists, that this pallet is normative, that any public network runs this code, or that value settlement occurred.
 
 The runtime fingerprint deliberately identifies itself as:
 
 - implementation: flop-tools/experimental-devnet
-- classification: LOCAL_POLICY
+- classification: EXPERIMENTAL_LOCAL_POLICY
+- officialRuntime: false
 
 The claim boundary is therefore experimental execution/readback only.
 
@@ -35,6 +38,7 @@ npm run runtime:devnet:serve
 FRAME pallet:
 
 cargo test --manifest-path frame/flop-poui/Cargo.toml
+
 ## Promotion rule
 
 Promotion beyond experimental status requires all of the following:

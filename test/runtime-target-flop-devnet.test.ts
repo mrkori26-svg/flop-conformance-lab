@@ -28,7 +28,7 @@ test("experimental FLOP devnet dispatches F.1 and verifies readback", async () =
     const result = await runRuntimeTarget(
       "flop-devnet",
       new FlopDevnetRuntimeTarget(`http://127.0.0.1:${address.port}`),
-      { id: "f1", input: { rpcUrl: `http://127.0.0.1:${address.port}`, f1 } },
+      { id: "f1", input: { f1 } },
     );
     assert.equal(result.status, "PASS");
     assert.equal(result.bundle.verification.status, "PASS");

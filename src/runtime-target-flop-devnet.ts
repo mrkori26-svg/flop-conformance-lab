@@ -45,7 +45,8 @@ export class FlopDevnetRuntimeTarget implements RuntimeTarget<FlopDevnetInput> {
       implementation: String(v.implementation ?? chain ?? "unknown"),
       version: String(v.specVersion ?? "unknown"),
       revision: String(v.implVersion ?? "unknown"),
-      classification: String(v.classification ?? "LOCAL_POLICY"),
+      classification: String(v.classification ?? "EXPERIMENTAL_LOCAL_POLICY"),
+      officialRuntime: false,
     };
   }
 
