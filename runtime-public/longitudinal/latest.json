@@ -1,18 +1,18 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.0.0",
-  "generatedAt": "2026-09-27T07:39:41.136Z",
-  "observationCount": 51436,
+  "generatedAt": "2026-09-27T08:05:19.744Z",
+  "observationCount": 804,
   "chainHead": "91585346765ebfac57cf733bf0e4f57e4959b7078b0ce8c9f18e203cf789ba50",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 549,
-      "numerator": 549,
-      "denominator": 549,
+      "samples": 12,
+      "numerator": 12,
+      "denominator": 12,
       "rate": 1,
       "outcomes": {
-        "PASS": 549,
+        "PASS": 12,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -21,42 +21,42 @@
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 114,
-      "numerator": 917,
-      "denominator": 1137,
-      "rate": 0.8065083553210203,
+      "samples": 12,
+      "numerator": 0,
+      "denominator": 20,
+      "rate": 0,
       "outcomes": {
-        "PASS": 33,
+        "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 81
+        "UNKNOWN": 12
       },
       "failures": {
-        "COVERAGE_LOST": 81
+        "COVERAGE_LOST": 12
       }
     },
     "signature_verification": {
       "metric": "signature_verification",
-      "samples": 13863,
-      "numerator": 0,
-      "denominator": 0,
+      "samples": 0,
+      "numerator": null,
+      "denominator": null,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 13863
+        "UNKNOWN": 0
       },
       "failures": {}
     },
     "room_retention": {
       "metric": "room_retention",
-      "samples": 13863,
-      "numerator": 27726,
-      "denominator": 27726,
-      "rate": 1,
+      "samples": 0,
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
       "outcomes": {
-        "PASS": 13863,
+        "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -65,26 +65,26 @@
     },
     "mailbox_validity": {
       "metric": "mailbox_validity",
-      "samples": 13863,
-      "numerator": 0,
-      "denominator": 0,
+      "samples": 0,
+      "numerator": null,
+      "denominator": null,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 13863
+        "UNKNOWN": 0
       },
       "failures": {}
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 114,
-      "numerator": 570,
-      "denominator": 570,
+      "samples": 12,
+      "numerator": 60,
+      "denominator": 60,
       "rate": 1,
       "outcomes": {
-        "PASS": 114,
+        "PASS": 12,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -93,37 +93,35 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 6010,
-      "numerator": 3030,
-      "denominator": 3072,
-      "rate": 0.986328125,
+      "samples": 384,
+      "numerator": 12,
+      "denominator": 12,
+      "rate": 1,
       "outcomes": {
-        "PASS": 3030,
+        "PASS": 12,
         "FAIL": 0,
-        "DRIFT": 42,
-        "UNKNOWN": 2938
+        "DRIFT": 0,
+        "UNKNOWN": 372
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 2937,
-        "CONFORMANCE_DRIFT": 42
+        "OBSERVER_UNAVAILABLE": 372
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 3060,
-      "numerator": 3060,
-      "denominator": 3060,
+      "samples": 384,
+      "numerator": 384,
+      "denominator": 384,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 42,
-        "UNKNOWN": 3018
+        "DRIFT": 0,
+        "UNKNOWN": 384
       },
       "failures": {
-        "COVERAGE_LOST": 81,
-        "OBSERVER_UNAVAILABLE": 2937,
-        "CONFORMANCE_DRIFT": 42
+        "COVERAGE_LOST": 12,
+        "OBSERVER_UNAVAILABLE": 372
       }
     }
   },
