@@ -1,18 +1,18 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.0.0",
-  "generatedAt": "2026-09-27T14:05:27.270Z",
-  "observationCount": 1141,
+  "generatedAt": "2026-09-27T14:47:17.994Z",
+  "observationCount": 56448,
   "chainHead": "91585346765ebfac57cf733bf0e4f57e4959b7078b0ce8c9f18e203cf789ba50",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 18,
-      "numerator": 18,
-      "denominator": 18,
+      "samples": 647,
+      "numerator": 647,
+      "denominator": 647,
       "rate": 1,
       "outcomes": {
-        "PASS": 18,
+        "PASS": 647,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -21,42 +21,42 @@
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 17,
-      "numerator": 0,
-      "denominator": 20,
-      "rate": 0,
+      "samples": 121,
+      "numerator": 1120,
+      "denominator": 1340,
+      "rate": 0.835820895522388,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 40,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 17
+        "UNKNOWN": 81
       },
       "failures": {
-        "COVERAGE_LOST": 17
+        "COVERAGE_LOST": 81
       }
     },
     "signature_verification": {
       "metric": "signature_verification",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 15299,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 15299
       },
       "failures": {}
     },
     "room_retention": {
       "metric": "room_retention",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
-      "rate": null,
+      "samples": 15299,
+      "numerator": 30598,
+      "denominator": 30598,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 15299,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -65,26 +65,26 @@
     },
     "mailbox_validity": {
       "metric": "mailbox_validity",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 15299,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 15299
       },
       "failures": {}
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 17,
-      "numerator": 85,
-      "denominator": 85,
+      "samples": 121,
+      "numerator": 605,
+      "denominator": 605,
       "rate": 1,
       "outcomes": {
-        "PASS": 17,
+        "PASS": 121,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -93,35 +93,37 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 545,
-      "numerator": 18,
-      "denominator": 18,
-      "rate": 1,
+      "samples": 6556,
+      "numerator": 3530,
+      "denominator": 3574,
+      "rate": 0.9876888640179071,
       "outcomes": {
-        "PASS": 18,
+        "PASS": 3530,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 527
+        "DRIFT": 44,
+        "UNKNOWN": 2982
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 527
+        "OBSERVER_UNAVAILABLE": 2981,
+        "CONFORMANCE_DRIFT": 44
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 544,
-      "numerator": 544,
-      "denominator": 544,
+      "samples": 3106,
+      "numerator": 3106,
+      "denominator": 3106,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 544
+        "DRIFT": 44,
+        "UNKNOWN": 3062
       },
       "failures": {
-        "COVERAGE_LOST": 17,
-        "OBSERVER_UNAVAILABLE": 527
+        "COVERAGE_LOST": 81,
+        "OBSERVER_UNAVAILABLE": 2981,
+        "CONFORMANCE_DRIFT": 44
       }
     }
   },
