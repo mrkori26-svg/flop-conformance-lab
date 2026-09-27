@@ -124,7 +124,7 @@ const pkg = JSON.stringify({
     test: "npm run build && node --test dist/runtime-target.test.js",
     "runtime:verify": "npm run build && node dist/run-runtime.js"
   },  dependencies: {
-    "@flop-tools/conformance-lab": `github:retardio73-boop/flop-conformance-lab#${labRevision}`
+    "@flop-tools/conformance-lab": `git+https://github.com/retardio73-boop/flop-conformance-lab.git#${labRevision}`
   },
   devDependencies: {
     "@types/node": "^24.0.0",
