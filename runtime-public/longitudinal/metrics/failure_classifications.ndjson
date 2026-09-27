@@ -7,4 +7,4 @@
 {"bucket":"2026-09-27-03","metric":"failure_classifications","samples":1,"numerator":1,"denominator":1,"rate":1,"outcomes":{"PASS":0,"FAIL":0,"DRIFT":0,"UNKNOWN":1},"failures":{"OBSERVER_UNAVAILABLE":1}}
 {"bucket":"2026-09-27-04","metric":"failure_classifications","samples":0,"numerator":null,"denominator":null,"rate":null,"outcomes":{"PASS":0,"FAIL":0,"DRIFT":0,"UNKNOWN":0},"failures":{}}
 {"bucket":"2026-09-27-05","metric":"failure_classifications","samples":1,"numerator":1,"denominator":1,"rate":1,"outcomes":{"PASS":0,"FAIL":0,"DRIFT":0,"UNKNOWN":1},"failures":{"OBSERVER_UNAVAILABLE":1}}
-{"bucket":"2026-09-27-06","metric":"failure_classifications","samples":32,"numerator":32,"denominator":32,"rate":1,"outcomes":{"PASS":0,"FAIL":0,"DRIFT":0,"UNKNOWN":32},"failures":{"COVERAGE_LOST":1,"OBSERVER_UNAVAILABLE":31}}
+{"bucket":"2026-09-27-06","metric":"failure_classifications","samples":3,"numerator":3,"denominator":3,"rate":1,"outcomes":{"PASS":0,"FAIL":0,"DRIFT":2,"UNKNOWN":1},"failures":{"CONFORMANCE_DRIFT":2,"OBSERVER_UNAVAILABLE":1}}
