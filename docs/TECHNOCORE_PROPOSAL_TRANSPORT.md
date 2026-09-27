@@ -22,7 +22,34 @@ The strongest resulting state is `VERIFIED_DELIVERY`.
 flop-proposal-transport encode --input proposal.json --out message.txt
 ```
 
-Publish `message.txt` using the existing scoped Technocore signer/writer.
+Sign only through the proposal-scoped capability:
+
+```
+npm run proposal:sign -- \
+  --room mabolla-task-relay \
+  --text-file message.txt \
+  --out signed.json
+```
+
+The signer refuses arbitrary room messages. A proposal is signable only when:
+
+- the room is listed in `identity/proposal-destinations.json`;
+- that room maps to the exact `target` in the proposal envelope;
+- the source revision is an immutable 40-hex Git commit;
+- the `FLOP_PROPOSAL_V1` digest matches the canonical envelope;
+- the message is one line and within the bounded signer payload size.
+
+Then publish and immediately verify readback:
+
+```
+flop-proposal-transport deliver \
+  --envelope proposal.json \
+  --signed signed.json \
+  --room mabolla-task-relay \
+  --out delivery-receipt.json
+```
+
+Verified delivery receipts are also retained in the append-only proposal-delivery ledger when the retention-capable CLI is used.
 
 ## Verify readback
 
