@@ -14,8 +14,9 @@ import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
 import { assertDeployedContributionProofShape } from "./technocore-contribution-proof.js";
 import { verifyContributionJsonV1 } from "./technocore-contribution-vectors.js";
+import { verifyEconomicTestnetSettlement, type EconomicTestnetObservation, type EconomicTestnetExpectation } from "./economic-testnet-profile.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "technocore-contribution-proof", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "technocore-contribution-proof", "flop-market-adapter", "direct-rail-f1", "economic-testnet-settlement", "empires-journey", "flop-agent"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -633,12 +634,47 @@ function verifyFlopAgent(rawInput: unknown): PortableConformanceResult {
   }
 }
 
+function verifyEconomicTestnetProfile(rawInput: unknown): PortableConformanceResult {
+  try {
+    const input = asObject(rawInput, "PROFILE_INPUT");
+    const observationsRaw = input.observations;
+    if (!Array.isArray(observationsRaw)) throw new Error("INVALID_OBSERVATIONS");
+    const expectedRaw = asObject(input.expected, "EXPECTED");
+    const expected: EconomicTestnetExpectation = {
+      reservationId: requiredString(expectedRaw, "reservationId"),
+      asset: requiredString(expectedRaw, "asset"),
+      settledAmount: requiredString(expectedRaw, "settledAmount"),
+      minConfirmations: Number(expectedRaw.minConfirmations),
+      ...(Array.isArray(expectedRaw.allowedNetworks)
+        ? { allowedNetworks: expectedRaw.allowedNetworks.map((x) => String(x)) }
+        : {}),
+    };
+    if (!Number.isInteger(expected.minConfirmations) || expected.minConfirmations < 0) {
+      throw new Error("INVALID_MINCONFIRMATIONS");
+    }
+    const observations = observationsRaw.map((item) => asObject(item, "OBSERVATION") as unknown as EconomicTestnetObservation);
+    const checks = verifyEconomicTestnetSettlement({ observations, expected }).map((item) =>
+      check(item.id, item.ok ? "PASS" : "FAIL", item.message)
+    );
+    checks.push(check(
+      "testnet.claim-boundary",
+      "PASS",
+      "Verification proves externally observed testnet lock/settlement evidence only; it does not claim mainnet or live-value settlement.",
+      { claimBoundary: "TESTNET_RAIL_OBSERVED_NOT_LIVE_VALUE_SETTLEMENT" },
+    ));
+    return finalize("economic-testnet-settlement", input, checks);
+  } catch (error) {
+    return failureResult("economic-testnet-settlement", rawInput, error);
+  }
+}
+
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
   if (profile === "technocore-contribution-proof") return verifyTechnocoreContributionProof(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   if (profile === "direct-rail-f1") return verifyDirectRailF1(input);
+  if (profile === "economic-testnet-settlement") return verifyEconomicTestnetProfile(input);
   if (profile === "empires-journey") return verifyEmpiresJourney(input);
   if (profile === "flop-agent") return verifyFlopAgent(input);
   throw new Error(`UNKNOWN_EXTERNAL_PROFILE:${profile}`);

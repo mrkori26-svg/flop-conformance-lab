@@ -63,7 +63,7 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && node tools/copy-assets.js",
+    "build": "node tools/clean-build.js && tsc -p tsconfig.json && node tools/copy-assets.js",
     "clean": "node tools/clean-build.js",
     "test": "npm run build && node --test dist/test/*.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
