@@ -1,6 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { generateKeyPairSync, sign } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { deliverTechnocoreProposal, encodeTechnocoreProposal, verifyTechnocoreProposalReadback } from "../src/proposal-transport-technocore.js";
 import type { TransportRecord } from "../src/types.js";
 
@@ -98,4 +103,25 @@ test("Technocore delivery preserves 19-digit numeric nonce during readback", asy
   });
   assert.equal(receipt.status,"VERIFIED_DELIVERY");
   assert.equal(receipt.position,"flop-agent-lab/2/9");
+});
+test("proposal transport CLI durably retains verified receipts by default", () => {
+  const x=signedProposal("flop-agent-lab");
+  const dir=mkdtempSync(join(tmpdir(),"flop-proposal-cli-"));
+  const envelopePath=join(dir,"envelope.json");
+  const recordPath=join(dir,"record.json");
+  writeFileSync(envelopePath,JSON.stringify(x.envelope));
+  writeFileSync(recordPath,JSON.stringify(x.record));
+  const cli=fileURLToPath(new URL("../src/proposal-transport-cli.js",import.meta.url));
+  const stdout=execFileSync(process.execPath,[
+    cli,"verify",
+    "--envelope",envelopePath,
+    "--record",recordPath,
+    "--room","flop-agent-lab",
+    "--sender",x.did
+  ],{cwd:dir,encoding:"utf8",stdio:["ignore","pipe","pipe"]});
+  const receipt=JSON.parse(stdout);  assert.equal(receipt.status,"VERIFIED_DELIVERY");
+  const retained=join(dir,"reports","proposal-deliveries",`${receipt.proposalDigest}.json`);
+  assert.equal(existsSync(retained),true);
+  const stored=JSON.parse(readFileSync(retained,"utf8"));
+  assert.deepEqual(stored,receipt);
 });

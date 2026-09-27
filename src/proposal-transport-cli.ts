@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
+import { appendProposalDeliveryReceipt } from "./proposal-delivery-ledger.js";
 import { deliverTechnocoreProposal, encodeTechnocoreProposal, verifyTechnocoreProposalReadback, type TechnocoreProposalEnvelope, type TechnocoreSignedProposal } from "./proposal-transport-technocore.js";
 import type { TransportRecord } from "./types.js";
 
@@ -14,6 +16,20 @@ function readJson<T>(path:string|undefined,label:string):T{
 function emit(value:unknown,path?:string){
   const text=JSON.stringify(value,null,2)+"\n";
   if(path) writeFileSync(path,text); else process.stdout.write(text);
+}
+function emitRetainedReceipt(receipt:import("./proposal-transport-technocore.js").TechnocoreProposalReceipt,path?:string){
+  const dir="reports/proposal-deliveries";
+  mkdirSync(dir,{recursive:true});
+  const retainedPath=path ?? `${dir}/${receipt.proposalDigest}.json`;
+  emit(receipt,retainedPath);
+  if(receipt.status==="VERIFIED_DELIVERY"){
+    const ledgerPath=flag("--ledger") ?? `${dir}/index.ndjson`;
+    mkdirSync(dirname(ledgerPath),{recursive:true});
+    const record=appendProposalDeliveryReceipt(ledgerPath,receipt);
+    process.stderr.write(`PROPOSAL_RECEIPT_LEDGERED:${ledgerPath}#${record.sequence}\n`);
+  }
+  process.stdout.write(JSON.stringify(receipt,null,2)+"\n");
+  process.stderr.write(`PROPOSAL_RECEIPT_RETAINED:${retainedPath}\n`);
 }
 
 try{
@@ -30,7 +46,7 @@ try{
     const room=flag("--room");
     if(!room) throw new Error("ROOM_REQUIRED");
     const receipt=await deliverTechnocoreProposal({envelope,signed,expectedRoom:room});
-    emit(receipt,flag("--out"));
+    emitRetainedReceipt(receipt,flag("--out"));
     if(receipt.status!=="VERIFIED_DELIVERY") process.exitCode=1;
     process.exit();
   }
@@ -45,15 +61,15 @@ try{
       expectedSenderDid:flag("--sender"),
       record,
     });
-    emit(receipt,flag("--out"));
+    emitRetainedReceipt(receipt,flag("--out"));
     if(receipt.status!=="VERIFIED_DELIVERY") process.exitCode=1;
     process.exit();
   }
   process.stderr.write(
     "usage:\n"+
     "  flop-proposal-transport encode --input envelope.json [--out message.txt]\n"+
-    "  flop-proposal-transport deliver --envelope envelope.json --signed signed.json --room <room> [--out receipt.json]\n"+
-    "  flop-proposal-transport verify --envelope envelope.json --record readback.json --room <room> [--sender did] [--out receipt.json]\n"
+    "  flop-proposal-transport deliver --envelope envelope.json --signed signed.json --room <room> [--out receipt.json] [--ledger index.ndjson]\n"+
+    "  flop-proposal-transport verify --envelope envelope.json --record readback.json --room <room> [--sender did] [--out receipt.json] [--ledger index.ndjson]\n"
   );
   process.exit(2);
 }catch(error){
