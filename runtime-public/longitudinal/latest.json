@@ -1,18 +1,18 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.0.0",
-  "generatedAt": "2026-09-27T00:05:18.391Z",
-  "observationCount": 268,
-  "chainHead": "03934f91a622f8510c6b5eba78e45be4cedaf9eda1590347231b685c75fa35b7",
+  "generatedAt": "2026-09-27T00:09:14.501Z",
+  "observationCount": 45539,
+  "chainHead": "91585346765ebfac57cf733bf0e4f57e4959b7078b0ce8c9f18e203cf789ba50",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 4,
-      "numerator": 4,
-      "denominator": 4,
+      "samples": 457,
+      "numerator": 457,
+      "denominator": 457,
       "rate": 1,
       "outcomes": {
-        "PASS": 4,
+        "PASS": 457,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -21,42 +21,42 @@
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 4,
-      "numerator": 0,
-      "denominator": 15,
-      "rate": 0,
+      "samples": 108,
+      "numerator": 743,
+      "denominator": 963,
+      "rate": 0.7715472481827622,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 27,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 4
+        "UNKNOWN": 81
       },
       "failures": {
-        "COVERAGE_LOST": 4
+        "COVERAGE_LOST": 81
       }
     },
     "signature_verification": {
       "metric": "signature_verification",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 12094,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 12094
       },
       "failures": {}
     },
     "room_retention": {
       "metric": "room_retention",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
-      "rate": null,
+      "samples": 12094,
+      "numerator": 24188,
+      "denominator": 24188,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 12094,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -65,26 +65,26 @@
     },
     "mailbox_validity": {
       "metric": "mailbox_validity",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 12094,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 12094
       },
       "failures": {}
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 4,
-      "numerator": 20,
-      "denominator": 20,
+      "samples": 108,
+      "numerator": 540,
+      "denominator": 540,
       "rate": 1,
       "outcomes": {
-        "PASS": 4,
+        "PASS": 108,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -93,35 +93,37 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 128,
-      "numerator": 4,
-      "denominator": 4,
-      "rate": 1,
+      "samples": 5534,
+      "numerator": 2564,
+      "denominator": 2602,
+      "rate": 0.9853958493466565,
       "outcomes": {
-        "PASS": 4,
+        "PASS": 2564,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 124
+        "DRIFT": 38,
+        "UNKNOWN": 2932
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 124
+        "OBSERVER_UNAVAILABLE": 2931,
+        "CONFORMANCE_DRIFT": 38
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 128,
-      "numerator": 128,
-      "denominator": 128,
+      "samples": 3050,
+      "numerator": 3050,
+      "denominator": 3050,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 128
+        "DRIFT": 38,
+        "UNKNOWN": 3012
       },
       "failures": {
-        "COVERAGE_LOST": 4,
-        "OBSERVER_UNAVAILABLE": 124
+        "COVERAGE_LOST": 81,
+        "OBSERVER_UNAVAILABLE": 2931,
+        "CONFORMANCE_DRIFT": 38
       }
     }
   },
