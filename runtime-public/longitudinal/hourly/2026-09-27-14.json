@@ -4,17 +4,17 @@
   "bucket": "2026-09-27-14",
   "start": "2026-09-27T14:00:00.000Z",
   "end": "2026-09-27T15:00:00.000Z",
-  "recordCount": 67,
-  "recordsHash": "39e5ba1c5bd5801026c9ce6be74f09cab6598e17f6f21ba22752fbbb3acbce84",
+  "recordCount": 126,
+  "recordsHash": "8e51fe46099af1769a6974211ec277fb5595001d41f1cc688d9babbe5b47e098",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 1,
-      "numerator": 1,
-      "denominator": 1,
+      "samples": 14,
+      "numerator": 14,
+      "denominator": 14,
       "rate": 1,
       "outcomes": {
-        "PASS": 1,
+        "PASS": 14,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -24,18 +24,16 @@
     "interaction_success": {
       "metric": "interaction_success",
       "samples": 1,
-      "numerator": 0,
-      "denominator": 0,
-      "rate": null,
+      "numerator": 29,
+      "denominator": 29,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 1,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 1
+        "UNKNOWN": 0
       },
-      "failures": {
-        "COVERAGE_LOST": 1
-      }
+      "failures": {}
     },
     "signature_verification": {
       "metric": "signature_verification",
@@ -95,18 +93,18 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 32,
-      "numerator": 1,
-      "denominator": 1,
+      "samples": 78,
+      "numerator": 46,
+      "denominator": 46,
       "rate": 1,
       "outcomes": {
-        "PASS": 1,
+        "PASS": 46,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 31
+        "UNKNOWN": 32
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 31
+        "OBSERVER_UNAVAILABLE": 32
       }
     },
     "failure_classifications": {
@@ -122,8 +120,7 @@
         "UNKNOWN": 32
       },
       "failures": {
-        "COVERAGE_LOST": 1,
-        "OBSERVER_UNAVAILABLE": 31
+        "OBSERVER_UNAVAILABLE": 32
       }
     }
   }
