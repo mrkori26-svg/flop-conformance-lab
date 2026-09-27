@@ -105,6 +105,14 @@ function trustedTechnocoreBase(baseUrl: string): string {
   if (baseUrl !== "https://technocore.chat") throw new Error("UNTRUSTED_TECHNOCORE_ORIGIN");
   return baseUrl;
 }
+
+function parseTechnocoreReadback(raw: string): { generation?: unknown; messages?: unknown[] } {
+  const preserved = raw.replace(/("nonce"\s*:\s*)([0-9]{1,19})(?=\s*[,}])/g, '$1"$2"');
+  const value = JSON.parse(preserved) as unknown;
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("TECHNOCORE_READBACK_INVALID_JSON");
+  return value as { generation?: unknown; messages?: unknown[] };
+}
+
 export async function deliverTechnocoreProposal(input: {
   envelope: TechnocoreProposalEnvelope;
   signed: TechnocoreSignedProposal;
@@ -138,7 +146,7 @@ export async function deliverTechnocoreProposal(input: {
     { method: "GET", headers: { accept: "application/json" }, redirect: "error" },
   );
   if (!readback.ok) throw new Error(`TECHNOCORE_READBACK_HTTP_${readback.status}`);
-  const view = await readback.json() as { generation?: unknown; messages?: unknown[] };
+  const view = parseTechnocoreReadback(await readback.text());
   const generation = Number.isSafeInteger(view.generation) ? Number(view.generation) : 0;
   const messages = Array.isArray(view.messages) ? view.messages : [];
   const found = messages.find((item) => {

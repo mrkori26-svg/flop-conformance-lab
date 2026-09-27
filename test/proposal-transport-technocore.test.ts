@@ -7,13 +7,12 @@ import type { TransportRecord } from "../src/types.js";
 const A="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 function b58(b:Buffer){let n=BigInt("0x"+b.toString("hex")),s="";while(n){s=A[Number(n%58n)]+s;n/=58n;}for(const x of b){if(x)break;s="1"+s;}return s;}
 
-function signedProposal(room:string){
+function signedProposal(room:string,nonce="7"){
   const kp=generateKeyPairSync("ed25519");
   const raw=(kp.publicKey.export({format:"der",type:"spki"}) as Buffer).subarray(-32);
   const did="did:key:z"+b58(Buffer.concat([Buffer.from([0xed,1]),raw]));
   const envelope={schema:"flop.technocore-proposal/v1" as const,target:"example/repo",kind:"INTEGRATION_PROPOSAL" as const,subject:"Run external conformance",body:"Use the pinned RuntimeTarget kit.",sourceRepository:"retardio73-boop/flop-conformance-lab",sourceRevision:"abc123",createdAt:"2026-09-26T23:00:00Z"};
   const text=encodeTechnocoreProposal(envelope);
-  const nonce="7";
   const sig=sign(null,Buffer.from(`${room}|${nonce}|${text}`),kp.privateKey).toString("base64url");
   const record:TransportRecord={room,generation:2,seq:9,ts:"2026-09-26T23:00:01Z",from:did,text,nonce,sig};
   return {did,envelope,record};
@@ -81,4 +80,22 @@ test("Technocore deliver refuses untrusted origins before network access", async
     expectedRoom:"flop-agent-lab",
     baseUrl:"https://example.com",
   }),/UNTRUSTED_TECHNOCORE_ORIGIN/);
+});
+
+test("Technocore delivery preserves 19-digit numeric nonce during readback", async () => {
+  const nonce="1790529859181107833";
+  const x=signedProposal("flop-agent-lab",nonce);
+  const fetchImpl:typeof fetch = async (_url, init) => {
+    if((init?.method ?? "GET")==="POST") return new Response("ok",{status:200});
+    const body = `{"generation":2,"messages":[{"from":"${x.did}","nonce":${nonce},"sig":"${x.record.sig}","text":${JSON.stringify(x.record.text)},"seq":9,"ts":"${x.record.ts}"}]}`;
+    return new Response(body,{status:200,headers:{"content-type":"application/json"}});
+  };
+  const receipt=await deliverTechnocoreProposal({
+    envelope:x.envelope,
+    signed:{did:x.did,room:"flop-agent-lab",nonce,signature:String(x.record.sig),text:x.record.text},
+    expectedRoom:"flop-agent-lab",
+    fetchImpl,
+  });
+  assert.equal(receipt.status,"VERIFIED_DELIVERY");
+  assert.equal(receipt.position,"flop-agent-lab/2/9");
 });
