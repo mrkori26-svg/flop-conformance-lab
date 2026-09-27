@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync } from "node:fs";
-import { encodeTechnocoreProposal, verifyTechnocoreProposalReadback, type TechnocoreProposalEnvelope } from "./proposal-transport-technocore.js";
+import { deliverTechnocoreProposal, encodeTechnocoreProposal, verifyTechnocoreProposalReadback, type TechnocoreProposalEnvelope, type TechnocoreSignedProposal } from "./proposal-transport-technocore.js";
 import type { TransportRecord } from "./types.js";
 
 const args=process.argv.slice(2);
@@ -24,6 +24,16 @@ try{
     if(out) writeFileSync(out,text+"\n"); else process.stdout.write(text+"\n");
     process.exit(0);
   }
+  if(command==="deliver"){
+    const envelope=readJson<TechnocoreProposalEnvelope>(flag("--envelope"),"ENVELOPE");
+    const signed=readJson<TechnocoreSignedProposal>(flag("--signed"),"SIGNED");
+    const room=flag("--room");
+    if(!room) throw new Error("ROOM_REQUIRED");
+    const receipt=await deliverTechnocoreProposal({envelope,signed,expectedRoom:room});
+    emit(receipt,flag("--out"));
+    if(receipt.status!=="VERIFIED_DELIVERY") process.exitCode=1;
+    process.exit();
+  }
   if(command==="verify"){
     const envelope=readJson<TechnocoreProposalEnvelope>(flag("--envelope"),"ENVELOPE");
     const record=readJson<TransportRecord>(flag("--record"),"RECORD");
@@ -42,6 +52,7 @@ try{
   process.stderr.write(
     "usage:\n"+
     "  flop-proposal-transport encode --input envelope.json [--out message.txt]\n"+
+    "  flop-proposal-transport deliver --envelope envelope.json --signed signed.json --room <room> [--out receipt.json]\n"+
     "  flop-proposal-transport verify --envelope envelope.json --record readback.json --room <room> [--sender did] [--out receipt.json]\n"
   );
   process.exit(2);
