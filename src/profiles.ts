@@ -643,6 +643,7 @@ function verifyEconomicTestnetProfile(rawInput: unknown): PortableConformanceRes
     const expected: EconomicTestnetExpectation = {
       reservationId: requiredString(expectedRaw, "reservationId"),
       asset: requiredString(expectedRaw, "asset"),
+      lockedAmount: requiredString(expectedRaw, "lockedAmount"),
       settledAmount: requiredString(expectedRaw, "settledAmount"),
       minConfirmations: Number(expectedRaw.minConfirmations),
       ...(Array.isArray(expectedRaw.allowedNetworks)

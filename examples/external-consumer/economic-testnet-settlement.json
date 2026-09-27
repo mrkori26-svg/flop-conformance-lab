@@ -4,6 +4,7 @@
   "expected": {
     "reservationId": "r1",
     "asset": "FLOP",
+    "lockedAmount": "6200",
     "settledAmount": "6200",
     "minConfirmations": 2,
     "allowedNetworks": ["example-testnet"]
@@ -25,8 +26,9 @@
       "confirmations": 12,
       "finality": "FINALIZED",
       "observedAt": "2026-09-26T23:00:00Z",
-      "evidenceDigest": "1111111111111111111111111111111111111111111111111111111111111111",
-      "externalObserver": true
+      "evidenceDigest": "b57b19d7e43d8908d09d3348eaaa05a32f173e20b094fc92d2b7af4df494372f",
+      "externalObserver": true,
+      "observerId": "observer:testnet-a"
     },
     {
       "schema": "flop.testnet-rail-observation/v1",
@@ -44,8 +46,9 @@
       "confirmations": 12,
       "finality": "FINALIZED",
       "observedAt": "2026-09-26T23:01:00Z",
-      "evidenceDigest": "2222222222222222222222222222222222222222222222222222222222222222",
-      "externalObserver": true
+      "evidenceDigest": "98eaa062ecb8f0b6164eaba3d9cf4034a88bc16de1bf3896a61ae0b5a9da2099",
+      "externalObserver": true,
+      "observerId": "observer:testnet-a"
     }
   ]
 }
