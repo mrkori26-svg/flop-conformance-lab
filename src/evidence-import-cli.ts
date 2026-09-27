@@ -2,6 +2,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, extname, join } from "node:path";
+import { assertPublicDns } from "./evidence-network-policy.js";
 
 const MAX_BYTES = 10_000_000;
 const MAX_REDIRECTS = 5;
@@ -33,6 +34,7 @@ async function fetchBounded(initial: URL): Promise<{ bytes: Buffer; source: stri
   let current = initial;
   for (let redirects = 0; redirects <= MAX_REDIRECTS; redirects++) {
     publicHttps(current);
+    await assertPublicDns(current.hostname);
     const response = await fetch(current, { redirect: "manual", signal: AbortSignal.timeout(15000) });
     if ([301,302,303,307,308].includes(response.status)) {
       const location = response.headers.get("location");
