@@ -1,62 +1,64 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.0.0",
-  "generatedAt": "2026-09-27T20:05:08.990Z",
-  "observationCount": 1532,
+  "generatedAt": "2026-09-27T20:46:44.730Z",
+  "observationCount": 58813,
   "chainHead": "91585346765ebfac57cf733bf0e4f57e4959b7078b0ce8c9f18e203cf789ba50",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 24,
-      "numerator": 24,
-      "denominator": 24,
-      "rate": 1,
+      "samples": 796,
+      "numerator": 794,
+      "denominator": 796,
+      "rate": 0.9974874371859297,
       "outcomes": {
-        "PASS": 24,
+        "PASS": 794,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 2
       },
-      "failures": {}
+      "failures": {
+        "TARGET_UNAVAILABLE": 2
+      }
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 23,
-      "numerator": 0,
-      "denominator": 30,
-      "rate": 0,
+      "samples": 151,
+      "numerator": 1296,
+      "denominator": 1551,
+      "rate": 0.8355899419729207,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 46,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 23
+        "UNKNOWN": 105
       },
       "failures": {
-        "COVERAGE_LOST": 23
+        "COVERAGE_LOST": 105
       }
     },
     "signature_verification": {
       "metric": "signature_verification",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 15299,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 15299
       },
       "failures": {}
     },
     "room_retention": {
       "metric": "room_retention",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
-      "rate": null,
+      "samples": 15299,
+      "numerator": 30598,
+      "denominator": 30598,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 15299,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -65,26 +67,26 @@
     },
     "mailbox_validity": {
       "metric": "mailbox_validity",
-      "samples": 0,
-      "numerator": null,
-      "denominator": null,
+      "samples": 15299,
+      "numerator": 0,
+      "denominator": 0,
       "rate": null,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 0
+        "UNKNOWN": 15299
       },
       "failures": {}
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 23,
-      "numerator": 115,
-      "denominator": 115,
+      "samples": 151,
+      "numerator": 755,
+      "denominator": 755,
       "rate": 1,
       "outcomes": {
-        "PASS": 23,
+        "PASS": 151,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -93,35 +95,40 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 737,
-      "numerator": 35,
-      "denominator": 35,
-      "rate": 1,
+      "samples": 7833,
+      "numerator": 3955,
+      "denominator": 4044,
+      "rate": 0.9779920870425322,
       "outcomes": {
-        "PASS": 35,
+        "PASS": 3955,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 702
+        "DRIFT": 87,
+        "UNKNOWN": 3791
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 702
+        "OBSERVER_UNAVAILABLE": 3787,
+        "CONFORMANCE_DRIFT": 87,
+        "TARGET_UNAVAILABLE": 2
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 725,
-      "numerator": 725,
-      "denominator": 725,
-      "rate": 1,
+      "samples": 3985,
+      "numerator": 3985,
+      "denominator": 3987,
+      "rate": 0.9994983697015299,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 0,
-        "UNKNOWN": 725
+        "DRIFT": 87,
+        "UNKNOWN": 3898
       },
       "failures": {
-        "COVERAGE_LOST": 23,
-        "OBSERVER_UNAVAILABLE": 702
+        "COVERAGE_LOST": 105,
+        "OBSERVER_UNAVAILABLE": 3787,
+        "CONFORMANCE_DRIFT": 87,
+        "TARGET_UNAVAILABLE": 4,
+        "TRANSIENT_ERROR": 2
       }
     }
   },
