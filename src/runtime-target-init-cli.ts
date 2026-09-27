@@ -36,7 +36,8 @@ export const ${className}Target = defineRuntimeTarget({
   fingerprint: async () => ({
     implementation: "${id}",
     version: "0.0.0",
-    externalRuntime: true,
+    externalRuntime: false,
+    implementationKind: "scaffold",
     networkLive: false,
     valueMoving: false
   }),
@@ -76,7 +77,8 @@ test("${id} executes through the portable RUN contract", async () => {
     id: "${id}-reference",
     input: { hello: "world" }
   });  assert.equal(result.status, "PASS");
-  assert.equal(result.bundle.target.fingerprint.externalRuntime, true);
+  assert.equal(result.bundle.target.fingerprint.externalRuntime, false);
+  assert.equal(result.bundle.target.fingerprint.implementationKind, "scaffold");
   assert.equal(result.bundle.target.fingerprint.networkLive, false);
 });
 `;
@@ -182,9 +184,9 @@ npm test
 npm run runtime:verify
 \`\`\`
 
-The generated target is intentionally classified as a candidate scaffold. Replace execution, fingerprint metadata, capabilities and verification checks with the real implementation before changing the claim boundary.
+The generated target is intentionally classified as a candidate scaffold and sets externalRuntime=false. Replace execution, fingerprint metadata, capabilities and verification checks with the real implementation before changing the claim boundary or setting externalRuntime=true.
 
-A green self-run is not external adoption. Promotion requires an immutable external revision plus independently reproducible evidence.
+A green self-run proves only that the portable RuntimeTarget plumbing executes. It is not external runtime evidence and not external adoption. Promotion requires an immutable external revision plus independently reproducible evidence.
 `;
 
 const files: Record<string,string> = {

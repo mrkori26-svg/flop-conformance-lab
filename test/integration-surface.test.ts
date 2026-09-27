@@ -21,6 +21,9 @@ test("flop-runtime-init scaffolds an external RuntimeTarget consumer", () => {
   assert.equal(manifest.classification, "EXTERNAL_RUNTIME_CANDIDATE");
   assert.equal(manifest.promotion.requiresIndependentExecution, true);
   assert.equal(manifest.promotion.selfReportedPassDoesNotCountAsAdoption, true);
+  const generatedTarget = readFileSync(join(targetRoot, "runtime-target.ts"), "utf8");
+  assert.match(generatedTarget, /externalRuntime:\s*false/);
+  assert.match(generatedTarget, /implementationKind:\s*"scaffold"/);
   assert.match(manifest.labDependency.revision, /^[0-9a-f]{40}$/);
   const pkg = JSON.parse(readFileSync(join(targetRoot, "package.json"), "utf8"));
   assert.equal(pkg.dependencies["@flop-tools/conformance-lab"], `git+https://github.com/retardio73-boop/flop-conformance-lab.git#${manifest.labDependency.revision}`);
