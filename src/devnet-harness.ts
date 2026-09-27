@@ -22,7 +22,7 @@ try {
   const result = await runRuntimeTarget(
     "flop-devnet",
     new FlopDevnetRuntimeTarget(rpcUrl),
-    { id: raw.id ?? "flop-devnet-f1", input: { ...raw.input, rpcUrl } },
+    { id: raw.id ?? "flop-devnet-f1", input: raw.input },
     previous,
   );
   writeEvidenceBundle(outPath, result.bundle);

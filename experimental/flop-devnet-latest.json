@@ -32,11 +32,10 @@
       "outputHashHex": "0303030303030303030303030303030303030303030303030303030303030303",
       "decodePolicyHashHex": "be572af01bd68df9c660da094b7796244dd29435d532c63c9f42efe6bdabd796",
       "teeTypeScaleHex": "00"
-    },
-    "rpcUrl": "http://127.0.0.1:62563"
+    }
   },
-  "runId": "flop-devnet:flop-devnet-f1:2026-09-26T23:31:11.318Z",
-  "observedAt": "2026-09-26T23:31:11.318Z",
+  "runId": "flop-devnet:flop-devnet-f1:2026-09-27T17:26:18.276Z",
+  "observedAt": "2026-09-27T17:26:18.276Z",
   "reproduction": {
     "command": "runtime-observatory run --target flop-devnet --input <case.json> --out <bundle.json>",
     "runtime": "v25.6.1",
@@ -44,10 +43,10 @@
     "arch": "x64"
   },
   "execution": {
-    "startedAt": "2026-09-26T23:31:11.308Z",
-    "finishedAt": "2026-09-26T23:31:11.316Z",
+    "startedAt": "2026-09-27T17:26:18.269Z",
+    "finishedAt": "2026-09-27T17:26:18.275Z",
     "transcript": {
-      "rpcUrl": "http://127.0.0.1:62563",
+      "rpcUrl": "http://127.0.0.1:52261",
       "methods": [
         "flop_submitF1",
         "flop_getTask",
@@ -152,5 +151,5 @@
       }
     ]
   },
-  "digest": "60d12c507d734369daada9cc996b5707a3d87a7402f642fdccefe390004cdc86"
+  "digest": "14dd525c0636da19de3fc350fe5859ab623dc923d7280d679375c26da9727e54"
 }

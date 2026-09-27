@@ -18,7 +18,9 @@ The local harness executes a complete deterministic path:
 
 `F.1 input -> RPC submit -> task storage -> event emission -> readback -> independent RuntimeTarget verification`
 
-It verifies the published direct-rail F.1 task hash and report-data bytes and rejects divergent readback.## Run
+It verifies the published direct-rail F.1 task hash and report-data bytes and rejects divergent readback.
+
+## Run
 
 From the repository root:
 
@@ -36,9 +38,11 @@ with kind `REFERENCE_RUNTIME`.
 
 ## FRAME reference pallet
 
-`experimental/frame-flop-poui` contains the extracted FRAME pallet from the draft devnet work. It is retained as a reference implementation and testable artifact only.
+`experimental/frame-flop-poui` contains the extracted FRAME pallet from the draft devnet work. It is retained as a reference implementation and testable artifact only. Its FRAME dependencies are pinned to published crates and a committed `Cargo.lock`, so the reference can be reproduced without cloning the full Polkadot SDK.
 
-It is intentionally outside the normal production/runtime path. Its storage and event model can be reused by a future Substrate testnet adapter without changing the current protocol claims.## Promotion rule
+It is intentionally outside the normal production/runtime path. Its storage and event model can be reused by a future Substrate testnet adapter without changing the current protocol claims.
+
+## Promotion rule
 
 This lane can only be promoted from experimental status when there is an externally defined runtime contract or public FLOP runtime that can be targeted without inventing protocol authority.
 
