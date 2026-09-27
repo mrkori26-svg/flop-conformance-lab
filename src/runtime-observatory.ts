@@ -144,10 +144,13 @@ export async function runRuntimeTarget<TInput>(
   const targetVerification = await target.verify(testCase, execution, evidence);
   const receiptPresent = execution.executionReceipt !== undefined;
   const receiptValid = !receiptPresent || verifyRouterRuntimeExecutionReceipt(execution.executionReceipt);
+  const targetChecksConsistent = targetVerification.status !== "PASS"
+    || targetVerification.checks.every((check) => check.ok);
   const verification: RuntimeVerification = {
-    status: receiptValid ? targetVerification.status : "FAIL",
+    status: receiptValid && targetChecksConsistent ? targetVerification.status : "FAIL",
     checks: [
       ...targetVerification.checks,
+      ...(targetChecksConsistent ? [] : [{ id: "target_verification_consistency", ok: false, detail: "PASS cannot contain a failing check" }]),
       ...(receiptPresent ? [{ id: "router_runtime_execution_receipt_integrity", ok: receiptValid }] : []),
     ],
   };
