@@ -1,6 +1,8 @@
 #!/usr/bin/env node
+import { execFileSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const args = process.argv.slice(2);
 const flag = (name: string) => {
@@ -10,9 +12,20 @@ const flag = (name: string) => {
 const id = flag("--id");
 const outDir = flag("--dir") ?? ".";
 if (!id || !/^[a-z0-9][a-z0-9-]{1,62}$/.test(id)) {
-  process.stderr.write("usage: flop-runtime-init --id <kebab-case-id> [--dir path]\n");
+  process.stderr.write("usage: flop-runtime-init --id <kebab-case-id> [--dir path] [--lab-revision <40-hex>]\n");
   process.exit(2);
 }
+function detectLabRevision(): string {
+  const explicit = flag("--lab-revision") ?? process.env.FLOP_LAB_REVISION;
+  if (explicit && /^[0-9a-f]{40}$/.test(explicit)) return explicit;
+  try {
+    const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+    const revision = execFileSync("git", ["-C", packageRoot, "rev-parse", "HEAD"], { encoding: "utf8", stdio: ["ignore","pipe","ignore"] }).trim();
+    if (/^[0-9a-f]{40}$/.test(revision)) return revision;
+  } catch {}
+  throw new Error("IMMUTABLE_LAB_REVISION_REQUIRED");
+}
+const labRevision = detectLabRevision();
 const root = join(outDir, id);
 const workflowDir = join(root, ".github", "workflows");
 mkdirSync(workflowDir, { recursive: true });
@@ -91,6 +104,10 @@ if (result.status !== "PASS") process.exitCode = 1;
     output: "runtime-evidence.json",
     requiredChecks: ["output.present"]
   },
+  labDependency: {
+    repository: "retardio73-boop/flop-conformance-lab",
+    revision: labRevision
+  },
   promotion: {
     requiresIndependentExecution: true,
     requiresImmutableRevision: true,
@@ -107,7 +124,7 @@ const pkg = JSON.stringify({
     test: "npm run build && node --test dist/runtime-target.test.js",
     "runtime:verify": "npm run build && node dist/run-runtime.js"
   },  dependencies: {
-    "@flop-tools/conformance-lab": "github:retardio73-boop/flop-conformance-lab"
+    "@flop-tools/conformance-lab": `github:retardio73-boop/flop-conformance-lab#${labRevision}`
   },
   devDependencies: {
     "@types/node": "^24.0.0",
