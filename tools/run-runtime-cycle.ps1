@@ -15,6 +15,9 @@ if (Test-Path $sessionRouter) { $env:FLOP_SESSION_ROUTER_REPO = $sessionRouter }
 $dealScout = Join-Path $workspace "external-deal-scout"
 if (Test-Path $dealScout) { $env:FLOP_DEAL_SCOUT_REPO = $dealScout }
 
+$economicRuntime = Join-Path $workspace "flop-economic-runtime"
+if (Test-Path $economicRuntime) { $env:FLOP_ECONOMIC_RUNTIME_REPO = $economicRuntime }
+
 $runtimeDir = Join-Path $repo ".runtime"
 New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
 $log = Join-Path $runtimeDir "runtime-cycle.log"
@@ -59,18 +62,22 @@ $taskRelayCode = $LASTEXITCODE
 $dealScoutOut = & $node dist/src/runtime-cli.js cycle --target external-deal-scout --input examples/external-consumer/deal-scout-readonly.json --state .runtime/external-deal-scout-state.json --retry-budget 1 --history-limit 744 2>&1
 $dealScoutCode = $LASTEXITCODE
 
+$economicRuntimeOut = & $node dist/src/runtime-cli.js cycle --target external-economic-runtime --input examples/external-consumer/economic-runtime.json --state .runtime/external-economic-runtime-state.json --retry-budget 1 --history-limit 744 2>&1
+$economicRuntimeCode = $LASTEXITCODE
+
 $statusOut = & $node dist/src/runtime-status-cli.js --root .runtime --json runtime-public/runtime-index.json --markdown runtime-public/STATUS.md 2>&1
 $statusCode = $LASTEXITCODE
 
-Add-Content $log "[$started] build_exit=$buildCode reference_exit=$refCode external_verifier_exit=$extCode task_relay_exit=$taskRelayCode deal_scout_exit=$dealScoutCode status_exit=$statusCode"
+Add-Content $log "[$started] build_exit=$buildCode reference_exit=$refCode external_verifier_exit=$extCode task_relay_exit=$taskRelayCode deal_scout_exit=$dealScoutCode economic_runtime_exit=$economicRuntimeCode status_exit=$statusCode"
 Add-Content $log ($buildOut | Out-String)
 Add-Content $log ($refOut | Out-String)
 Add-Content $log ($extOut | Out-String)
 Add-Content $log ($taskRelayOut | Out-String)
 Add-Content $log ($dealScoutOut | Out-String)
+Add-Content $log ($economicRuntimeOut | Out-String)
 Add-Content $log ($statusOut | Out-String)
 
-$healthy = $buildCode -eq 0 -and $refCode -eq 0 -and $extCode -eq 0 -and $taskRelayCode -eq 0 -and $dealScoutCode -eq 0 -and $statusCode -eq 0
+$healthy = $buildCode -eq 0 -and $refCode -eq 0 -and $extCode -eq 0 -and $taskRelayCode -eq 0 -and $dealScoutCode -eq 0 -and $economicRuntimeCode -eq 0 -and $statusCode -eq 0
 $health = [ordered]@{
   schema='flop.runtime-observatory-health/v1'
   checkedAt=$started
@@ -79,6 +86,7 @@ $health = [ordered]@{
   externalVerifierExit=$extCode
   taskRelayExit=$taskRelayCode
   dealScoutExit=$dealScoutCode
+  economicRuntimeExit=$economicRuntimeCode
   statusExit=$statusCode
   status=$(if($healthy){'HEALTHY'}else{'DEGRADED'})
 }
@@ -89,5 +97,6 @@ if($refCode -ne 0){exit $refCode}
 if($extCode -ne 0){exit $extCode}
 if($taskRelayCode -ne 0){exit $taskRelayCode}
 if($dealScoutCode -ne 0){exit $dealScoutCode}
+if($economicRuntimeCode -ne 0){exit $economicRuntimeCode}
 if($statusCode -ne 0){exit $statusCode}
 exit 0
