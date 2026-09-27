@@ -4,17 +4,17 @@
   "bucket": "2026-09-27-15",
   "start": "2026-09-27T15:00:00.000Z",
   "end": "2026-09-27T16:00:00.000Z",
-  "recordCount": 56,
-  "recordsHash": "bde9e8889c117f4d3276499d79569b9251458d6ed6213d82a611f71014b34aba",
+  "recordCount": 126,
+  "recordsHash": "5288b3ca979655990717d441e2839ada04bc29edf8b4b7f39b2b683d39a0b667",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 1,
-      "numerator": 1,
-      "denominator": 1,
+      "samples": 14,
+      "numerator": 14,
+      "denominator": 14,
       "rate": 1,
       "outcomes": {
-        "PASS": 1,
+        "PASS": 14,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -24,18 +24,16 @@
     "interaction_success": {
       "metric": "interaction_success",
       "samples": 1,
-      "numerator": 0,
-      "denominator": 0,
-      "rate": null,
+      "numerator": 29,
+      "denominator": 29,
+      "rate": 1,
       "outcomes": {
-        "PASS": 0,
+        "PASS": 1,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 1
+        "UNKNOWN": 0
       },
-      "failures": {
-        "COVERAGE_LOST": 1
-      }
+      "failures": {}
     },
     "signature_verification": {
       "metric": "signature_verification",
@@ -95,35 +93,34 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 32,
-      "numerator": 12,
-      "denominator": 12,
+      "samples": 78,
+      "numerator": 46,
+      "denominator": 46,
       "rate": 1,
       "outcomes": {
-        "PASS": 12,
+        "PASS": 46,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 20
+        "UNKNOWN": 32
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 20
+        "OBSERVER_UNAVAILABLE": 32
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 21,
-      "numerator": 21,
-      "denominator": 21,
+      "samples": 32,
+      "numerator": 32,
+      "denominator": 32,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 21
+        "UNKNOWN": 32
       },
       "failures": {
-        "COVERAGE_LOST": 1,
-        "OBSERVER_UNAVAILABLE": 20
+        "OBSERVER_UNAVAILABLE": 32
       }
     }
   }
