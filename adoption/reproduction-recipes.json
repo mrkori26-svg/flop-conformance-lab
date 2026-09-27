@@ -1,0 +1,26 @@
+{
+  "schema": "flop.adoption-reproduction-recipes/v1",
+  "recipes": [
+    {
+      "consumer": "osr21/flop-protocol-reproducibility-audits",
+      "pr": 4,
+      "profile": "direct-rail-f1",
+      "workflow": ".github/workflows/flop-conformance.yml",
+      "evidence": "evidence/flop-direct-rail-f1.json",
+      "prepare": [
+        ["python", ["-m", "unittest", "-v", "client-conformance/test_task_id_conformance.py"]]
+      ],
+      "build": ["python", ["tools/build-direct-rail-input.py"]]
+    },    {
+      "consumer": "congge918/technocore-tclk-deal-scout",
+      "pr": 3,
+      "profile": "tclk-transcript",
+      "workflow": ".github/workflows/flop-conformance.yml",
+      "evidence": "evidence/flop-tclk-transcript.json",
+      "prepare": [
+        ["npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"]]
+      ],
+      "build": ["node", ["tools/build-flop-tclk-conformance.mjs"]]
+    }
+  ]
+}

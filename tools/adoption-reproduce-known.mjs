@@ -12,25 +12,23 @@ mkdirSync(workRoot, { recursive: true });
 const token = process.env.GITHUB_TOKEN ?? "";
 if (!token) throw new Error("GITHUB_TOKEN_REQUIRED");
 
-const recipes = [
-  {
-    consumer: "osr21/flop-protocol-reproducibility-audits",
-    pr: 4,
-    profile: "direct-rail-f1",
-    workflow: ".github/workflows/flop-conformance.yml",
-    evidence: "evidence/flop-direct-rail-f1.json",
-    prepare: [["python", ["-m","unittest","-v","client-conformance/test_task_id_conformance.py"]]],
-    build: ["python", ["tools/build-direct-rail-input.py"]],
-  },  {
-    consumer: "congge918/technocore-tclk-deal-scout",
-    pr: 3,
-    profile: "tclk-transcript",
-    workflow: ".github/workflows/flop-conformance.yml",
-    evidence: "evidence/flop-tclk-transcript.json",
-    prepare: [["npm", ["install","--ignore-scripts","--no-audit","--no-fund"]]],
-    build: ["node", ["tools/build-flop-tclk-conformance.mjs"]],
-  },
-];
+const recipeRegistryPath = join(labRoot, "adoption", "reproduction-recipes.json");
+const recipeRegistry = JSON.parse(readFileSync(recipeRegistryPath, "utf8"));
+if (recipeRegistry.schema !== "flop.adoption-reproduction-recipes/v1" || !Array.isArray(recipeRegistry.recipes)) {
+  throw new Error("ADOPTION_REPRODUCTION_RECIPE_REGISTRY_INVALID");
+}
+const recipes = recipeRegistry.recipes;
+const seenRecipes = new Set();
+for (const recipe of recipes) {
+  if (!recipe || typeof recipe !== "object") throw new Error("ADOPTION_REPRODUCTION_RECIPE_INVALID");
+  const required = ["consumer","pr","profile","workflow","evidence","prepare","build"];
+  if (required.some((key) => recipe[key] === undefined)) throw new Error(`ADOPTION_REPRODUCTION_RECIPE_INCOMPLETE:${recipe.consumer ?? "unknown"}`);
+  if (!/^[^/]+\/[^/]+$/.test(recipe.consumer) || !Number.isInteger(recipe.pr) || recipe.pr < 1) throw new Error(`ADOPTION_REPRODUCTION_RECIPE_ID_INVALID:${recipe.consumer}`);
+  if (!Array.isArray(recipe.prepare) || !Array.isArray(recipe.build) || recipe.build.length !== 2) throw new Error(`ADOPTION_REPRODUCTION_RECIPE_COMMAND_INVALID:${recipe.consumer}`);
+  const key = `${recipe.consumer}#${recipe.pr}`;
+  if (seenRecipes.has(key)) throw new Error(`ADOPTION_REPRODUCTION_RECIPE_DUPLICATE:${key}`);
+  seenRecipes.add(key);
+}
 
 function github(path) {
   const raw = execFileSync("gh", ["api", path], { encoding:"utf8", env:{...process.env,GH_TOKEN:token} });
