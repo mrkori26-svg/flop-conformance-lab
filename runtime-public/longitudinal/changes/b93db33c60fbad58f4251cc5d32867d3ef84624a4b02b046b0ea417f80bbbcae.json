@@ -1,0 +1,17 @@
+{
+  "schema": "flop.before-after-journey/v1",
+  "metric": "conformance_drift",
+  "source": "drift",
+  "before": "f3776c0456b5fa28f19de034689655bbcfb71bc2ca5db30ef3b024e76fd04690",
+  "failure": "f5739de01a6a30209b342388cc4edc03f804cd407c3560a14696085c1c3d1920",
+  "after": "7b23576db258694219863f990341c03713cef309cfb3b96afbbf199ae039b0b1",
+  "intervention": {
+    "kind": "REVISION_CHANGE",
+    "observerBefore": "5a900a40b1162e7d4a0efa798fd9e5c62f2979db",
+    "observerAfter": "db8cfb169f06269529e49d1d658c79bbf072fe70",
+    "sourceBefore": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6InByb3Bvc2FsOiBleGVjdXRhYmxlIFNPRlQgdmVyaWZpY2F0aW9uIHByb2ZpbGUgYW5kIEUuNDUgYWR2ZXJzYXJpYWwgbW9kZWwiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yOFQwMjowNDozOVoifQ",
+    "sourceAfter": "eyJzdGF0ZSI6Im9wZW4iLCJ0aXRsZSI6InByb3Bvc2FsOiBleGVjdXRhYmxlIFNPRlQgdmVyaWZpY2F0aW9uIHByb2ZpbGUgYW5kIEUuNDUgYWR2ZXJzYXJpYWwgbW9kZWwiLCJ1cGRhdGVkX2F0IjoiMjAyNi0wOS0yOFQwMjowNDozOVoifQ"
+  },
+  "id": "b93db33c60fbad58f4251cc5d32867d3ef84624a4b02b046b0ea417f80bbbcae",
+  "bucket": "b93db33c60fbad58f4251cc5d32867d3ef84624a4b02b046b0ea417f80bbbcae"
+}
