@@ -1,33 +1,33 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.1.0",
-  "generatedAt": "2026-09-29T16:06:15.443Z",
-  "observationCount": 95963,
+  "generatedAt": "2026-09-29T17:06:32.731Z",
+  "observationCount": 96047,
   "chainHead": "edde971e8e556746743c7724f8c97ae468f80d2ef537e224b97260db244e3f5b",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 978,
-      "observed": 978,
-      "evaluable": 976,
+      "samples": 985,
+      "observed": 985,
+      "evaluable": 983,
       "unknown": 2,
-      "coverageDenominator": 978,
-      "coverage": 0.9979550102249489,
+      "coverageDenominator": 985,
+      "coverage": 0.9979695431472081,
       "passRate": 1,
-      "unknownRate": 0.002044989775051125,
+      "unknownRate": 0.0020304568527918783,
       "coverageThreshold": 0.95,
       "coverageHealth": "SUFFICIENT_COVERAGE",
-      "numerator": 976,
-      "denominator": 976,
+      "numerator": 983,
+      "denominator": 983,
       "rate": 1,
       "outcomes": {
-        "PASS": 976,
+        "PASS": 983,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 2
       },
       "evaluations": {
-        "EVALUATED_PASS": 976,
+        "EVALUATED_PASS": 983,
         "EVALUATED_FAIL": 0,
         "UNKNOWN": 2
       },
@@ -40,14 +40,14 @@
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 176,
-      "observed": 176,
+      "samples": 177,
+      "observed": 177,
       "evaluable": 62,
-      "unknown": 114,
-      "coverageDenominator": 176,
-      "coverage": 0.3522727272727273,
+      "unknown": 115,
+      "coverageDenominator": 177,
+      "coverage": 0.3502824858757062,
       "passRate": 1,
-      "unknownRate": 0.6477272727272727,
+      "unknownRate": 0.6497175141242938,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
       "numerator": 1790,
@@ -57,53 +57,53 @@
         "PASS": 62,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 114
+        "UNKNOWN": 115
       },
       "evaluations": {
         "EVALUATED_PASS": 62,
         "EVALUATED_FAIL": 0,
-        "UNKNOWN": 114
+        "UNKNOWN": 115
       },
       "unknownReasons": {
-        "COVERAGE_LOST": 114
+        "COVERAGE_LOST": 115
       },
       "failures": {
-        "COVERAGE_LOST": 114
+        "COVERAGE_LOST": 115
       }
     },
     "signature_verification": {
       "metric": "signature_verification",
-      "samples": 15304,
-      "observed": 15304,
+      "samples": 15305,
+      "observed": 15305,
       "evaluable": 0,
-      "unknown": 15304,
-      "coverageDenominator": 15304,
+      "unknown": 15305,
+      "coverageDenominator": 15305,
       "coverage": 0,
       "passRate": null,
       "unknownRate": 1,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
-      "numerator": 842045,
-      "denominator": 842045,
+      "numerator": 1010454,
+      "denominator": 1010454,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 15304
+        "UNKNOWN": 15305
       },
       "evaluations": {
         "EVALUATED_PASS": 0,
         "EVALUATED_FAIL": 0,
-        "UNKNOWN": 15304
+        "UNKNOWN": 15305
       },
       "unknownReasons": {
         "MISSING_ARTIFACT": 15299,
-        "INVALID_EVIDENCE": 5
+        "INVALID_EVIDENCE": 6
       },
       "failures": {
         "MISSING_ARTIFACT": 15299,
-        "INVALID_EVIDENCE": 5
+        "INVALID_EVIDENCE": 6
       }
     },
     "room_retention": {
@@ -137,62 +137,62 @@
     },
     "mailbox_validity": {
       "metric": "mailbox_validity",
-      "samples": 15304,
-      "observed": 15304,
+      "samples": 15305,
+      "observed": 15305,
       "evaluable": 0,
-      "unknown": 15304,
-      "coverageDenominator": 15304,
+      "unknown": 15305,
+      "coverageDenominator": 15305,
       "coverage": 0,
       "passRate": null,
       "unknownRate": 1,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
-      "numerator": 841965,
-      "denominator": 841965,
+      "numerator": 1010358,
+      "denominator": 1010358,
       "rate": 1,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 15304
+        "UNKNOWN": 15305
       },
       "evaluations": {
         "EVALUATED_PASS": 0,
         "EVALUATED_FAIL": 0,
-        "UNKNOWN": 15304
+        "UNKNOWN": 15305
       },
       "unknownReasons": {
         "MISSING_ARTIFACT": 15299,
-        "INVALID_EVIDENCE": 5
+        "INVALID_EVIDENCE": 6
       },
       "failures": {
         "MISSING_ARTIFACT": 15299,
-        "INVALID_EVIDENCE": 5
+        "INVALID_EVIDENCE": 6
       }
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 177,
-      "observed": 177,
-      "evaluable": 177,
+      "samples": 178,
+      "observed": 178,
+      "evaluable": 178,
       "unknown": 0,
-      "coverageDenominator": 177,
+      "coverageDenominator": 178,
       "coverage": 1,
       "passRate": 1,
       "unknownRate": 0,
       "coverageThreshold": 0.95,
       "coverageHealth": "SUFFICIENT_COVERAGE",
-      "numerator": 885,
-      "denominator": 885,
+      "numerator": 890,
+      "denominator": 890,
       "rate": 1,
       "outcomes": {
-        "PASS": 177,
+        "PASS": 178,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
       },
       "evaluations": {
-        "EVALUATED_PASS": 177,
+        "EVALUATED_PASS": 178,
         "EVALUATED_FAIL": 0,
         "UNKNOWN": 0
       },
@@ -201,27 +201,27 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 9702,
-      "observed": 9702,
-      "evaluable": 6463,
+      "samples": 9772,
+      "observed": 9772,
+      "evaluable": 6533,
       "unknown": 3239,
-      "coverageDenominator": 9702,
-      "coverage": 0.6661513090084519,
-      "passRate": 0.9582237351075352,
-      "unknownRate": 0.3338486909915481,
+      "coverageDenominator": 9772,
+      "coverage": 0.6685427752762997,
+      "passRate": 0.9586713607837134,
+      "unknownRate": 0.33145722472370037,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
-      "numerator": 6193,
-      "denominator": 6463,
-      "rate": 0.9582237351075352,
+      "numerator": 6263,
+      "denominator": 6533,
+      "rate": 0.9586713607837134,
       "outcomes": {
-        "PASS": 6193,
+        "PASS": 6263,
         "FAIL": 0,
         "DRIFT": 270,
         "UNKNOWN": 3239
       },
       "evaluations": {
-        "EVALUATED_PASS": 6193,
+        "EVALUATED_PASS": 6263,
         "EVALUATED_FAIL": 270,
         "UNKNOWN": 3239
       },
@@ -239,92 +239,92 @@
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 4304,
-      "observed": 4304,
+      "samples": 4307,
+      "observed": 4307,
       "evaluable": 169,
-      "unknown": 4135,
-      "coverageDenominator": 4304,
-      "coverage": 0.03926579925650558,
+      "unknown": 4138,
+      "coverageDenominator": 4307,
+      "coverage": 0.03923844903645229,
       "passRate": 0,
-      "unknownRate": 0.9607342007434945,
+      "unknownRate": 0.9607615509635478,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
-      "numerator": 4304,
-      "denominator": 4306,
-      "rate": 0.9995355318160706,
+      "numerator": 4307,
+      "denominator": 4309,
+      "rate": 0.9995358551868183,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
         "DRIFT": 169,
-        "UNKNOWN": 4135
+        "UNKNOWN": 4138
       },
       "evaluations": {
         "EVALUATED_PASS": 0,
         "EVALUATED_FAIL": 169,
-        "UNKNOWN": 4135
+        "UNKNOWN": 4138
       },
       "unknownReasons": {
-        "COVERAGE_LOST": 114,
+        "COVERAGE_LOST": 115,
         "OBSERVER_COLLECTOR_ERROR": 3981,
         "OBSERVER_UNAVAILABLE": 24,
         "TARGET_UNAVAILABLE": 4,
         "UNKNOWN": 2,
-        "INVALID_EVIDENCE": 10
+        "INVALID_EVIDENCE": 12
       },
       "failures": {
-        "COVERAGE_LOST": 114,
+        "COVERAGE_LOST": 115,
         "OBSERVER_UNAVAILABLE": 3985,
         "CONFORMANCE_DRIFT": 169,
         "TARGET_UNAVAILABLE": 4,
         "TRANSIENT_ERROR": 2,
-        "INVALID_EVIDENCE": 10,
+        "INVALID_EVIDENCE": 12,
         "OBSERVER_COLLECTOR_ERROR": 20
       }
     }
   },
   "coverageSlo": {
     "threshold": 0.95,
-    "windowStart": "2026-09-28T16:06:15.443Z",
-    "windowEnd": "2026-09-29T16:06:15.443Z",
+    "windowStart": "2026-09-28T17:06:32.731Z",
+    "windowEnd": "2026-09-29T17:06:32.731Z",
     "status": "FAIL",
     "violations": [
       {
         "metric": "interaction_success",
-        "coverage": 0.088,
+        "coverage": 0.08,
         "observed": 125,
-        "evaluable": 11,
-        "unknown": 114,
+        "evaluable": 10,
+        "unknown": 115,
         "unknownReasons": {
-          "COVERAGE_LOST": 114
+          "COVERAGE_LOST": 115
         }
       },
       {
         "metric": "signature_verification",
         "coverage": 0,
-        "observed": 15304,
+        "observed": 15305,
         "evaluable": 0,
-        "unknown": 15304,
+        "unknown": 15305,
         "unknownReasons": {
           "MISSING_ARTIFACT": 15299,
-          "INVALID_EVIDENCE": 5
+          "INVALID_EVIDENCE": 6
         }
       },
       {
         "metric": "mailbox_validity",
         "coverage": 0,
-        "observed": 15304,
+        "observed": 15305,
         "evaluable": 0,
-        "unknown": 15304,
+        "unknown": 15305,
         "unknownReasons": {
           "MISSING_ARTIFACT": 15299,
-          "INVALID_EVIDENCE": 5
+          "INVALID_EVIDENCE": 6
         }
       },
       {
         "metric": "conformance_drift",
-        "coverage": 0.3849221420432966,
-        "observed": 5266,
-        "evaluable": 2027,
+        "coverage": 0.3850389215872413,
+        "observed": 5267,
+        "evaluable": 2028,
         "unknown": 3239,
         "unknownReasons": {
           "OBSERVER_COLLECTOR_ERROR": 3213,
@@ -334,15 +334,15 @@
       },
       {
         "metric": "failure_classifications",
-        "coverage": 0.21673003802281368,
-        "observed": 263,
-        "evaluable": 57,
-        "unknown": 206,
+        "coverage": 0.21212121212121213,
+        "observed": 264,
+        "evaluable": 56,
+        "unknown": 208,
         "unknownReasons": {
-          "OBSERVER_UNAVAILABLE": 8,
+          "OBSERVER_UNAVAILABLE": 7,
           "OBSERVER_COLLECTOR_ERROR": 179,
-          "COVERAGE_LOST": 9,
-          "INVALID_EVIDENCE": 10
+          "COVERAGE_LOST": 10,
+          "INVALID_EVIDENCE": 12
         }
       }
     ]
