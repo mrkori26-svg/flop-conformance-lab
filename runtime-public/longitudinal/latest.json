@@ -1,33 +1,33 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.1.0",
-  "generatedAt": "2026-09-29T14:10:42.678Z",
-  "observationCount": 95748,
+  "generatedAt": "2026-09-29T14:40:52.401Z",
+  "observationCount": 95792,
   "chainHead": "edde971e8e556746743c7724f8c97ae468f80d2ef537e224b97260db244e3f5b",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 961,
-      "observed": 961,
-      "evaluable": 959,
+      "samples": 967,
+      "observed": 967,
+      "evaluable": 965,
       "unknown": 2,
-      "coverageDenominator": 961,
-      "coverage": 0.9979188345473465,
+      "coverageDenominator": 967,
+      "coverage": 0.9979317476732161,
       "passRate": 1,
-      "unknownRate": 0.002081165452653486,
+      "unknownRate": 0.002068252326783868,
       "coverageThreshold": 0.95,
       "coverageHealth": "SUFFICIENT_COVERAGE",
-      "numerator": 959,
-      "denominator": 959,
+      "numerator": 965,
+      "denominator": 965,
       "rate": 1,
       "outcomes": {
-        "PASS": 959,
+        "PASS": 965,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 2
       },
       "evaluations": {
-        "EVALUATED_PASS": 959,
+        "EVALUATED_PASS": 965,
         "EVALUATED_FAIL": 0,
         "UNKNOWN": 2
       },
@@ -201,27 +201,27 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 9527,
-      "observed": 9527,
-      "evaluable": 6288,
+      "samples": 9565,
+      "observed": 9565,
+      "evaluable": 6326,
       "unknown": 3239,
-      "coverageDenominator": 9527,
-      "coverage": 0.6600188936706204,
-      "passRate": 0.9584923664122137,
-      "unknownRate": 0.33998110632937967,
+      "coverageDenominator": 9565,
+      "coverage": 0.6613695765812859,
+      "passRate": 0.9587417009168511,
+      "unknownRate": 0.3386304234187141,
       "coverageThreshold": 0.95,
       "coverageHealth": "INSUFFICIENT_COVERAGE",
-      "numerator": 6027,
-      "denominator": 6288,
-      "rate": 0.9584923664122137,
+      "numerator": 6065,
+      "denominator": 6326,
+      "rate": 0.9587417009168511,
       "outcomes": {
-        "PASS": 6027,
+        "PASS": 6065,
         "FAIL": 0,
         "DRIFT": 261,
         "UNKNOWN": 3239
       },
       "evaluations": {
-        "EVALUATED_PASS": 6027,
+        "EVALUATED_PASS": 6065,
         "EVALUATED_FAIL": 261,
         "UNKNOWN": 3239
       },
@@ -284,15 +284,15 @@
   },
   "coverageSlo": {
     "threshold": 0.95,
-    "windowStart": "2026-09-28T14:10:42.678Z",
-    "windowEnd": "2026-09-29T14:10:42.678Z",
+    "windowStart": "2026-09-28T14:40:52.401Z",
+    "windowEnd": "2026-09-29T14:40:52.401Z",
     "status": "FAIL",
     "violations": [
       {
         "metric": "interaction_success",
-        "coverage": 0.104,
-        "observed": 125,
-        "evaluable": 13,
+        "coverage": 0.0967741935483871,
+        "observed": 124,
+        "evaluable": 12,
         "unknown": 112,
         "unknownReasons": {
           "COVERAGE_LOST": 112
@@ -322,9 +322,9 @@
       },
       {
         "metric": "conformance_drift",
-        "coverage": 0.3799770290964778,
-        "observed": 5224,
-        "evaluable": 1985,
+        "coverage": 0.37687572143131975,
+        "observed": 5198,
+        "evaluable": 1959,
         "unknown": 3239,
         "unknownReasons": {
           "OBSERVER_COLLECTOR_ERROR": 3213,
@@ -334,13 +334,13 @@
       },
       {
         "metric": "failure_classifications",
-        "coverage": 0.20077220077220076,
-        "observed": 259,
-        "evaluable": 52,
-        "unknown": 207,
+        "coverage": 0.196,
+        "observed": 250,
+        "evaluable": 49,
+        "unknown": 201,
         "unknownReasons": {
-          "OBSERVER_COLLECTOR_ERROR": 185,
           "OBSERVER_UNAVAILABLE": 9,
+          "OBSERVER_COLLECTOR_ERROR": 179,
           "COVERAGE_LOST": 7,
           "INVALID_EVIDENCE": 6
         }
