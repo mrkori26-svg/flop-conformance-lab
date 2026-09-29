@@ -1,18 +1,18 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.0.0",
-  "generatedAt": "2026-09-29T01:40:28.990Z",
-  "observationCount": 60175,
+  "generatedAt": "2026-09-29T02:02:53.669Z",
+  "observationCount": 60253,
   "chainHead": "edde971e8e556746743c7724f8c97ae468f80d2ef537e224b97260db244e3f5b",
   "metrics": {
     "runtime_availability": {
       "metric": "runtime_availability",
-      "samples": 902,
-      "numerator": 900,
-      "denominator": 902,
-      "rate": 0.9977827050997783,
+      "samples": 908,
+      "numerator": 906,
+      "denominator": 908,
+      "rate": 0.9977973568281938,
       "outcomes": {
-        "PASS": 900,
+        "PASS": 906,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 2
@@ -23,7 +23,7 @@
     },
     "interaction_success": {
       "metric": "interaction_success",
-      "samples": 166,
+      "samples": 167,
       "numerator": 1761,
       "denominator": 2016,
       "rate": 0.8735119047619048,
@@ -31,10 +31,10 @@
         "PASS": 61,
         "FAIL": 0,
         "DRIFT": 0,
-        "UNKNOWN": 105
+        "UNKNOWN": 106
       },
       "failures": {
-        "COVERAGE_LOST": 105
+        "COVERAGE_LOST": 106
       }
     },
     "signature_verification": {
@@ -81,12 +81,12 @@
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 167,
-      "numerator": 835,
-      "denominator": 835,
+      "samples": 168,
+      "numerator": 840,
+      "denominator": 840,
       "rate": 1,
       "outcomes": {
-        "PASS": 167,
+        "PASS": 168,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
@@ -95,38 +95,38 @@
     },
     "conformance_drift": {
       "metric": "conformance_drift",
-      "samples": 8963,
-      "numerator": 4990,
-      "denominator": 5121,
-      "rate": 0.9744190587775825,
+      "samples": 9000,
+      "numerator": 4995,
+      "denominator": 5127,
+      "rate": 0.9742539496781744,
       "outcomes": {
-        "PASS": 4990,
+        "PASS": 4995,
         "FAIL": 0,
-        "DRIFT": 129,
-        "UNKNOWN": 3844
+        "DRIFT": 130,
+        "UNKNOWN": 3875
       },
       "failures": {
-        "OBSERVER_UNAVAILABLE": 3840,
-        "CONFORMANCE_DRIFT": 129,
+        "OBSERVER_UNAVAILABLE": 3871,
+        "CONFORMANCE_DRIFT": 130,
         "TARGET_UNAVAILABLE": 2
       }
     },
     "failure_classifications": {
       "metric": "failure_classifications",
-      "samples": 4080,
-      "numerator": 4080,
-      "denominator": 4082,
-      "rate": 0.9995100440960314,
+      "samples": 4113,
+      "numerator": 4113,
+      "denominator": 4115,
+      "rate": 0.9995139732685298,
       "outcomes": {
         "PASS": 0,
         "FAIL": 0,
-        "DRIFT": 129,
-        "UNKNOWN": 3951
+        "DRIFT": 130,
+        "UNKNOWN": 3983
       },
       "failures": {
-        "COVERAGE_LOST": 105,
-        "OBSERVER_UNAVAILABLE": 3840,
-        "CONFORMANCE_DRIFT": 129,
+        "COVERAGE_LOST": 106,
+        "OBSERVER_UNAVAILABLE": 3871,
+        "CONFORMANCE_DRIFT": 130,
         "TARGET_UNAVAILABLE": 4,
         "TRANSIENT_ERROR": 2
       }
