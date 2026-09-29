@@ -1,0 +1,15 @@
+{
+  "schema": "flop.longitudinal-incident/v1",
+  "bucket": "0151acd70eb37a4d1985cb4ae1eee08270fb12add2a98b4edebe73d84adbf8e9",
+  "observationId": "0151acd70eb37a4d1985cb4ae1eee08270fb12add2a98b4edebe73d84adbf8e9",
+  "observedAt": "2026-09-29T04:10:58.158Z",
+  "source": "probe",
+  "metric": "failure_classifications",
+  "failure": {
+    "scope": "INDETERMINATE",
+    "class": "MISSING_ARTIFACT",
+    "detail": "Historical UNKNOWN reclassified as MISSING_ARTIFACT; no retained evidence supports PASS/FAIL."
+  },
+  "observerRevision": "0abb513f1d16b20c4050da633a113cdf6b682ada",
+  "sourceRevision": "technocore-v0.13.0"
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "flop.longitudinal-incident/v1",
+  "bucket": "d903961f1f9b26142bf99fe1ffc837df606387b022f5c74c9a9fb87194c79bdd",
+  "observationId": "d903961f1f9b26142bf99fe1ffc837df606387b022f5c74c9a9fb87194c79bdd",
+  "observedAt": "2026-09-29T04:11:13.969Z",
+  "source": "runtime",
+  "metric": "runtime_availability",
+  "failure": {
+    "scope": "INDETERMINATE",
+    "class": "TARGET_UNAVAILABLE",
+    "detail": "ECONOMIC_SETTLEMENT_EVIDENCE_FAILED:usage: flop-economic price-check|quote-rank|settlement-plan|init [options]"
+  },
+  "observerRevision": "0abb513f1d16b20c4050da633a113cdf6b682ada",
+  "sourceRevision": null
+}
