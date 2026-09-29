@@ -1,0 +1,15 @@
+{
+  "schema": "flop.longitudinal-incident/v1",
+  "bucket": "ef624b8c166eacc43b6e951aee0640fc2d0ccbeb8993af080f8f2cf1dac506aa",
+  "observationId": "ef624b8c166eacc43b6e951aee0640fc2d0ccbeb8993af080f8f2cf1dac506aa",
+  "observedAt": "2026-09-29T14:00:00.000Z",
+  "source": "probe",
+  "metric": "signature_verification",
+  "failure": {
+    "scope": "INDETERMINATE",
+    "class": "INVALID_EVIDENCE",
+    "detail": "Retained evidence ledger is incomplete or not fully verifiable."
+  },
+  "observerRevision": "af65e6687212205646cfab0e901fac4a3954ad36",
+  "sourceRevision": "0.13.0"
+}
