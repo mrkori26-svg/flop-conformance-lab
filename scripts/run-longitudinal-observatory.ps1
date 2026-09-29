@@ -3,8 +3,9 @@ $repo = "C:\Users\acost\flop stack\flop-conformance-lab"
 $frozen = "C:\Users\acost\flop stack\_publish\longitudinal-evidence-v1"
 $tclk = "C:\Users\acost\flop stack\_scratch\tclk-pr175-replay"
 $log = Join-Path $repo ".runtime\longitudinal\runner.log"
-$state = Join-Path $repo ".runtime\longitudinal-sources"
-New-Item -ItemType Directory -Force -Path (Split-Path $log), $state | Out-Null
+$state = Join-Path $env:LOCALAPPDATA "FLOP\observatory\longitudinal-state"
+$publicRoot = Join-Path $env:LOCALAPPDATA "FLOP\observatory\longitudinal-public"
+New-Item -ItemType Directory -Force -Path (Split-Path $log), $state, $publicRoot | Out-Null
 Set-Location $repo
 "[$(Get-Date -Format o)] longitudinal:start" | Add-Content $log
 & npm.cmd run build *>> $log
@@ -24,7 +25,7 @@ $driftExit = $LASTEXITCODE
 $driftOutput | Add-Content $log
 $driftHealth = if ($driftExit -eq 0) { "NO_CHANGE" } elseif ($driftExit -eq 3) { "CHANGE_DETECTED" } else { "COLLECTOR_ERROR" }
 $handoff = Join-Path $repo "conformance\observatory\handoff.json"
-$runtimeEvolution = Join-Path $frozen ".runtime\longitudinal"
+$runtimeEvolution = Join-Path $env:LOCALAPPDATA "FLOP\observatory"
 New-Item -ItemType Directory -Force -Path $runtimeEvolution | Out-Null
 $replay = Join-Path $runtimeEvolution "resolution-replay-latest.json"
 $evolution = Join-Path $runtimeEvolution "evolution-history.json"
@@ -44,11 +45,11 @@ $tclkProbe = node tools/tclk-parse-probe.mjs 2>> $log
 $tclkExit = $LASTEXITCODE
 if ($tclkExit -eq 0) {
   $parsedProbe = $tclkProbe | ConvertFrom-Json
-  node dist/src/longitudinal-cli.js record-tclk-probe --status pass --parsed $parsedProbe.parsed --total $parsedProbe.total --source-revision $tclkRevision *>> $log
+  node dist/src/longitudinal-cli.js record-tclk-probe --root $state --status pass --parsed $parsedProbe.parsed --total $parsedProbe.total --source-revision $tclkRevision *>> $log
 } else {
-  node dist/src/longitudinal-cli.js record-tclk-probe --status unknown --source-revision $tclkRevision *>> $log
+  node dist/src/longitudinal-cli.js record-tclk-probe --root $state --status unknown --source-revision $tclkRevision *>> $log
 }
-node dist/src/longitudinal-cli.js sync *>> $log
+node dist/src/longitudinal-cli.js sync --root $state --public-root $publicRoot *>> $log
 $syncExit = $LASTEXITCODE
 "[$(Get-Date -Format o)] longitudinal:end runtime=$runtimeExit interaction=$interactionHealth($interactionExit) drift=$driftHealth($driftExit) replay=$replayExit evolution=$evolutionExit tclk=$tclkExit sync=$syncExit" | Add-Content $log
 if ($syncExit -ne 0) { exit $syncExit }

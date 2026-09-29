@@ -7,6 +7,7 @@ import { readRuntimeLoopState, runOperationalRuntimeCycle, writeRuntimeLoopState
 import { appendObservations, detectGitRevision, observationsFromRuntime } from "./longitudinal-observatory.js";
 
 const args = process.argv.slice(2);
+const runtimePublicRoot = process.env.FLOP_RUNTIME_PUBLIC_ROOT ?? "runtime-public";
 const flag = (name: string): string | undefined => {
   const index = args.indexOf(name);
   return index < 0 ? undefined : args[index + 1];
@@ -47,7 +48,7 @@ try {
     const previous = previousPath ? readEvidenceBundle(previousPath) : null;
     const result = await runRuntimeTarget(targetName, target, testCase, previous);
     writeEvidenceBundle(outPath, result.bundle);
-    const archive = publishRuntimeBundle("runtime-public", result.status, result.bundle);
+    const archive = publishRuntimeBundle(runtimePublicRoot, result.status, result.bundle);
     process.stdout.write(`${JSON.stringify({
       status: result.status,
       target: result.bundle.target,
@@ -78,7 +79,7 @@ try {
     writeRuntimeLoopState(statePath, result.state);
     appendObservations(".runtime/longitudinal", observationsFromRuntime(result.entry, detectGitRevision(process.cwd())));
     const archive = result.entry.bundle
-      ? publishRuntimeBundle("runtime-public", result.entry.status, result.entry.bundle)
+      ? publishRuntimeBundle(runtimePublicRoot, result.entry.status, result.entry.bundle)
       : null;
     process.stdout.write(`${JSON.stringify({
       status: result.entry.status,

@@ -39,7 +39,7 @@ def run_script(name):
 
 def _delegated_evidence():
     paths = {
-        "longitudinal": ROOT.parent / "_publish" / "longitudinal-evidence-v1" / "runtime-public" / "longitudinal" / "latest.json",
+        "longitudinal": Path.home() / "AppData" / "Local" / "FLOP" / "observatory" / "longitudinal-public" / "latest.json",
         "evolution": Path.home() / "AppData" / "Local" / "FLOP" / "observatory" / "evolution-history.json",
         "adoption": Path.home() / "AppData" / "Local" / "FLOP" / "adoption" / "latest.json",
     }
@@ -56,6 +56,12 @@ def _delegated_evidence():
 
 def cycle():
     results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1")]
+    longitudinal = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(Path.home() / "AppData/Local/FLOP/longitudinal/run.ps1")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
+    results.append({"script":"longitudinal","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":longitudinal.returncode,"stdoutTail":longitudinal.stdout[-4000:],"stderrTail":longitudinal.stderr[-4000:]})
+    interaction = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(Path.home() / "AppData/Local/FLOP/interaction-observatory/run.ps1")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
+    results.append({"script":"interaction","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":interaction.returncode,"stdoutTail":interaction.stdout[-4000:],"stderrTail":interaction.stderr[-4000:]})
+    adoption = subprocess.run(["cmd.exe", "/d", "/c", "call", str(Path.home() / "AppData/Local/FLOP/adoption/run.cmd")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
+    results.append({"script":"adoption","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":adoption.returncode,"stdoutTail":adoption.stdout[-4000:],"stderrTail":adoption.stderr[-4000:]})
     delegated = _delegated_evidence()
     healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
     state = {

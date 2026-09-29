@@ -2,7 +2,9 @@ $ErrorActionPreference = "Continue"
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 $runtimeDir = Join-Path $repo ".runtime"
-New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
+$publicDir = Join-Path $env:LOCALAPPDATA "FLOP\observatory\runtime-public"
+New-Item -ItemType Directory -Force -Path $runtimeDir, $publicDir | Out-Null
+$env:FLOP_RUNTIME_PUBLIC_ROOT = $publicDir
 $log = Join-Path $runtimeDir "runtime-cycle.log"
 $started = (Get-Date).ToUniversalTime().ToString("o")
 
@@ -12,7 +14,7 @@ $extOut = node.exe dist/src/runtime-cli.js cycle --target external-osr21-f1 --in
 $extCode = $LASTEXITCODE
 $taskRelayOut = node.exe dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744 2>&1
 $taskRelayCode = $LASTEXITCODE
-$statusOut = npm.cmd run runtime:status 2>&1
+$statusOut = node.exe dist/src/runtime-status-cli.js --root .runtime --json (Join-Path $publicDir "runtime-index.json") --markdown (Join-Path $publicDir "STATUS.md") 2>&1
 $statusCode = $LASTEXITCODE
 
 Add-Content $log "[$started] reference_exit=$refCode external_verifier_exit=$extCode external_runtime_exit=$taskRelayCode status_exit=$statusCode"
