@@ -37,14 +37,35 @@ def run_script(name):
         "stderrTail": proc.stderr[-4000:],
     }
 
+def _delegated_evidence():
+    paths = {
+        "longitudinal": ROOT.parent / "_publish" / "longitudinal-evidence-v1" / "runtime-public" / "longitudinal" / "latest.json",
+        "evolution": ROOT.parent / "_publish" / "longitudinal-evidence-v1" / "conformance" / "observatory" / "evolution-history.json",
+        "adoption": Path.home() / "AppData" / "Local" / "FLOP" / "adoption" / "latest.json",
+    }
+    now = time.time()
+    out = {}
+    for name, path in paths.items():
+        if not path.exists():
+            out[name] = {"state": "MISSING", "path": str(path)}
+            continue
+        age = max(0.0, now - path.stat().st_mtime)
+        out[name] = {"state": "FRESH" if age <= 10800 else "STALE", "ageSeconds": round(age, 3), "path": str(path)}
+    return out
+
+
 def cycle():
-    results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1"), run_script("run-longitudinal-cycle.ps1")]
+    results = [run_script("run-runtime-cycle.ps1")]
+    delegated = _delegated_evidence()
+    healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
     state = {
-        "schema": "flop.observatory-supervisor/v1",
+        "schema": "flop.observatory-supervisor/v2",
         "checkedAt": datetime.now(timezone.utc).isoformat(),
-        "status": "HEALTHY" if all(x["exitCode"] == 0 for x in results) else "DEGRADED",
+        "status": "HEALTHY" if healthy else "DEGRADED",
         "results": results,
+        "delegatedEvidence": delegated,
         "intervalSeconds": INTERVAL,
+        "rule": "Runtime executes in the canonical checkout; longitudinal, drift evolution, and adoption evidence are read from dedicated external-output locations.",
     }
     STATE.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
     with LOG.open("a", encoding="utf-8") as f:
