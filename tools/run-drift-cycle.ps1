@@ -4,11 +4,13 @@ Set-Location $repo
 if(-not $env:GITHUB_TOKEN){
   try { $env:GITHUB_TOKEN = (gh auth token).Trim() } catch {}
 }
-$obs = Join-Path $repo 'conformance\observatory'
-$runtime = Join-Path $repo '.runtime\drift-history'
-New-Item -ItemType Directory -Force -Path $runtime | Out-Null
+
+$baseline = Join-Path $repo 'conformance\observatory\baseline.json'
+$obs = if($env:FLOP_OBSERVATORY_OUTPUT_DIR){ $env:FLOP_OBSERVATORY_OUTPUT_DIR } else { Join-Path $env:LOCALAPPDATA 'FLOP\observatory' }
+$runtime = Join-Path $obs 'drift-history'
+New-Item -ItemType Directory -Force -Path $obs,$runtime | Out-Null
 $previous = Join-Path $obs 'current.json'
-if(-not (Test-Path $previous)){ $previous = Join-Path $obs 'baseline.json' }
+if(-not (Test-Path $previous)){ $previous = $baseline }
 
 & npm.cmd run build *> $null
 if($LASTEXITCODE -ne 0){ exit $LASTEXITCODE }
@@ -19,10 +21,13 @@ if($code -eq 0 -or $code -eq 3){
   if($LASTEXITCODE -ne 0){ exit $LASTEXITCODE }
 }
 if($code -eq 0 -or $code -eq 3){
-  $events = Get-Content (Join-Path $obs 'events.json') -Raw | ConvertFrom-Json
-  if($events.events.Count -gt 0){
-    $stamp=(Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
-    Copy-Item (Join-Path $obs 'events.json') (Join-Path $runtime ($stamp + '.json'))
+  $eventsPath = Join-Path $obs 'events.json'
+  if(Test-Path $eventsPath){
+    $events = Get-Content $eventsPath -Raw | ConvertFrom-Json
+    if($events.events.Count -gt 0){
+      $stamp=(Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
+      Copy-Item $eventsPath (Join-Path $runtime ($stamp + '.json'))
+    }
   }
   exit 0
 }

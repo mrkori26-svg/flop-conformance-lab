@@ -55,7 +55,7 @@ def _delegated_evidence():
 
 
 def cycle():
-    results = [run_script("run-runtime-cycle.ps1")]
+    results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1")]
     delegated = _delegated_evidence()
     healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
     state = {
