@@ -40,7 +40,7 @@ def run_script(name):
 def _delegated_evidence():
     paths = {
         "longitudinal": ROOT.parent / "_publish" / "longitudinal-evidence-v1" / "runtime-public" / "longitudinal" / "latest.json",
-        "evolution": ROOT.parent / "_publish" / "longitudinal-evidence-v1" / "conformance" / "observatory" / "evolution-history.json",
+        "evolution": Path.home() / "AppData" / "Local" / "FLOP" / "observatory" / "evolution-history.json",
         "adoption": Path.home() / "AppData" / "Local" / "FLOP" / "adoption" / "latest.json",
     }
     now = time.time()
