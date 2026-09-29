@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { appendObservations, detectGitRevision, makeObservation, observationsFromDrift, observationsFromInteractions, observationsFromRuntime, syncLongitudinal } from "./longitudinal-observatory.js";
+import { appendObservations, backfillHistoricalUnknowns, detectGitRevision, makeObservation, observationsFromDrift, observationsFromInteractions, observationsFromRuntime, syncLongitudinal } from "./longitudinal-observatory.js";
 
 
 const args = process.argv.slice(2);
@@ -53,6 +53,10 @@ async function main(): Promise<void> {
     process.stdout.write(JSON.stringify({ appended: appendObservations(root, [record]) }) + "\n");
     return;
   }
+  if (command === "backfill") {
+    process.stdout.write(JSON.stringify(backfillHistoricalUnknowns(root, revision), null, 2) + "\n");
+    return;
+  }
   if (command === "sync") {
     const identity = JSON.parse(readFileSync(resolve("identity/builder.json"), "utf8")) as { did?: unknown };
     if (typeof identity.did !== "string" || !identity.did.startsWith("did:key:")) throw new Error("IDENTITY_DID_UNAVAILABLE");
@@ -71,7 +75,7 @@ async function main(): Promise<void> {
     process.stdout.write(JSON.stringify(result, null, 2) + "\n");
     return;
   }
-  throw new Error("usage: longitudinal-observatory ingest-runtime|ingest-interaction|ingest-drift|sync [options]");
+  throw new Error("usage: longitudinal-observatory ingest-runtime|ingest-interaction|ingest-drift|backfill|sync [options]");
 }
 main().catch((error) => {
   process.stderr.write(`LONGITUDINAL_OBSERVATORY_FAILED:${error instanceof Error ? error.message : "failed"}\n`);

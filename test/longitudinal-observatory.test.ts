@@ -57,7 +57,8 @@ test("drift baseline and fetch failures stay unknown instead of becoming target 
   };
   const baseline = observationsFromDrift(snapshot, [{ sourceId: "baseline", currentFingerprint: "a" }], "rev", null);
   assert.equal(baseline[0]?.outcome, "UNKNOWN");
-  assert.equal(baseline[0]?.failure, null);
+  assert.equal(baseline[0]?.evaluation.reason, "MISSING_ARTIFACT");
+  assert.equal(baseline[0]?.failure?.class, "MISSING_ARTIFACT");
   const previous: { observations: Array<{ id: string; fingerprint: string; state: Record<string, string | number | boolean | null> }> } = { observations: [
     { id: "baseline", fingerprint: "old", state: { sha: "old" } },
     { id: "unavailable", fingerprint: "old-unavailable", state: { fetch_state: "UNAVAILABLE", error: "HTTP_403" } },

@@ -4,9 +4,10 @@ import { Osr21F1VerifierTarget } from "./runtime-target-external-f1.js";
 import { FlopProofApiF1VerifierTarget } from "./runtime-target-flop-proof-api-f1.js";
 import { TaskRelayPaperRuntimeTarget } from "./runtime-target-task-relay-paper.js";
 import { EmpiresRuntimeTarget } from "./runtime-target-empires.js";
+import { FlopTestnetRuntimeTarget } from "./runtime-target-flop-testnet.js";
 
-export type RuntimeTargetKind = "REFERENCE_RUNTIME" | "EXTERNAL_VERIFIER" | "EXTERNAL_RUNTIME";
-export type RuntimeInputProfile = "direct-rail-f1" | "task-relay-paper" | "empires-replay";
+export type RuntimeTargetKind = "REFERENCE_RUNTIME" | "EXTERNAL_VERIFIER" | "EXTERNAL_RUNTIME" | "FLOP_TESTNET";
+export type RuntimeInputProfile = "direct-rail-f1" | "task-relay-paper" | "empires-replay" | "flop-testnet-session";
 export type RuntimeTargetRegistration = {
   id: string;
   kind: RuntimeTargetKind;
@@ -22,6 +23,7 @@ const REGISTRY: RuntimeTargetRegistration[] = [
   { id:"external-flop-proof-api-f1", kind:"EXTERNAL_VERIFIER", inputProfile:"direct-rail-f1", claimBoundary:"EXTERNAL_VERIFIER_NOT_PUBLIC_FLOP_RUNTIME", defaultCaseId:"direct-rail-f1-reference", create:()=>new FlopProofApiF1VerifierTarget() },
   { id:"external-task-relay-paper", kind:"EXTERNAL_RUNTIME", inputProfile:"task-relay-paper", claimBoundary:"EXTERNAL_EXECUTABLE_RUNTIME_NOT_LIVE_NETWORK_SETTLEMENT", defaultCaseId:"task-relay-paper-reference", create:()=>new TaskRelayPaperRuntimeTarget() },
   { id:"empires-runtime", kind:"EXTERNAL_RUNTIME", inputProfile:"empires-replay", claimBoundary:"REAL_RUNTIME_STATE_EVIDENCE_NOT_VALUE_SETTLEMENT", defaultCaseId:"empires-runtime-replay-v1", create:()=>new EmpiresRuntimeTarget() },
+  { id:"flop-testnet", kind:"FLOP_TESTNET", inputProfile:"flop-testnet-session", claimBoundary:"OFFICIAL_TESTNET_ONLY_FAIL_CLOSED_UNTIL_NETWORK_IDENTITY_VERIFIED", defaultCaseId:"flop-testnet-readiness", create:()=>new FlopTestnetRuntimeTarget() },
 ];
 
 export const RUNTIME_TARGET_NAMES = REGISTRY.map((entry)=>entry.id) as string[];

@@ -3,17 +3,27 @@ import { execFileSync } from "node:child_process";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-export const METHODOLOGY_VERSION = "1.0.0";
+export const METHODOLOGY_VERSION = "1.1.0";
 export const OBSERVATION_SCHEMA = "flop.observation-record/v1" as const;
 
 export type ObservationSource = "probe" | "interaction" | "runtime" | "drift";
 export type ObservationOutcome = "PASS" | "FAIL" | "DRIFT" | "UNKNOWN";
+export type EvaluationState = "EVALUATED_PASS" | "EVALUATED_FAIL" | "UNKNOWN";
+export type UnknownReason =
+  | "MISSING_ARTIFACT" | "SIGNER_UNAVAILABLE" | "MAILBOX_UNREACHABLE"
+  | "OBSERVER_UNAVAILABLE" | "OBSERVER_DOWNTIME" | "OBSERVER_TASK_DISABLED"
+  | "OBSERVER_TIMEOUT" | "OBSERVER_DEPENDENCY_MISSING" | "OBSERVER_COLLECTOR_ERROR"
+  | "UNSUPPORTED_VERSION" | "INVALID_EVIDENCE" | "SIGNATURE_UNVERIFIED"
+  | "BASELINE_MISSING" | "TARGET_UNAVAILABLE" | "COVERAGE_LOST" | "UNKNOWN";
 export type FailureScope = "NONE" | "TARGET_FAILURE" | "OBSERVER_FAILURE" | "INDETERMINATE";
 export type FailureClass =
   | "NONE" | "TARGET_UNAVAILABLE" | "TARGET_PROTOCOL_ERROR" | "OBSERVER_UNAVAILABLE"
+  | "OBSERVER_DOWNTIME" | "OBSERVER_TASK_DISABLED" | "OBSERVER_TIMEOUT"
+  | "OBSERVER_DEPENDENCY_MISSING" | "OBSERVER_COLLECTOR_ERROR"
   | "OBSERVER_PARSE_ERROR" | "SIGNATURE_INVALID" | "SIGNATURE_UNVERIFIED"
   | "SIGNATURE_NOT_PRESENT" | "SIGNER_UNAVAILABLE" | "RETENTION_GAP"
-  | "MAILBOX_INVALID" | "TCLK_PARSE_ERROR" | "CONFORMANCE_FAIL"
+  | "MAILBOX_INVALID" | "MAILBOX_UNREACHABLE" | "MISSING_ARTIFACT"
+  | "UNSUPPORTED_VERSION" | "INVALID_EVIDENCE" | "TCLK_PARSE_ERROR" | "CONFORMANCE_FAIL"
   | "CONFORMANCE_DRIFT" | "COVERAGE_LOST" | "TRANSIENT_ERROR"
   | "RATE_LIMITED" | "UNKNOWN";
 
@@ -70,6 +80,7 @@ export interface ObservationRecord {
   source: ObservationSource;
   metric: MetricName;
   outcome: ObservationOutcome;
+  evaluation: { state: EvaluationState; reason?: UnknownReason };
   numerator?: number;
   denominator?: number;
   dimensions: Record<string, string>;
@@ -106,7 +117,47 @@ export function detectGitRevision(root = process.cwd()): string {
   }
 }
 
-export function makeObservation(input: Omit<ObservationRecord, "schema" | "id">): ObservationRecord {
+export const OBSERVATORY_COVERAGE_SLO = 0.95;
+
+function classifyUnknownReason(record: Pick<ObservationRecord, "metric" | "failure" | "evidenceRefs" | "denominator">): UnknownReason {
+  const failureClass = record.failure?.class;
+  const detail = String(record.failure?.detail ?? "").toLowerCase();
+  if (failureClass === "MISSING_ARTIFACT") return "MISSING_ARTIFACT";
+  if (failureClass === "SIGNER_UNAVAILABLE") return "SIGNER_UNAVAILABLE";
+  if (failureClass === "MAILBOX_UNREACHABLE") return "MAILBOX_UNREACHABLE";
+  if (failureClass === "UNSUPPORTED_VERSION") return "UNSUPPORTED_VERSION";
+  if (failureClass === "INVALID_EVIDENCE") return "INVALID_EVIDENCE";
+  if (failureClass === "SIGNATURE_UNVERIFIED" || failureClass === "SIGNATURE_NOT_PRESENT") return "SIGNATURE_UNVERIFIED";
+  if (failureClass === "TARGET_UNAVAILABLE") return "TARGET_UNAVAILABLE";
+  if (failureClass === "COVERAGE_LOST") return "COVERAGE_LOST";
+  if (failureClass === "OBSERVER_TASK_DISABLED" || /task.{0,12}disabled|disabled.{0,12}task/.test(detail)) return "OBSERVER_TASK_DISABLED";
+  if (failureClass === "OBSERVER_TIMEOUT" || /timeout|timed out|etimedout/.test(detail)) return "OBSERVER_TIMEOUT";
+  if (failureClass === "OBSERVER_DEPENDENCY_MISSING" || /enoent|module not found|dependency.{0,12}missing|missing.{0,12}dependency/.test(detail)) return "OBSERVER_DEPENDENCY_MISSING";
+  if (failureClass === "OBSERVER_DOWNTIME" || /econnrefused|enotfound|network unreachable|http_5\d\d|failed_5\d\d/.test(detail)) return "OBSERVER_DOWNTIME";
+  if (failureClass === "OBSERVER_COLLECTOR_ERROR" || /fetch_failed|http_40[13]|failed_40[13]|collector/.test(detail)) return "OBSERVER_COLLECTOR_ERROR";
+  if (failureClass === "OBSERVER_UNAVAILABLE") return "OBSERVER_UNAVAILABLE";
+  if ((record.metric === "mailbox_validity" || record.metric === "signature_verification") && (!record.evidenceRefs.length || record.denominator === 0)) return "MISSING_ARTIFACT";
+  return "UNKNOWN";
+}
+
+function evaluationFor(input: Omit<ObservationRecord, "schema" | "id" | "evaluation"> & { evaluation?: ObservationRecord["evaluation"] }): ObservationRecord["evaluation"] {
+  if (input.evaluation) return input.evaluation;
+  if (input.outcome === "PASS") return { state: "EVALUATED_PASS" };
+  if (input.outcome === "FAIL" || input.outcome === "DRIFT") return { state: "EVALUATED_FAIL" };
+  return { state: "UNKNOWN", reason: classifyUnknownReason(input as ObservationRecord) };
+}
+
+function classifyObserverFailure(detailValue: unknown): FailureClass {
+  const detail = String(detailValue ?? "").toLowerCase();
+  if (/task.{0,12}disabled|disabled.{0,12}task/.test(detail)) return "OBSERVER_TASK_DISABLED";
+  if (/timeout|timed out|etimedout/.test(detail)) return "OBSERVER_TIMEOUT";
+  if (/enoent|module not found|dependency.{0,12}missing|missing.{0,12}dependency/.test(detail)) return "OBSERVER_DEPENDENCY_MISSING";
+  if (/econnrefused|enotfound|network unreachable|http_5\d\d|failed_5\d\d/.test(detail)) return "OBSERVER_DOWNTIME";
+  if (/fetch_failed|http_40[13]|failed_40[13]|collector/.test(detail)) return "OBSERVER_COLLECTOR_ERROR";
+  return "OBSERVER_UNAVAILABLE";
+}
+
+export function makeObservation(input: Omit<ObservationRecord, "schema" | "id" | "evaluation"> & { evaluation?: ObservationRecord["evaluation"] }): ObservationRecord {
   if (!Number.isFinite(Date.parse(input.observedAt))) throw new Error("INVALID_OBSERVATION_TIME");
   if (input.numerator !== undefined && (!Number.isFinite(input.numerator) || input.numerator < 0)) {
     throw new Error("INVALID_OBSERVATION_NUMERATOR");
@@ -117,8 +168,10 @@ export function makeObservation(input: Omit<ObservationRecord, "schema" | "id">)
   if (input.numerator !== undefined && input.denominator !== undefined && input.numerator > input.denominator) {
     throw new Error("OBSERVATION_NUMERATOR_EXCEEDS_DENOMINATOR");
   }
-  const core = { ...input, evidenceRefs: [...input.evidenceRefs].sort(), dimensions: { ...input.dimensions } };
-  return { schema: OBSERVATION_SCHEMA, id: sha256(core), ...core };
+  const evaluation = evaluationFor(input);
+  if (evaluation.state === "UNKNOWN" && !evaluation.reason) throw new Error("UNKNOWN_REASON_REQUIRED");
+  const core = { ...input, evaluation, evidenceRefs: [...input.evidenceRefs].sort(), dimensions: { ...input.dimensions } };
+  return { schema: OBSERVATION_SCHEMA, id: sha256(core), ...core } as ObservationRecord;
 }
 function expandFailure(records: ObservationRecord[]): ObservationRecord[] {
   const out = [...records];
@@ -142,11 +195,10 @@ function expandFailure(records: ObservationRecord[]): ObservationRecord[] {
   return out;
 }
 
-export function appendObservations(root: string, records: ObservationRecord[]): number {
-  const expanded = expandFailure(records);
+function appendRawObservationRecords(root: string, records: ObservationRecord[]): number {
   mkdirSync(join(root, "raw"), { recursive: true });
   const grouped = new Map<ObservationSource, ObservationRecord[]>();
-  for (const record of expanded) {
+  for (const record of records) {
     const values = grouped.get(record.source) ?? [];
     values.push(record);
     grouped.set(record.source, values);
@@ -154,13 +206,21 @@ export function appendObservations(root: string, records: ObservationRecord[]): 
   for (const [source, values] of grouped) {
     appendFileSync(join(root, "raw", `${source}.ndjson`), values.map((item) => JSON.stringify(item)).join("\n") + "\n", "utf8");
   }
-  return expanded.length;
+  return records.length;
+}
+
+export function appendObservations(root: string, records: ObservationRecord[]): number {
+  return appendRawObservationRecords(root, expandFailure(records));
 }
 function parseNdjson(path: string): ObservationRecord[] {
   if (!existsSync(path)) return [];
   return readFileSync(path, "utf8").split(/\r?\n/).filter(Boolean).map((line) => {
     const value = JSON.parse(line) as ObservationRecord;
     if (value.schema !== OBSERVATION_SCHEMA) throw new Error("OBSERVATION_SCHEMA_DIVERGENCE");
+    if (!value.evaluation) {
+      value.evaluation = evaluationFor(value);
+      value.dimensions = { ...value.dimensions, legacyEvaluationSynthesized: "true" };
+    }
     return value;
   });
 }
@@ -175,42 +235,99 @@ export function readObservations(root: string): ObservationRecord[] {
   return [...byId.values()].sort((a, b) => a.observedAt.localeCompare(b.observedAt) || a.id.localeCompare(b.id));
 }
 
+export type CoverageHealth = "SUFFICIENT_COVERAGE" | "INSUFFICIENT_COVERAGE" | "NO_OBSERVATIONS";
+
 export interface MetricAggregate {
   metric: MetricName;
   samples: number;
+  observed: number;
+  evaluable: number;
+  unknown: number;
+  coverageDenominator: number;
+  coverage: number | null;
+  passRate: number | null;
+  unknownRate: number | null;
+  coverageThreshold: number;
+  coverageHealth: CoverageHealth;
   numerator: number | null;
   denominator: number | null;
   rate: number | null;
   outcomes: Record<ObservationOutcome, number>;
+  evaluations: Record<EvaluationState, number>;
+  unknownReasons: Record<string, number>;
   failures: Record<string, number>;
 }
 
+function effectiveRecords(records: ObservationRecord[]): ObservationRecord[] {
+  const superseded = new Set(records.map((record) => record.dimensions.reevaluationOf).filter(Boolean));
+  return records.filter((record) => !superseded.has(record.id));
+}
+
 export function aggregateMetric(metric: MetricName, records: ObservationRecord[]): MetricAggregate {
-  const selected = records.filter((record) => record.metric === metric);
+  const selected = effectiveRecords(records).filter((record) => record.metric === metric);
   let numerator = 0, denominator = 0, sampled = false;
   const outcomes: Record<ObservationOutcome, number> = { PASS: 0, FAIL: 0, DRIFT: 0, UNKNOWN: 0 };
+  const evaluations: Record<EvaluationState, number> = { EVALUATED_PASS: 0, EVALUATED_FAIL: 0, UNKNOWN: 0 };
+  const unknownReasons: Record<string, number> = {};
   const failures: Record<string, number> = {};
   for (const record of selected) {
+    const evaluation = record.evaluation ?? evaluationFor(record);
     outcomes[record.outcome] += 1;
-    if (record.numerator !== undefined && record.denominator !== undefined) {
+    evaluations[evaluation.state] += 1;
+    if (evaluation.state === "UNKNOWN") {
+      const reason = evaluation.reason ?? "UNKNOWN";
+      unknownReasons[reason] = (unknownReasons[reason] ?? 0) + 1;
+    }
+    if (record.numerator !== undefined && record.denominator !== undefined && record.denominator > 0) {
       numerator += record.numerator; denominator += record.denominator; sampled = true;
     }
     if (record.failure && record.failure.class !== "NONE") {
       failures[record.failure.class] = (failures[record.failure.class] ?? 0) + 1;
     }
   }
+  const observed = selected.length;
+  const evaluable = evaluations.EVALUATED_PASS + evaluations.EVALUATED_FAIL;
+  const unknown = evaluations.UNKNOWN;
+  const coverage = observed > 0 ? evaluable / observed : null;
+  const passRate = evaluable > 0 ? evaluations.EVALUATED_PASS / evaluable : null;
+  const unknownRate = observed > 0 ? unknown / observed : null;
   return {
-    metric, samples: selected.length,
+    metric, samples: observed, observed, evaluable, unknown, coverageDenominator: observed,
+    coverage, passRate, unknownRate, coverageThreshold: OBSERVATORY_COVERAGE_SLO,
+    coverageHealth: observed === 0 ? "NO_OBSERVATIONS" : (coverage ?? 0) < OBSERVATORY_COVERAGE_SLO ? "INSUFFICIENT_COVERAGE" : "SUFFICIENT_COVERAGE",
     numerator: sampled ? numerator : null,
     denominator: sampled ? denominator : null,
     rate: sampled && denominator > 0 ? numerator / denominator : null,
-    outcomes, failures,
+    outcomes, evaluations, unknownReasons, failures,
   };
 }
 
 export function aggregateAll(records: ObservationRecord[]): Record<MetricName, MetricAggregate> {
   return Object.fromEntries((Object.keys(METRIC_DEFINITIONS) as MetricName[])
     .map((metric) => [metric, aggregateMetric(metric, records)])) as Record<MetricName, MetricAggregate>;
+}
+
+export interface CoverageSloReport {
+  threshold: number;
+  windowStart: string;
+  windowEnd: string;
+  status: "PASS" | "FAIL";
+  violations: Array<{ metric: MetricName; coverage: number; observed: number; evaluable: number; unknown: number; unknownReasons: Record<string, number> }>;
+}
+
+export function evaluateCoverageSlo(records: ObservationRecord[], now = new Date(), windowMs = 86_400_000): CoverageSloReport {
+  const windowEnd = now.toISOString();
+  const windowStart = new Date(now.getTime() - windowMs).toISOString();
+  const recent = records.filter((record) => record.observedAt >= windowStart && record.observedAt <= windowEnd);
+  const metrics = aggregateAll(recent);
+  const violations = (Object.keys(metrics) as MetricName[])
+    .map((metric) => metrics[metric])
+    .filter((aggregate) => aggregate.observed > 0 && aggregate.coverageHealth === "INSUFFICIENT_COVERAGE")
+    .map((aggregate) => ({
+      metric: aggregate.metric, coverage: aggregate.coverage ?? 0, observed: aggregate.observed,
+      evaluable: aggregate.evaluable, unknown: aggregate.unknown, unknownReasons: aggregate.unknownReasons,
+    }));
+  return { threshold: OBSERVATORY_COVERAGE_SLO, windowStart, windowEnd, status: violations.length ? "FAIL" : "PASS", violations };
 }
 
 function revisionOf(value: unknown): string | null {
@@ -295,14 +412,88 @@ export function observationsFromDrift(snapshot: {
       ...(sampled ? { numerator: changed.has(item.id) ? 0 : 1, denominator: 1 } : {}),
       dimensions: { sourceId: item.id },
       failure: observationUncertain
-        ? { scope: "OBSERVER_FAILURE", class: "OBSERVER_UNAVAILABLE", detail: String(item.state?.error ?? before?.state?.error ?? item.state?.detail_state ?? before?.state?.detail_state ?? "source metadata unavailable").slice(0, 240) }
-        : hasBaseline && changed.has(item.id)
-          ? { scope: "TARGET_FAILURE", class: "CONFORMANCE_DRIFT" }
-          : null,
+        ? (() => {
+            const detail = String(item.state?.error ?? before?.state?.error ?? item.state?.detail_state ?? before?.state?.detail_state ?? "source metadata unavailable").slice(0, 240);
+            return { scope: "OBSERVER_FAILURE" as const, class: classifyObserverFailure(detail), detail };
+          })()
+        : !hasBaseline
+          ? { scope: "INDETERMINATE", class: "MISSING_ARTIFACT", detail: "No previous baseline retained for comparison." }
+          : changed.has(item.id)
+            ? { scope: "TARGET_FAILURE", class: "CONFORMANCE_DRIFT" }
+            : null,
       evidenceRefs: [item.fingerprint], observerRevision,
       sourceRevision: item.fingerprint, targetFingerprint: item.fingerprint,
     });
   });
+}
+
+export interface BackfillResult {
+  scannedUnknown: number;
+  appended: number;
+  reclassifiedReasons: Record<string, number>;
+  recoveredPass: number;
+  recoveredFail: number;
+}
+
+function sameRetainedEvidence(a: ObservationRecord, b: ObservationRecord): boolean {
+  return a.metric === b.metric && a.source === b.source && a.evidenceRefs.length > 0 &&
+    canonical(a.evidenceRefs) === canonical(b.evidenceRefs) &&
+    a.targetFingerprint === b.targetFingerprint && a.sourceRevision === b.sourceRevision;
+}
+
+export function buildHistoricalReevaluations(records: ObservationRecord[], observerRevision: string): ObservationRecord[] {
+  const effective = effectiveRecords(records);
+  const evaluated = effective.filter((record) => (record.evaluation ?? evaluationFor(record)).state !== "UNKNOWN");
+  const out: ObservationRecord[] = [];
+  for (const legacy of effective.filter((record) => (record.evaluation ?? evaluationFor(record)).state === "UNKNOWN" && record.metric !== "failure_classifications")) {
+    const currentEvaluation = legacy.evaluation ?? evaluationFor(legacy);
+    const matching = evaluated.find((candidate) => sameRetainedEvidence(legacy, candidate));
+    const reason = classifyUnknownReason(legacy);
+    if (!matching && currentEvaluation.reason === reason &&
+      (legacy.dimensions.reevaluationOf !== undefined || legacy.dimensions.legacyEvaluationSynthesized !== "true")) continue;
+    const { schema: _schema, id: _id, evaluation: _evaluation, ...core } = legacy;
+    if (matching) {
+      out.push(makeObservation({
+        ...core, observedAt: new Date().toISOString(), outcome: matching.outcome,
+        evaluation: matching.evaluation ?? evaluationFor(matching),
+        numerator: matching.numerator, denominator: matching.denominator,
+        dimensions: { ...legacy.dimensions, reevaluationOf: legacy.id, reevaluationMethod: "MATCHED_RETAINED_EVIDENCE" },
+        failure: matching.failure, observerRevision,
+      }));
+    } else {
+      out.push(makeObservation({
+        ...core, observedAt: new Date().toISOString(), outcome: "UNKNOWN",
+        evaluation: { state: "UNKNOWN", reason }, numerator: undefined, denominator: undefined,
+        dimensions: { ...legacy.dimensions, reevaluationOf: legacy.id, reevaluationMethod: "RECLASSIFY_ONLY" },
+        failure: legacy.failure
+          ? { ...legacy.failure, class: legacy.failure.class === "OBSERVER_UNAVAILABLE" ? classifyObserverFailure(legacy.failure.detail) : legacy.failure.class }
+          : {
+              scope: "INDETERMINATE", class: reason === "MISSING_ARTIFACT" ? "MISSING_ARTIFACT" : "UNKNOWN",
+              detail: `Historical UNKNOWN reclassified as ${reason}; no retained evidence supports PASS/FAIL.`,
+            },
+        observerRevision,
+      }));
+    }
+  }
+  return out;
+}
+
+export function backfillHistoricalUnknowns(root: string, observerRevision = detectGitRevision(process.cwd())): BackfillResult {
+  const records = readObservations(root);
+  const scannedUnknown = effectiveRecords(records).filter((record) => (record.evaluation ?? evaluationFor(record)).state === "UNKNOWN" && record.metric !== "failure_classifications").length;
+  const reevaluations = buildHistoricalReevaluations(records, observerRevision);
+  if (reevaluations.length) appendRawObservationRecords(root, reevaluations);
+  const reclassifiedReasons: Record<string, number> = {};
+  let recoveredPass = 0, recoveredFail = 0;
+  for (const record of reevaluations) {
+    if (record.evaluation.state === "EVALUATED_PASS") recoveredPass += 1;
+    else if (record.evaluation.state === "EVALUATED_FAIL") recoveredFail += 1;
+    else {
+      const reason = record.evaluation.reason ?? "UNKNOWN";
+      reclassifiedReasons[reason] = (reclassifiedReasons[reason] ?? 0) + 1;
+    }
+  }
+  return { scannedUnknown, appended: reevaluations.length, reclassifiedReasons, recoveredPass, recoveredFail };
 }
 
 export interface ChangeJourney {
@@ -383,6 +574,7 @@ function publishIncidents(publicRoot: string, records: ObservationRecord[]): num
   let count = 0;
   for (const record of records) {
     if (!record.failure || record.failure.class === "NONE") continue;
+    if (record.metric === "failure_classifications" || record.dimensions.reevaluationMethod === "RECLASSIFY_ONLY") continue;
     if (existing.has(record.id)) continue;
     const incident = {
       schema: "flop.longitudinal-incident/v1", bucket: record.id, observationId: record.id,
@@ -484,7 +676,7 @@ export async function syncLongitudinal(input: {
   writeFileSync(join(input.publicRoot, "latest.json"), JSON.stringify({
     schema: "flop.longitudinal-latest/v1", methodologyVersion: METHODOLOGY_VERSION,
     generatedAt: now.toISOString(), observationCount: records.length, chainHead,
-    metrics: aggregateAll(records), metricDefinitions: METRIC_DEFINITIONS,
+    metrics: aggregateAll(records), coverageSlo: evaluateCoverageSlo(records, now), metricDefinitions: METRIC_DEFINITIONS,
   }, null, 2) + "\n", "utf8");
   return { observations: records.length, hourlyPublished, dailyPublished, incidentsPublished, journeysPublished, chainHead };
 }
