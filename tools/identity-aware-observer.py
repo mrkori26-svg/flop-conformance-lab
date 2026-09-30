@@ -5,10 +5,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 LOCAL=Path(os.environ.get("LOCALAPPDATA", str(Path.home()/"AppData"/"Local")))
+STACK=Path(r"C:\Users\acost\flop stack")
+WORK=STACK/"useful-work-operator"
 PROBE=LOCAL/"Technocore"/"probe-agent"
 EVIDENCE=PROBE/"evidence.jsonl"
 EVENTS=PROBE/"technocore-probe-events.jsonl"
 OUT=LOCAL/"FLOP"/"observatory"/"identity-aware.json"
+
+def read_json(path):
+    try:
+        v=json.loads(path.read_text(encoding="utf-8-sig"))
+        return v if isinstance(v,dict) else {}
+    except Exception:
+        return {}
 
 def read_jsonl(path):
     if not path.exists(): return []
@@ -23,6 +32,45 @@ def read_jsonl(path):
 
 evidence=read_jsonl(EVIDENCE)
 events=read_jsonl(EVENTS)
+
+work_by_did=defaultdict(dict)
+for lane,path in {
+    "blockrewards":WORK/"state-blockrewards-0-of-1"/"status.json",
+    "harness":WORK/"state-harness-0-of-1"/"status.json",
+    "kibble":WORK/"state"/"status.json",
+}.items():
+    state=read_json(path)
+    did=state.get("did")
+    if not did:
+        continue
+    tracker=state.get("passTracker") or {}
+    result=state.get("result") or {}
+    if lane=="blockrewards":
+        work_by_did[did][lane]={
+            "fundedExternal":tracker.get("fundedExternal"),
+            "claimedExternal":tracker.get("claimedExternal"),
+            "deliveredExternal":tracker.get("deliveredExternal"),
+            "reviewedExternal":tracker.get("reviewedExternal"),
+            "receiptsExternal":tracker.get("receiptsExternal"),
+            "passportIndexed":tracker.get("passportIndexed"),
+            "externalSuccess":tracker.get("externalSuccess"),
+        }
+    elif lane=="harness":
+        work_by_did[did][lane]={
+            "tracked":tracker.get("tracked"),
+            "pass":tracker.get("pass"),
+            "fail":tracker.get("fail"),
+            "pending":tracker.get("pending"),
+            "receipts":tracker.get("receipts"),
+        }
+    else:
+        work_by_did[did][lane]={
+            "action":result.get("action"),
+            "contract":result.get("contract"),
+            "railClaimed":result.get("railClaimed"),
+            "receipt":result.get("receipt"),
+        }
+
 by=defaultdict(lambda:{"verifiedMessages":0,"rooms":defaultdict(list),"evidenceRefs":[],"probeResponses":{"sent":0,"failed":0},"nonceValues":[]})
 for e in evidence:
     subj=e.get("subject") or {}
@@ -75,15 +123,16 @@ for did,b in sorted(by.items()):
         "peerResponses":b["probeResponses"],
         "evidenceCount":len(set(b["evidenceRefs"])),
         "evidenceRefs":sorted(set(b["evidenceRefs"]))[-100:],
+        "derivedWorkEvidence":work_by_did.get(did,{}),
     })
 OUT.parent.mkdir(parents=True,exist_ok=True)
 payload={
-  "schema":"flop.identity-aware-observation/v1",
+  "schema":"flop.identity-aware-observation/v2",
   "generatedAt":datetime.now(timezone.utc).isoformat(),
   "status":"HEALTHY",
   "source":{"evidence":str(EVIDENCE),"probeEvents":str(EVENTS)},
   "identities":rows,
-  "summary":{"identities":len(rows),"verifiedMessages":sum(x["verifiedMessages"] for x in rows),"rooms":len({r for x in rows for r in x["rooms"]})},
+  "summary":{"identities":len(rows),"verifiedMessages":sum(x["verifiedMessages"] for x in rows),"rooms":len({r for x in rows for r in x["rooms"]}),"identitiesWithDerivedWorkEvidence":sum(1 for x in rows if x["derivedWorkEvidence"])},
   "claimBoundary":"Nonce continuity is UNKNOWN where retained evidence does not include nonce bytes; no continuity is inferred from room sequence alone. Sequence gaps describe retained evidence coverage and do not by themselves prove transport loss."
 }
 OUT.write_text(json.dumps(payload,indent=2)+"\n",encoding="utf-8")
