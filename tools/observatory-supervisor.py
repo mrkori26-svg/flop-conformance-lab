@@ -2,6 +2,7 @@ import ctypes
 import json
 import os
 import subprocess
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -38,10 +39,15 @@ def run_script(name):
     }
 
 def _delegated_evidence():
+    base = Path.home() / "AppData" / "Local" / "FLOP" / "observatory"
     paths = {
-        "longitudinal": Path.home() / "AppData" / "Local" / "FLOP" / "observatory" / "longitudinal-public" / "latest.json",
-        "evolution": Path.home() / "AppData" / "Local" / "FLOP" / "observatory" / "evolution-history.json",
+        "longitudinal": base / "longitudinal-public" / "latest.json",
+        "evolution": base / "evolution-history.json",
         "adoption": Path.home() / "AppData" / "Local" / "FLOP" / "adoption" / "latest.json",
+        "identityAware": base / "identity-aware.json",
+        "boundarySuite": base / "boundary-suite.json",
+        "strangerJourney": base / "stranger-journey.json",
+        "appendixE": base / "appendix-e-coverage.json",
     }
     now = time.time()
     out = {}
@@ -62,6 +68,17 @@ def cycle():
     results.append({"script":"interaction","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":interaction.returncode,"stdoutTail":interaction.stdout[-4000:],"stderrTail":interaction.stderr[-4000:]})
     adoption = subprocess.run(["cmd.exe", "/d", "/c", "call", str(Path.home() / "AppData/Local/FLOP/adoption/run.cmd")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
     results.append({"script":"adoption","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":adoption.returncode,"stdoutTail":adoption.stdout[-4000:],"stderrTail":adoption.stderr[-4000:]})
+
+    for script, command in [
+        ("identity-aware", [sys.executable, str(ROOT / "tools" / "identity-aware-observer.py")]),
+        ("boundary-suite", ["node.exe", str(ROOT / "tools" / "cross-layer-boundary-suite.mjs")]),
+        ("stranger-journey", ["node.exe", str(ROOT / "tools" / "stranger-journey.mjs")]),
+        ("appendix-e-coverage", [sys.executable, str(ROOT / "tools" / "appendix-e-coverage.py")]),
+    ]:
+        started = datetime.now(timezone.utc).isoformat()
+        proc = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300, creationflags=CREATE_NO_WINDOW)
+        results.append({"script":script,"startedAt":started,"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":proc.returncode,"stdoutTail":proc.stdout[-4000:],"stderrTail":proc.stderr[-4000:]})
+
     delegated = _delegated_evidence()
     healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
     state = {
