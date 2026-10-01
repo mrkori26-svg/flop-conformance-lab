@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added a TCLK Unreleased boundary canary for exact decimal-string nonces above 2^53, unsafe numeric rejection, schema-owned tclk/1 fields, signed heartbeat, and hosted no-custody MCP while keeping read-path issue #78 explicitly open and released behavior unpromoted.
+- Added Yellow Paper D-0506 readiness mapping that reuses EvidenceBundle, longitudinal history, signer authority, digest heads, and replay/audit surfaces without claiming the draft storage protocol is implemented.
 - Added a pinned `kberkan/flop-proof-api` Appendix F.1 external verifier target with canonical and mutation-corpus evidence.
 - Added negative boundary probes for task/report lengths and u64 nonce constraints.
 - Extended the hourly Runtime Observatory to retain external verifier history and detect revision drift without claiming a public FLOP runtime.

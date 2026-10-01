@@ -9,6 +9,8 @@ import { validateDemandIndependenceFixture } from "./demand-independence.js";
 import { validateSybilEconomicsFixture } from "./sybil-economics.js";
 import { validateTclkIssue93Fixture } from "./tclk-stream-completeness.js";
 import { validateTclkIssue96Fixture } from "./tclk-venue-time.js";
+import { tclkUnreleasedCapabilitySnapshot } from "./tclk-unreleased-boundaries.js";
+import { yellowpaperD0506Readiness } from "./yellowpaper-d0506-readiness.js";
 import { assessTclkRailEvidence } from "./tclk-rail-evidence.js";
 import { validateClientCrashSettlementFixture } from "./client-crash-settlement.js";
 import { validateContributionProof851Populations } from "./technocore-contribution-proof.js";
@@ -49,6 +51,8 @@ export * from "./sybil-economics.js";
 export * from "./tclk-provisional-hardening.js";
 export * from "./tclk-stream-completeness.js";
 export * from "./tclk-venue-time.js";
+export * from "./tclk-unreleased-boundaries.js";
+export * from "./yellowpaper-d0506-readiness.js";
 export * from "./tclk-rail-evidence.js";
 export * from "./work-evidence.js";
 export * from "./tcr1-adapter.js";
@@ -110,6 +114,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
   const sybilEconomics = validateSybilEconomicsFixture();
   const tclkIssue93 = validateTclkIssue93Fixture();
   const tclkIssue96 = validateTclkIssue96Fixture();
+  const tclkUnreleased = tclkUnreleasedCapabilitySnapshot();
+  const d0506Readiness = yellowpaperD0506Readiness();
   const tclkRailBoundary = assessTclkRailEvidence({ transcriptValid: true, rail: "flop-htlc", ref: "field-observation", });
   const clientCrashSettlement = validateClientCrashSettlementFixture();
   const technocore851 = validateContributionProof851Populations();
@@ -172,6 +178,8 @@ export async function runLab(routerModule?: string): Promise<LabReport> {
     { id: "tclk.settlement-view-rail-evidence", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: tclkSettlementView },
     { id: "tclk.issue-180-lockterms-binding", suite: "tclk", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: tclkIssue180 },
     { id: "tclk.settlement-truth-composition", suite: "tclk", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: tclkSettlementTruth },
+    { id: "tclk.unreleased-exact-nonce-and-capabilities", suite: "tclk", status: "PASS" as const, normativeStatus: "PROVISIONAL_PR" as const, durationMs: 0, details: { ...tclkUnreleased } },
+    { id: "flop.yellowpaper-d0506-readiness", suite: "research", status: "PASS" as const, normativeStatus: "TARGET_SPEC" as const, durationMs: 0, details: { ...d0506Readiness } },
     { id: "flop.settlement-composition-v1", suite: "evidence", status: "PASS" as const, normativeStatus: "LOCAL_POLICY" as const, durationMs: 0, details: settlementComposition },
     { id: "flop.validator-performance-score-ambiguity", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: validatorPerformanceAmbiguity },
     { id: "flop.f3-hids-kat", suite: "flop", status: "PASS" as const, normativeStatus: "OPEN_ISSUE" as const, durationMs: 0, details: f3HidsKat },

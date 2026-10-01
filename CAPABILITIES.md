@@ -30,7 +30,7 @@ The primary portable artifact is `flop-conformance-result/v1`. A result is evide
 
 ## Normative boundaries
 
-Results identify their source class: released normative material, pinned upstream, provisional PR, open issue, target specification, or local policy. Open issues and provisional pull requests never silently become protocol law.
+Results identify their source class: released normative material, pinned upstream, provisional PR, open issue, target specification, or local policy. Open issues, provisional pull requests, and upstream `Unreleased` changelog entries never silently become protocol law. TCLK exact decimal-string nonce posting, schema-owned tclk/1 fields, heartbeat frames, and hosted MCP remain tracked as unreleased until a tagged package/release is observed. Yellow Paper D-0506 is tracked as draft readiness only; no implementation or conformance claim is made.
 
 ## Builder identity
 
