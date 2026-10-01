@@ -1,6 +1,6 @@
 {
   "schema": "flop.protocol-evolution-history.v1",
-  "generatedAt": "2026-09-30T23:43:36.886Z",
+  "generatedAt": "2026-10-01T00:46:54.000Z",
   "records": [
     {
       "schema": "flop.protocol-evolution-record.v1",
@@ -1364,10 +1364,80 @@
         "algorithm": "sha256",
         "digest": "a69dd372a9d0a437a7a2605e60a42449c396cec22e1c30a2adfff8a731687b0c"
       }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "technocore-pr-800-retained-floor:eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2N2MxZjcyYzQ4M2RjZTBlNDlmYjYyMmFhZWQ3MTQ3YzM5MWNjYzFlIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjRUMTQ6MDI6MjZaIn0->eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIzMmM0ZWMzNzdkYTYzYjY5ZjU0MGZiYTBiYzI5ZjJlZmFlZmMxYTI1IiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDFUMDA6MTY6MjlaIn0",
+      "sourceId": "technocore-pr-800-retained-floor",
+      "observedAt": "2026-10-01T00:46:19.418Z",
+      "affected": [
+        "technocore.retained-window-proof"
+      ],
+      "before": {
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2N2MxZjcyYzQ4M2RjZTBlNDlmYjYyMmFhZWQ3MTQ3YzM5MWNjYzFlIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjRUMTQ6MDI6MjZaIn0",
+        "result": "PASS",
+        "evidenceRef": null
+      },
+      "change": {
+        "kind": "PR_CHANGE",
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIzMmM0ZWMzNzdkYTYzYjY5ZjU0MGZiYTBiYzI5ZjJlZmFlZmMxYTI1IiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMDFUMDA6MTY6MjlaIn0",
+        "reproductionStatus": "PENDING",
+        "evidenceRef": null,
+        "note": null
+      },
+      "after": {
+        "status": "DETECTED",
+        "result": null,
+        "resolutionRef": null,
+        "replayEvidenceRef": null
+      },
+      "provenance": {
+        "handoffId": "technocore-pr-800-retained-floor:1",
+        "upstreamUrl": null
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "a35e4a3dfc90c72db3e07728ca505c52a60b45bea62350160cbdee6cd55492b3"
+      }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "technocore-pr-842-export:eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2YTRkOGVjZGE1NzM2ODFkMzQ4OTRjMDIyMzAzNDM1YzFiZDcyODljIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjJUMDA6NTU6MDlaIn0->eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI4YjA3MmVhY2YxNjk4Yjk4MTFhNjU2YWQwMjdmYTVhMTg2NmI0MzZlIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMzBUMjM6NTk6MjZaIn0",
+      "sourceId": "technocore-pr-842-export",
+      "observedAt": "2026-10-01T00:46:19.418Z",
+      "affected": [
+        "technocore.retained-window-proof"
+      ],
+      "before": {
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI2YTRkOGVjZGE1NzM2ODFkMzQ4OTRjMDIyMzAzNDM1YzFiZDcyODljIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjJUMDA6NTU6MDlaIn0",
+        "result": "PASS",
+        "evidenceRef": null
+      },
+      "change": {
+        "kind": "PR_CHANGE",
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiI4YjA3MmVhY2YxNjk4Yjk4MTFhNjU2YWQwMjdmYTVhMTg2NmI0MzZlIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMzBUMjM6NTk6MjZaIn0",
+        "reproductionStatus": "PENDING",
+        "evidenceRef": null,
+        "note": null
+      },
+      "after": {
+        "status": "DETECTED",
+        "result": null,
+        "resolutionRef": null,
+        "replayEvidenceRef": null
+      },
+      "provenance": {
+        "handoffId": "technocore-pr-842-export:0",
+        "upstreamUrl": null
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "c1379fcf455223453666acc8c8a6e52294827945d4c171eaae7afb0890c8a7a6"
+      }
     }
   ],
   "summary": {
-    "DETECTED": 37,
+    "DETECTED": 39,
     "REPRODUCED": 0,
     "UPSTREAM_POSTED": 0,
     "UPSTREAM_RESOLVED": 0,
