@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import time
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,22 +22,57 @@ def singleton():
     handle = ctypes.windll.kernel32.CreateMutexW(None, False, "Local\\FLOPObservatorySupervisor")
     return bool(handle) and ctypes.windll.kernel32.GetLastError() != 183
 
-def run_script(name):
-    path = ROOT / "tools" / name
+def run_step(name, command, timeout=900):
+    """Bound one owned process tree; a failed step must not suppress other evidence."""
     started = datetime.now(timezone.utc).isoformat()
-    proc = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(path)],
-        cwd=ROOT, capture_output=True, text=True, timeout=900,
-        creationflags=CREATE_NO_WINDOW,
-    )
-    return {
-        "script": name,
-        "startedAt": started,
-        "finishedAt": datetime.now(timezone.utc).isoformat(),
-        "exitCode": proc.returncode,
-        "stdoutTail": proc.stdout[-4000:],
-        "stderrTail": proc.stderr[-4000:],
-    }
+    timed_out = False
+    cleanup_exit = None
+    error = None
+    with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
+        try:
+            proc = subprocess.Popen(command, cwd=ROOT, stdout=stdout, stderr=stderr,
+                                    creationflags=CREATE_NO_WINDOW)
+            try:
+                code = proc.wait(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                # Only target the PID created by this invocation and its descendants.
+                if os.name == "nt" and proc.poll() is None:
+                    try:
+                        cleanup = subprocess.run(
+                            ["taskkill.exe", "/PID", str(proc.pid), "/T", "/F"],
+                            capture_output=True, timeout=15, creationflags=CREATE_NO_WINDOW)
+                        cleanup_exit = cleanup.returncode
+                    except (OSError, subprocess.TimeoutExpired) as exc:
+                        error = f"Timeout cleanup failed: {exc}"
+                if proc.poll() is None:
+                    proc.kill()
+                proc.wait(timeout=15)
+                code = 124
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            code = 127
+            error = f"{type(exc).__name__}: {exc}"
+        def tail(stream):
+            stream.seek(0, 2)
+            stream.seek(max(0, stream.tell() - 4000))
+            return stream.read().decode("utf-8", errors="replace")
+        result = {
+            "script": name, "startedAt": started,
+            "finishedAt": datetime.now(timezone.utc).isoformat(),
+            "exitCode": code, "timedOut": timed_out,
+            "stdoutTail": tail(stdout), "stderrTail": tail(stderr),
+        }
+        if cleanup_exit is not None:
+            result["timeoutCleanupExitCode"] = cleanup_exit
+        if error:
+            result["error"] = error
+        return result
+
+
+def run_script(name):
+    return run_step(name, ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+                           "-File", str(ROOT / "tools" / name)])
+
 
 def _delegated_evidence():
     base = Path.home() / "AppData" / "Local" / "FLOP" / "observatory"
@@ -62,12 +98,13 @@ def _delegated_evidence():
 
 def cycle():
     results = [run_script("run-runtime-cycle.ps1"), run_script("run-drift-cycle.ps1")]
-    longitudinal = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(Path.home() / "AppData/Local/FLOP/longitudinal/run.ps1")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
-    results.append({"script":"longitudinal","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":longitudinal.returncode,"stdoutTail":longitudinal.stdout[-4000:],"stderrTail":longitudinal.stderr[-4000:]})
-    interaction = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(Path.home() / "AppData/Local/FLOP/interaction-observatory/run.ps1")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
-    results.append({"script":"interaction","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":interaction.returncode,"stdoutTail":interaction.stdout[-4000:],"stderrTail":interaction.stderr[-4000:]})
-    adoption = subprocess.run(["cmd.exe", "/d", "/c", "call", str(Path.home() / "AppData/Local/FLOP/adoption/run.cmd")], capture_output=True, text=True, timeout=900, creationflags=CREATE_NO_WINDOW)
-    results.append({"script":"adoption","startedAt":datetime.now(timezone.utc).isoformat(),"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":adoption.returncode,"stdoutTail":adoption.stdout[-4000:],"stderrTail":adoption.stderr[-4000:]})
+    local = Path.home() / "AppData" / "Local" / "FLOP"
+    for name, command in [
+        ("longitudinal", ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(local / "longitudinal/run.ps1")]),
+        ("interaction", ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(local / "interaction-observatory/run.ps1")]),
+        ("adoption", ["cmd.exe", "/d", "/c", "call", str(local / "adoption/run.cmd")]),
+    ]:
+        results.append(run_step(name, command))
 
     for script, command in [
         ("identity-aware", [sys.executable, str(ROOT / "tools" / "identity-aware-observer.py")]),
@@ -75,9 +112,7 @@ def cycle():
         ("stranger-journey", ["node.exe", str(ROOT / "tools" / "stranger-journey.mjs")]),
         ("appendix-e-coverage", [sys.executable, str(ROOT / "tools" / "appendix-e-coverage.py")]),
     ]:
-        started = datetime.now(timezone.utc).isoformat()
-        proc = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, timeout=300, creationflags=CREATE_NO_WINDOW)
-        results.append({"script":script,"startedAt":started,"finishedAt":datetime.now(timezone.utc).isoformat(),"exitCode":proc.returncode,"stdoutTail":proc.stdout[-4000:],"stderrTail":proc.stderr[-4000:]})
+        results.append(run_step(script, command, timeout=300))
 
     delegated = _delegated_evidence()
     healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
