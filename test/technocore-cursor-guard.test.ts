@@ -1,0 +1,12 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { assessCursorSnapshot, type CursorSnapshot, type CursorDecision } from "../src/technocore-cursor-guard.js";
+const base: CursorSnapshot = { room: "lobby", generation: 1, lastCommittedSeq: 100, firstReturnedSeq: 101, lastReturnedSeq: 103 };
+const reason = (d: CursorDecision) => d.status === "HOLD" ? d.reason : "ADVANCED";
+test("contiguous reads may advance", () => assert.deepEqual(assessCursorSnapshot(base,1), {status:"ADVANCE",commitThrough:103}));
+test("tail jump never silently advances checkpoint", () => assert.deepEqual(assessCursorSnapshot({...base,firstReturnedSeq:120,lastReturnedSeq:140},1), {status:"HOLD",reason:"GAP_DETECTED",missingFrom:101,missingTo:119}));
+test("provisional unsnapshotted retained floor is untrusted", () => assert.equal(reason(assessCursorSnapshot({...base,firstReturnedSeq:120,lastReturnedSeq:140,firstRetainedSeq:90},1)),"FLOOR_UNTRUSTED"));
+test("verified retention eviction stays distinct from recoverable gap", () => assert.equal(reason(assessCursorSnapshot({...base,firstReturnedSeq:120,lastReturnedSeq:140,firstRetainedSeq:110,retentionFloorSnapshotConsistent:true},1)),"RETENTION_LOSS"));
+test("verified retained gap is still a hold pending external export replay", () => assert.equal(reason(assessCursorSnapshot({...base,firstReturnedSeq:120,lastReturnedSeq:140,firstRetainedSeq:80,retentionFloorSnapshotConsistent:true},1)),"GAP_DETECTED"));
+test("epoch changes cannot inherit prior cursor", () => assert.equal(reason(assessCursorSnapshot({...base,generation:2},1)),"GENERATION_UNVERIFIED"));
+test("empty window does not prove recovery", () => assert.equal(reason(assessCursorSnapshot({...base,firstReturnedSeq:null,lastReturnedSeq:null},1)),"EMPTY_OR_INVALID"));
