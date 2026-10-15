@@ -1,6 +1,6 @@
 {
   "schema": "flop.protocol-evolution-history.v1",
-  "generatedAt": "2026-10-15T01:41:41.413Z",
+  "generatedAt": "2026-10-15T02:49:17.803Z",
   "records": [
     {
       "schema": "flop.protocol-evolution-record.v1",
@@ -7821,10 +7821,45 @@
         "algorithm": "sha256",
         "digest": "9819de223c11f74b8afbd53c271ab14d6b6f2d1f6f12f8525c805bba3ea82b26"
       }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "technocore-pr-800-retained-floor:eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwMWNlY2RjYTU5N2FjMTA2NmY3OTVlMWJhOGQ4ZDcwMWI3ZDQ5MmVjIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMTVUMDA6MDg6MDJaIn0->eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwMWNlY2RjYTU5N2FjMTA2NmY3OTVlMWJhOGQ4ZDcwMWI3ZDQ5MmVjIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMTVUMDI6MTA6NTVaIn0",
+      "sourceId": "technocore-pr-800-retained-floor",
+      "observedAt": "2026-10-15T02:48:15.517Z",
+      "affected": [
+        "technocore.retained-window-proof"
+      ],
+      "before": {
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwMWNlY2RjYTU5N2FjMTA2NmY3OTVlMWJhOGQ4ZDcwMWI3ZDQ5MmVjIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMTVUMDA6MDg6MDJaIn0",
+        "result": "PASS",
+        "evidenceRef": null
+      },
+      "change": {
+        "kind": "PR_CHANGE",
+        "fingerprint": "eyJkZXRhaWxfc3RhdGUiOiJGVUxMX1BSX01FVEFEQVRBIiwiaGVhZF9zaGEiOiIwMWNlY2RjYTU5N2FjMTA2NmY3OTVlMWJhOGQ4ZDcwMWI3ZDQ5MmVjIiwibWVyZ2VkIjpmYWxzZSwic3RhdGUiOiJvcGVuIiwidXBkYXRlZF9hdCI6IjIwMjYtMTAtMTVUMDI6MTA6NTVaIn0",
+        "reproductionStatus": "PENDING",
+        "evidenceRef": null,
+        "note": null
+      },
+      "after": {
+        "status": "DETECTED",
+        "result": null,
+        "resolutionRef": null,
+        "replayEvidenceRef": null
+      },
+      "provenance": {
+        "handoffId": "technocore-pr-800-retained-floor:0",
+        "upstreamUrl": null
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "3732afc42043a60b4b0946877d88311db2252fd54c520cf0ad8f32aef3cc87a5"
+      }
     }
   ],
   "summary": {
-    "DETECTED": 216,
+    "DETECTED": 217,
     "REPRODUCED": 0,
     "UPSTREAM_POSTED": 0,
     "UPSTREAM_RESOLVED": 0,
