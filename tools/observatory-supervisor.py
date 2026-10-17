@@ -84,6 +84,7 @@ def _delegated_evidence():
         "boundarySuite": base / "boundary-suite.json",
         "strangerJourney": base / "stranger-journey.json",
         "appendixE": base / "appendix-e-coverage.json",
+        "draftGuards": base / "draft-guards.json",
     }
     now = time.time()
     out = {}
@@ -114,6 +115,7 @@ def cycle():
     ]:
         results.append(run_step(script, command, timeout=300))
 
+    results.append(run_step("draft-guards", ["node.exe", str(ROOT / "tools" / "observe-draft-guards.mjs"), str(local / "observatory" / "draft-guards.json")], timeout=60))
     delegated = _delegated_evidence()
     healthy = all(x["exitCode"] == 0 for x in results) and all(x["state"] == "FRESH" for x in delegated.values())
     state = {
