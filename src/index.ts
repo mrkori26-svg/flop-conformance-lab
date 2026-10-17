@@ -36,6 +36,7 @@ import type { LabReport } from "./types.js";
 
 export * from "./types.js";
 export * from "./october-2026-draft-gates.js";
+export * from "./october-2026-second-wave.js";
 export * from "./technocore.js";
 export * from "./technocore-contribution-proof.js";
 export * from "./boundary.js";
