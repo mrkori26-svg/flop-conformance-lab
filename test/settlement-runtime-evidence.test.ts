@@ -16,4 +16,10 @@ test("settlement runtime binding requires verified bundle and integral execution
   assert.equal(bindSettlementToRuntime(bundle()).status,"VERIFIED");
   assert.equal(bindSettlementToRuntime(bundle(false)).status,"UNVERIFIED");
   assert.equal(bindSettlementToRuntime(bundle(true,"FAIL")).status,"UNVERIFIED");
+  const mismatchedCase=bundle();
+  mismatchedCase.testCaseId="different-case";
+  assert.equal(bindSettlementToRuntime(mismatchedCase).status,"UNVERIFIED");
+  const mismatchedTarget=bundle();
+  mismatchedTarget.target.id="other-runtime";
+  assert.equal(bindSettlementToRuntime(mismatchedTarget).status,"UNVERIFIED");
 });

@@ -24,7 +24,11 @@ function sha(value: unknown): string { return createHash("sha256").update(stable
 export function bindSettlementToRuntime(bundle: EvidenceBundle): SettlementRuntimeEvidence {
   const receipt=bundle.execution.executionReceipt;
   const receiptValid=verifyRouterRuntimeExecutionReceipt(receipt);
-  const verified=bundle.verification.status==="PASS" && receiptValid;
+  const signedReceipt=receipt && typeof receipt === "object" ? receipt as Record<string,unknown> : null;
+  const runtime=signedReceipt?.runtime;
+  const receiptTarget=runtime && typeof runtime === "object" ? (runtime as Record<string,unknown>).targetId : null;
+  const attributionMatches=signedReceipt?.testCaseId === bundle.testCaseId && receiptTarget === bundle.target.id;
+  const verified=bundle.verification.status==="PASS" && receiptValid && attributionMatches;
   const body= {
     schema:"flop.settlement-runtime-evidence/v1" as const,
     composition:"flop.settlement-composition/v1" as const,
