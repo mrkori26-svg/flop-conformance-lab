@@ -1,0 +1,46 @@
+name: Technocore upstream Linux regression audit
+on:
+  push:
+    branches:
+      - audit/linux-technocore-20261020
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pr: 930
+            suite: signer
+          - pr: 954
+            suite: owners
+          - pr: 998
+            suite: retention
+    steps:
+      - name: Clone and pin official upstream PR
+        run: |
+          git clone --no-checkout https://github.com/flop-labs/technocore-chat.git upstream
+          cd upstream
+          git fetch origin pull/${{ matrix.pr }}/head
+          git checkout --detach FETCH_HEAD
+          git rev-parse HEAD
+      - name: Python and uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - name: Install official locked dependencies
+        working-directory: upstream
+        run: uv sync --frozen --group dev
+      - name: Official upstream focused regression suite
+        working-directory: upstream
+        shell: bash
+        run: |
+          set -o pipefail
+          case '${{ matrix.suite }}' in
+            signer) uv run --frozen --group dev python -m pytest tests/unit/test_mcp_signing.py tests/test_mcp.py -q ;;
+            owners) uv run --frozen --group dev python -m pytest tests/http/test_rooms.py -q ;;
+            retention) uv run --frozen --group dev python -m pytest tests/unit/test_store.py tests/test_store_stateful.py -q ;;
+          esac
