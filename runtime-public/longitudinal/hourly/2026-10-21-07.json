@@ -1,0 +1,243 @@
+{
+  "schema": "flop.longitudinal-hour/v1",
+  "methodologyVersion": "1.1.0",
+  "bucket": "2026-10-21-07",
+  "start": "2026-10-21T07:00:00.000Z",
+  "end": "2026-10-21T08:00:00.000Z",
+  "recordCount": 2,
+  "recordsHash": "71283ea1b02c6c6ddd7592a22e824f630330e23f2b09164e79a2e32a9226c688",
+  "metrics": {
+    "runtime_availability": {
+      "metric": "runtime_availability",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "interaction_success": {
+      "metric": "interaction_success",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "signature_verification": {
+      "metric": "signature_verification",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "room_retention": {
+      "metric": "room_retention",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "mailbox_validity": {
+      "metric": "mailbox_validity",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "tclk_parse_rate": {
+      "metric": "tclk_parse_rate",
+      "samples": 2,
+      "observed": 2,
+      "evaluable": 2,
+      "unknown": 0,
+      "coverageDenominator": 2,
+      "coverage": 1,
+      "passRate": 1,
+      "unknownRate": 0,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "SUFFICIENT_COVERAGE",
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1,
+      "outcomes": {
+        "PASS": 2,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 2,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "conformance_drift": {
+      "metric": "conformance_drift",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    },
+    "failure_classifications": {
+      "metric": "failure_classifications",
+      "samples": 0,
+      "observed": 0,
+      "evaluable": 0,
+      "unknown": 0,
+      "coverageDenominator": 0,
+      "coverage": null,
+      "passRate": null,
+      "unknownRate": null,
+      "coverageThreshold": 0.95,
+      "coverageHealth": "NO_OBSERVATIONS",
+      "numerator": null,
+      "denominator": null,
+      "rate": null,
+      "outcomes": {
+        "PASS": 0,
+        "FAIL": 0,
+        "DRIFT": 0,
+        "UNKNOWN": 0
+      },
+      "evaluations": {
+        "EVALUATED_PASS": 0,
+        "EVALUATED_FAIL": 0,
+        "UNKNOWN": 0
+      },
+      "unknownReasons": {},
+      "failures": {}
+    }
+  }
+}
