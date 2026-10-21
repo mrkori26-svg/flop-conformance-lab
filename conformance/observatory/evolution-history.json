@@ -1,6 +1,6 @@
 {
   "schema": "flop.protocol-evolution-history.v1",
-  "generatedAt": "2026-10-21T10:55:15.275Z",
+  "generatedAt": "2026-10-21T11:57:53.230Z",
   "records": [
     {
       "schema": "flop.protocol-evolution-record.v1",
@@ -12204,10 +12204,46 @@
         "algorithm": "sha256",
         "digest": "b4b8c4b950306dd0a52b3ff5620e158cbf4f291335c29094720b683a222b5456"
       }
+    },
+    {
+      "schema": "flop.protocol-evolution-record.v1",
+      "id": "technocore-main:eyJzaGEiOiJmYWNmNGIwOTYwYjZmZDU2NWVjOWMyOTM2Y2FhNjRlZDM2ZDAwNGVkIn0->eyJzaGEiOiI4NmViNmU4MzlmNzVlNTM1NDY5NDY1OTA3NzcyNmY5MGQ0NWNjZDc3In0",
+      "sourceId": "technocore-main",
+      "observedAt": "2026-10-21T11:57:13.731Z",
+      "affected": [
+        "technocore.transport",
+        "technocore.contribution-proof-v1"
+      ],
+      "before": {
+        "fingerprint": "eyJzaGEiOiJmYWNmNGIwOTYwYjZmZDU2NWVjOWMyOTM2Y2FhNjRlZDM2ZDAwNGVkIn0",
+        "result": "PASS",
+        "evidenceRef": null
+      },
+      "change": {
+        "kind": "SPEC_CHANGE",
+        "fingerprint": "eyJzaGEiOiI4NmViNmU4MzlmNzVlNTM1NDY5NDY1OTA3NzcyNmY5MGQ0NWNjZDc3In0",
+        "reproductionStatus": "PENDING",
+        "evidenceRef": null,
+        "note": null
+      },
+      "after": {
+        "status": "DETECTED",
+        "result": null,
+        "resolutionRef": null,
+        "replayEvidenceRef": null
+      },
+      "provenance": {
+        "handoffId": "technocore-main:0",
+        "upstreamUrl": null
+      },
+      "integrity": {
+        "algorithm": "sha256",
+        "digest": "969e149bac3832ddf5bb6a991ad9477cb4982e83758aa67976b69807e661f1e9"
+      }
     }
   ],
   "summary": {
-    "DETECTED": 337,
+    "DETECTED": 338,
     "REPRODUCED": 0,
     "UPSTREAM_POSTED": 0,
     "UPSTREAM_RESOLVED": 0,
