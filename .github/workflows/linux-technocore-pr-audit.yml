@@ -1,5 +1,6 @@
 name: Technocore upstream Linux regression audit
 on:
+  workflow_dispatch:
   push:
     branches:
       - audit/linux-technocore-20261020
