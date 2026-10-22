@@ -1,0 +1,10 @@
+import test from "node:test";import assert from "node:assert/strict";
+import {assessFlopRailObservation} from "../src/flop-rail-210-boundary.js";
+const sourceCommit="fb910d354b34892f9bad236ca51f390be50a6d4b",genesis="0x"+"a".repeat(64);
+const base={sourceCommit,network:"devnet",genesis,expectedGenesis:genesis,rpcsHealthy:true,finalized:true,pendingJournalDurable:true};
+test("unknown RPC or genesis remains UNKNOWN",()=>{assert.equal(assessFlopRailObservation({...base,rpcsHealthy:false}).status,"UNKNOWN");assert.equal(assessFlopRailObservation({...base,expectedGenesis:"other"}).status,"UNKNOWN")});
+test("timeout never becomes a safe automatic retry",()=>{const r=assessFlopRailObservation({...base,transactionOutcomeUnknown:true});assert.ok(r.reasons.includes("TRANSACTION_OUTCOME_UNKNOWN_NO_RETRY"))});
+test("claim window fails closed during expiry",()=>{const r=assessFlopRailObservation({...base,escrowStatus:"Open",requestedOperation:"claim",wallDeadlineReached:true});assert.ok(r.reasons.includes("CLAIM_WINDOW_CLOSED"))});
+test("refund requires both chain and wall deadlines",()=>{for(const flags of [{chainDeadlineReached:false,wallDeadlineReached:true},{chainDeadlineReached:true,wallDeadlineReached:false}])assert.equal(assessFlopRailObservation({...base,escrowStatus:"Open",requestedOperation:"refund",...flags}).status,"UNKNOWN")});
+test("HTLC release cannot prove inference settlement or airdrop",()=>{const r=assessFlopRailObservation({...base,escrowStatus:"Released",finalizedEvent:"EscrowReleased",inferenceSettlementVerified:true});assert.equal(r.status,"PASS");assert.equal(r.inferenceSettlementEligible,false);assert.equal(r.airdropEligible,false);assert.equal(r.economicExecutionAuthorized,false)});
+test("merged source is pinned and pending journal required",()=>{assert.equal(assessFlopRailObservation({...base,sourceCommit:"other"}).status,"UNKNOWN");assert.equal(assessFlopRailObservation({...base,pendingJournalDurable:false}).status,"UNKNOWN")});
