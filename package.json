@@ -50,7 +50,9 @@
     "docs/EXTERNAL_EVIDENCE_REUSE.md",
     "docs/D0506_READINESS.md",
     "examples/minimal-verify.mjs",
-    "adoption/external-evidence-reuse.json"
+    "adoption/external-evidence-reuse.json",
+    "docs/RESEARCH_ASSURANCE_20261113.md",
+    "tools/research-assurance.mjs"
   ],
   "engines": {
     "node": ">=22.13"
@@ -77,7 +79,8 @@
     "runtime:task-relay:paper": "npm run build && node dist/src/runtime-cli.js run --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --out .runtime/external-task-relay-paper-latest.json",
     "runtime:task-relay:cycle": "npm run build && node dist/src/runtime-cli.js cycle --target external-task-relay-paper --input examples/external-consumer/task-relay-paper.json --state .runtime/external-task-relay-paper-state.json --retry-budget 1 --history-limit 744",
     "runtime:replay": "npm run build && node dist/src/runtime-replay-cli.js",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "research:assurance": "node tools/research-assurance.mjs"
   },
   "keywords": [
     "flop",

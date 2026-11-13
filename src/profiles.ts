@@ -1,4 +1,5 @@
 ﻿import { readFileSync } from "node:fs";
+import { verifyResearchEvidence } from "./research-assurance.js";
 import { createHash, createPublicKey, verify as verifySignature } from "node:crypto";
 import { tryDecodeFrame } from "@flop-labs/tclk";
 import {
@@ -13,7 +14,7 @@ import type { TransportRecord } from "./types.js";
 import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 import { assessDirectRailF1, type DirectRailF1Input, type DirectRailF1Observed } from "./direct-rail-f1.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter", "direct-rail-f1", "empires-journey", "flop-agent", "router-evidence"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -119,7 +120,7 @@ function finalize(profile: ExternalProfile, input: JsonObject, checks: PortableC
     fail: checks.filter((item) => item.status === "FAIL").length,
     skip: checks.filter((item) => item.status === "SKIP").length,
   };
-  const result: PortableResultStatus = summary.fail > 0 ? "FAIL" : summary.warn > 0 ? "PARTIAL" : "PASS";
+  const result: PortableResultStatus = summary.fail > 0 ? "FAIL" : summary.warn > 0 || summary.skip > 0 || summary.pass === 0 ? "PARTIAL" : "PASS";
   return {
     schema: "flop-conformance-result/v1",
     profile,
@@ -553,6 +554,11 @@ function verifyFlopAgent(rawInput: unknown): PortableConformanceResult {
 }
 
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
+  if (profile === "router-evidence") {
+    const report = verifyResearchEvidence(input);
+    return finalize("router-evidence", {}, report.checks.map(c =>
+      check(c.id, c.status === "UNKNOWN" ? "WARN" : c.status, c.reason)));
+  }
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
   if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);

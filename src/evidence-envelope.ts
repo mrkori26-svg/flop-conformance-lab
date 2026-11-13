@@ -45,8 +45,11 @@ export function buildEvidenceEnvelope(input: EvidenceEnvelopeInput): EvidenceEnv
       input.claims?.some((claim) => claim.normative === true)) {
     throw new Error("NON_OFFICIAL_EVIDENCE_CANNOT_BE_NORMATIVE");
   }
+  if (input.verification.state === "VERIFIED" && (!input.verification.checks?.length || !input.verification.verifier.trim())) {
+    throw new Error("VERIFIED_EVIDENCE_REQUIRES_CHECKS");
+  }
   if (input.verification.state === "VERIFIED" &&
-      input.verification.checks?.some((check) => !check.ok)) {
+      input.verification.checks?.some((check) => check.ok !== true || !check.id.trim())) {
     throw new Error("VERIFIED_EVIDENCE_HAS_FAILED_CHECK");
   }
 

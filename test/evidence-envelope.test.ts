@@ -30,3 +30,9 @@ test("community and local evidence cannot self-promote to normative authority", 
     claims: [{ type: "normative", value: true, normative: true }],
   }), /NON_OFFICIAL_EVIDENCE_CANNOT_BE_NORMATIVE/);
 });
+
+test("VERIFIED cannot be minted with absent or empty verification checks",()=>{
+ const input={subject:{kind:"test",id:"x"},source:{uri:"local:x",sourceClass:"LOCAL" as const,observedAt:"2026-11-13T00:00:00Z"},payload:{type:"x",value:{}},verification:{state:"VERIFIED" as const,verifier:"lab"}};
+ assert.throws(()=>buildEvidenceEnvelope(input),/VERIFIED_EVIDENCE_REQUIRES_CHECKS/);
+ assert.throws(()=>buildEvidenceEnvelope({...input,verification:{...input.verification,checks:[]}}),/VERIFIED_EVIDENCE_REQUIRES_CHECKS/);
+});
