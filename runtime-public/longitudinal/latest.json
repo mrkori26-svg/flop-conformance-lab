@@ -1,8 +1,8 @@
 {
   "schema": "flop.longitudinal-latest/v1",
   "methodologyVersion": "1.1.0",
-  "generatedAt": "2026-11-21T23:22:59.981Z",
-  "observationCount": 938,
+  "generatedAt": "2026-11-21T23:48:48.486Z",
+  "observationCount": 939,
   "chainHead": "1c340aebf3d00273ca4f3d67d7fbd74b2736219e8016b04a9348ec2002556f53",
   "metrics": {
     "runtime_availability": {
@@ -152,27 +152,27 @@
     },
     "tclk_parse_rate": {
       "metric": "tclk_parse_rate",
-      "samples": 938,
-      "observed": 938,
-      "evaluable": 938,
+      "samples": 939,
+      "observed": 939,
+      "evaluable": 939,
       "unknown": 0,
-      "coverageDenominator": 938,
+      "coverageDenominator": 939,
       "coverage": 1,
       "passRate": 1,
       "unknownRate": 0,
       "coverageThreshold": 0.95,
       "coverageHealth": "SUFFICIENT_COVERAGE",
-      "numerator": 4690,
-      "denominator": 4690,
+      "numerator": 4695,
+      "denominator": 4695,
       "rate": 1,
       "outcomes": {
-        "PASS": 938,
+        "PASS": 939,
         "FAIL": 0,
         "DRIFT": 0,
         "UNKNOWN": 0
       },
       "evaluations": {
-        "EVALUATED_PASS": 938,
+        "EVALUATED_PASS": 939,
         "EVALUATED_FAIL": 0,
         "UNKNOWN": 0
       },
@@ -240,8 +240,8 @@
   },
   "coverageSlo": {
     "threshold": 0.95,
-    "windowStart": "2026-11-20T23:22:59.981Z",
-    "windowEnd": "2026-11-21T23:22:59.981Z",
+    "windowStart": "2026-11-20T23:48:48.486Z",
+    "windowEnd": "2026-11-21T23:48:48.486Z",
     "status": "PASS",
     "violations": []
   },
